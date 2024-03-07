@@ -1,4 +1,5 @@
 import { Utils } from "@/app/_components/Utils";
+import Navbar from "@/components/page/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { inter } from "@/lib/fonts";
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className={cn("relative antialiased", inter.className)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
+            <Navbar />
             <Utils>{children}</Utils>
             <Toaster richColors />
           </AuthProvider>

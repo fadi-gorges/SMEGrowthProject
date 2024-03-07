@@ -1,5 +1,5 @@
 "use server";
-import { actionError } from "@/lib/utils/actionError";
+import { ActionError, actionError } from "@/lib/utils/actionError";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import getPayloadClient from "@/payload/payloadClient";
 

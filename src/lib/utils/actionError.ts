@@ -1,3 +1,5 @@
+export type ActionError = { success: false; error: string };
+
 export const actionError = (
   e: any,
   message: string

@@ -1,6 +1,6 @@
 "use server";
 
-import { actionError } from "@/lib/utils/actionError";
+import { ActionError, actionError } from "@/lib/utils/actionError";
 import { EmailData, emailSchema } from "@/lib/validations/auth/emailSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
