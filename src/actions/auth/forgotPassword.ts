@@ -1,6 +1,7 @@
 "use server";
 
 import { ActionError, actionError } from "@/lib/utils/actionError";
+import { getUrl } from "@/lib/utils/getUrl";
 import { EmailData, emailSchema } from "@/lib/validations/auth/emailSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
@@ -60,7 +61,7 @@ export const forgotPasswordAction = async (
         <h1 style="margin-bottom: 16px;">Reset your password</h1>
         <p style="margin-bottom: 8px;">Hi ${validation.data.email},</p>
         <p style="margin-bottom: 16px;">Click the button below to reset your password:</p>
-        <a href="${process.env.NEXT_PUBLIC_SITE_URL}/auth/reset-password/${user.resetPasswordToken}" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Reset your password</a>
+        <a href="${getUrl()}/auth/reset-password/${user.resetPasswordToken}" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Reset your password</a>
         `,
     });
 

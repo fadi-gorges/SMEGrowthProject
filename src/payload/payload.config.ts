@@ -6,6 +6,7 @@ import path from "path";
 import { buildConfig } from "payload/config";
 import { Icons } from "../components/Icons";
 import ReturnToSite from "../components/admin/ReturnToSite";
+import { getUrl } from "../lib/utils/getUrl";
 import Users from "../payload/collections/Users";
 
 const mockModulePath = path.resolve(__dirname, "./emptyModuleMock.js");
@@ -16,7 +17,7 @@ dotenv.config({
 
 // TODO: CUSTOMISE PAYLOAD MORE!
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SITE_URL,
+  serverURL: getUrl(),
   db: mongooseAdapter({
     url: process.env.MONGODB_URI!,
   }),
@@ -27,7 +28,7 @@ export default buildConfig({
     meta: {
       favicon: "/icon.png",
       ogImage: "/icon.png",
-      titleSuffix: "• Admin",
+      titleSuffix: "• SME@UTS Admin",
     },
     components: {
       graphics: {
@@ -44,10 +45,6 @@ export default buildConfig({
           ...config.resolve,
           alias: {
             ...config.resolve?.alias,
-            // [path.resolve(
-            //   __dirname,
-            //   "collections/Toppings/hooks/updateNameAndPrice.ts"
-            // )]: mockModulePath,
             fs: mockModulePath,
           },
         },
@@ -68,6 +65,6 @@ export default buildConfig({
   graphQL: {
     disable: true,
   },
-  cors: [process.env.NEXT_PUBLIC_SITE_URL || ""].filter(Boolean),
-  csrf: [process.env.NEXT_PUBLIC_SITE_URL || ""].filter(Boolean),
+  cors: [getUrl()].filter(Boolean),
+  csrf: [getUrl()].filter(Boolean),
 });

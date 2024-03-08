@@ -1,5 +1,6 @@
 "use server";
 import { ActionError, actionError } from "@/lib/utils/actionError";
+import { getUrl } from "@/lib/utils/getUrl";
 import {
   UserAuthData,
   userAuthSchema,
@@ -54,7 +55,9 @@ export const createUser = async (
         <h1 style="margin-bottom: 16px;">Verify your email</h1>
         <p style="margin-bottom: 8px;">Hi ${user.email},</p>
         <p style="margin-bottom: 16px;">Click the button below to verify your email address:</p>
-        <a href="${process.env.NEXT_PUBLIC_SITE_URL}/auth/verify/${user._verificationToken}" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Verify your email</a>
+        <a href="${getUrl()}/auth/verify/${
+        user._verificationToken
+      }" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Verify your email</a>
       `,
     });
 

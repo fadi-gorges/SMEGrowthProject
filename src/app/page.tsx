@@ -3,7 +3,7 @@ import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "",
+  title: "Home • SME@UTS",
   description: "",
 };
 

@@ -23,38 +23,9 @@ const Users: CollectionConfig = {
   hooks: {
     afterChange: [loginAfterCreate],
   },
-  auth: true,
-  // auth: {
-  //   verify: {
-  //     generateEmailHTML: ({ token, user }) => {
-  //       return `
-  //         <h1 style="margin-bottom: 16px;">Verify your email</h1>
-  //         <p style="margin-bottom: 8px;">Hi ${user.email},</p>
-  //         <p style="margin-bottom: 16px;">Click the button below to verify your email address:</p>
-  //         <a href="${process.env.NEXT_PUBLIC_SITE_URL}/auth/verify/${token}" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Verify your email</a>
-  //       `;
-  //     },
-  //   },
-  //   forgotPassword: {
-  //     generateEmailHTML: (args) => {
-  //       const { token, user } = args as {
-  //         token: string;
-  //         user: { email: string };
-  //       };
-
-  //       if (!token || !user) {
-  //         return "There was an error in generating your reset password email. Please try again.";
-  //       }
-
-  //       return `
-  //         <h1 style="margin-bottom: 16px;">Reset your password</h1>
-  //         <p style="margin-bottom: 8px;">Hi ${user.email},</p>
-  //         <p style="margin-bottom: 16px;">Click the button below to reset your password:</p>
-  //         <a href="${process.env.NEXT_PUBLIC_SITE_URL}/auth/reset-password/${token}" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Reset your password</a>
-  //       `;
-  //     },
-  //   },
-  // },
+  auth: {
+    verify: true,
+  },
   fields: [
     {
       name: "roles",

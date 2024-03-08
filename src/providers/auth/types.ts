@@ -17,6 +17,6 @@ export interface AuthContext {
   setUser: (user: User | null) => void;
   logout: Logout;
   login: Login;
-  googleLogin: GoogleLogin;
+  // googleLogin: GoogleLogin;
   resetPassword: ResetPassword;
 }

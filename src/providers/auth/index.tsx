@@ -14,6 +14,7 @@ import {
   Logout,
   ResetPassword,
 } from "./types";
+import { getUrl } from "@/lib/utils/getUrl";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -56,10 +57,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // });
 
   const login: Login = async (args) => {
-    const user = await rest(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/api/users/login`,
-      args
-    );
+    const user = await rest(`${getUrl()}/api/users/login`, args);
     setUser(user);
   };
 
@@ -69,10 +67,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const resetPassword: ResetPassword = async (args) => {
-    const user = await rest(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/api/users/reset-password`,
-      args
-    );
+    const user = await rest(`${getUrl()}/api/users/reset-password`, args);
     setUser(user);
   };
 
@@ -80,7 +75,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchMe = async () => {
       const user = await rest(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/api/users/me`,
+        `${getUrl()}/api/users/me`,
         {},
         {
           method: "GET",
