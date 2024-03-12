@@ -78,6 +78,7 @@ const config = {
     hoverOnlyWhenSupported: true,
   },
   plugins: [require("tailwindcss-animate")],
+  blocklist: ["table"],
 } satisfies Config;
 
 export default config;

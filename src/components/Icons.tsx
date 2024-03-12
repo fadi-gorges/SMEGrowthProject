@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { cn } from "../lib/utils/cn";
 
-export interface ImgIconProps
+export interface IMGIconProps
   extends React.ImgHTMLAttributes<HTMLImageElement> {
   size?: number;
 }
@@ -10,7 +10,7 @@ export interface SVGIconProps extends React.SVGAttributes<SVGElement> {
   size?: number;
 }
 
-const Icon = ({ className, size = 24, ...props }: ImgIconProps) => (
+const Icon = ({ className, size = 24, ...props }: IMGIconProps) => (
   <Image
     src="/icon.png"
     alt="Logo"
@@ -23,7 +23,7 @@ const Icon = ({ className, size = 24, ...props }: ImgIconProps) => (
 
 const PayloadIcon = () => <Icon className="w-6 h-6 md:w-9 md:h-9" />;
 
-const PayloadLogo = ({ className }: ImgIconProps) => (
+const PayloadLogo = ({ className }: IMGIconProps) => (
   <h2 className="flex gap-6 items-center font-sans text-5xl">
     <Image
       src="/icon.png"

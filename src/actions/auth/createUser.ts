@@ -1,16 +1,13 @@
 "use server";
 import { ActionError, actionError } from "@/lib/utils/actionError";
 import { getUrl } from "@/lib/utils/getUrl";
-import {
-  UserAuthData,
-  userAuthSchema,
-} from "@/lib/validations/auth/userAuthSchema";
+import { SignupData, signupSchema } from "@/lib/validations/auth/signupSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
 export const createUser = async (
-  data: UserAuthData
+  data: SignupData
 ): Promise<{ success: true } | ActionError> => {
-  const validation = userAuthSchema.safeParse(data);
+  const validation = signupSchema.safeParse(data);
 
   if (!validation.success) {
     return { success: false, error: validation.error.message };
