@@ -10,6 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Drawer,
@@ -20,6 +21,15 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import {
   Sheet,
@@ -29,15 +39,23 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils/cn";
 import { checkRole } from "@/payload/collections/Users/checkRole";
 import { useAuth } from "@/providers/auth";
 import {
   HomeIcon,
+  LockKeyholeIcon,
   LogInIcon,
   LogOutIcon,
   LucideIcon,
   MenuIcon,
+  UserIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -52,8 +70,8 @@ type Link = {
 };
 
 export const navLinks = {
-  logo: { link: "/", icon: Icons.icon },
   home: { text: "Home", link: "/", icon: HomeIcon },
+  admin: { text: "Admin Panel", link: "/admin", icon: LockKeyholeIcon },
 };
 
 const hiddenPaths = ["/admin"];
@@ -79,8 +97,65 @@ const Navbar = () => {
     setLogoutDialogOpen(false);
   };
 
+  const accountDropdown = (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="hidden lg:inline-flex h-10 w-10 rounded-full"
+        >
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <Avatar>
+                    <AvatarFallback>
+                      <UserIcon />
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Account</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56" align="center" forceMount>
+        <DropdownMenuLabel className="font-bold">
+          {user?.email}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          {userIsAdmin && (
+            <DropdownMenuItem asChild>
+              <Link href="/admin" className="flex items-center gap-2">
+                <LockKeyholeIcon size={16} />
+                Admin Panel
+              </Link>
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuGroup>
+        {/* <DropdownMenuSeparator /> */}
+        <DropdownMenuItem
+          onClick={() => setLogoutDialogOpen(true)}
+          className="flex items-center gap-2"
+        >
+          <LogOutIcon size={16} />
+          Log Out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   const logoutDialog =
-    !user && isMobile ? (
+    user &&
+    (isMobile ? (
       <Drawer open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
         <DrawerContent>
           <DrawerHeader>
@@ -126,7 +201,7 @@ const Navbar = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    );
+    ));
 
   const navDrawer = (
     <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
@@ -147,11 +222,12 @@ const Navbar = () => {
         </SheetHeader>
         <div className="flex-1 space-y-4">
           <NavLink link={navLinks.home} drawerLink />
+          {userIsAdmin && <NavLink link={navLinks.admin} drawerLink />}
         </div>
         {!user ? (
           <SheetClose asChild>
             <Link
-              href="/auth/login"
+              href="/auth"
               className={cn(buttonVariants({ variant: "default" }), "w-full")}
             >
               <h6>Log in</h6>
@@ -186,19 +262,12 @@ const Navbar = () => {
         >
           <Icons.icon size={30} />
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {user ? (
-            <Button
-              variant="outline"
-              onClick={() => setLogoutDialogOpen(true)}
-              className="hidden lg:inline-flex"
-            >
-              Log Out
-              <LogOutIcon size={16} />
-            </Button>
+            accountDropdown
           ) : (
             <Link
-              href="/login"
+              href="/auth"
               className={buttonVariants({
                 variant: "outline",
                 className: "hidden lg:inline-flex",

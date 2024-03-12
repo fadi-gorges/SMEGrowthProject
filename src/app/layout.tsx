@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 import { AuthProvider } from "@/providers/auth";
 import "@/styles/globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
   title: {
@@ -15,6 +15,13 @@ export const metadata: Metadata = {
     default: "SME@UTS",
   },
   description: "",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
