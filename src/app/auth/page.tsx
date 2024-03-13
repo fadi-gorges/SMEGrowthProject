@@ -15,7 +15,7 @@ const AuthPage = async () => {
   if (user) redirect("/");
 
   return (
-    <div className="flex-1 flex flex-col justify-center items-center">
+    <main className="flex-1 flex flex-col justify-center items-center">
       <Tabs defaultValue="login" className="w-[90%] max-w-lg">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Log In</TabsTrigger>
@@ -28,7 +28,7 @@ const AuthPage = async () => {
           <AuthForm type="signup" />
         </TabsContent>
       </Tabs>
-    </div>
+    </main>
   );
 };
 

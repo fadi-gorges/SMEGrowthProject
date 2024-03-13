@@ -36,7 +36,7 @@ export default function RootLayout({
           <AuthProvider>
             <Navbar />
             <Utils>{children}</Utils>
-            <Toaster richColors />
+            <Toaster richColors closeButton />
           </AuthProvider>
         </ThemeProvider>
         <SpeedInsights />
