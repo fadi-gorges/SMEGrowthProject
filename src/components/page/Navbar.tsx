@@ -240,8 +240,8 @@ const Navbar = () => {
             onClick={() => setLogoutDialogOpen(true)}
             className="w-full"
           >
-            <LogOutIcon />
             <h6>Log out</h6>
+            <LogOutIcon />
           </Button>
         )}
       </SheetContent>

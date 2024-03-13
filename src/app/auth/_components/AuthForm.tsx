@@ -68,6 +68,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
   useEffect(() => {
     if (user) {
       router.replace(searchParams?.get("next") || "/");
+      router.refresh();
     }
   }, [user]);
 
