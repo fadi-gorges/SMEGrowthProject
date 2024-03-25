@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils/cn";
+import { LoginData, loginSchema } from "@/lib/validations/auth/loginSchema";
 import { SignupData, signupSchema } from "@/lib/validations/auth/signupSchema";
-import { LoginData, loginSchema } from "@/lib/validations/loginSchema";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, MailIcon } from "lucide-react";
@@ -100,15 +100,16 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
     } catch (e: any) {
       setError("Something went wrong. Please try again.");
       setIsLoading(false);
-      signupForm.resetField("password");
-      signupForm.resetField("password");
     }
+
+    signupForm.resetField("password");
+    signupForm.resetField("password");
   };
 
   return (
     <Card
       key={type}
-      className={cn("min-h-[400px] flex flex-col justify-center", className)}
+      className={cn("flex flex-col justify-center", className)}
       {...props}
     >
       <div className="group-data-[state=active]:animate-in group-data-[state=active]:fade-in-25 group-data-[state=active]:slide-in-from-top-1 group-data-[state=active]:duration-300">
@@ -124,7 +125,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
           <form
             onSubmit={form.handleSubmit(type === "login" ? onLogin : onSignup)}
           >
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-4">
               {error && (
                 <Alert className="bg-destructive">
                   <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 text-destructive-foreground font-semibold">

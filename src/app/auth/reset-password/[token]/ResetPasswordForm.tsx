@@ -48,8 +48,6 @@ const ResetPasswordForm = ({ className, ...props }: ResetPasswordFormProps) => {
   });
 
   const onSubmit = async (data: PasswordData) => {
-    console.log("bruh");
-
     setError("");
     setIsLoading(true);
 

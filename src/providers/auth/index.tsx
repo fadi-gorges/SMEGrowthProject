@@ -2,19 +2,18 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+import { getUser } from "@/actions/auth/getUser";
 import { logoutAction } from "@/actions/auth/logout";
-import { User } from "@/payload-types";
+import { getUrl } from "@/lib/utils/getUrl";
 import { usePathname } from "next/navigation";
-import { toast } from "sonner";
 import { rest } from "./rest";
 import {
   AuthContext,
-  GoogleLogin,
   Login,
   Logout,
   ResetPassword,
+  UserWithPicture,
 } from "./types";
-import { getUrl } from "@/lib/utils/getUrl";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -30,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 // AuthProvider component
 export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<UserWithPicture | null>();
 
   // useGoogleOneTapLogin({
   //   onSuccess: ({ credential }) => googleLoginSuccess({ credential }),
@@ -67,20 +66,15 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const resetPassword: ResetPassword = async (args) => {
-    const user = await rest(`${getUrl()}/api/users/reset-password`, args);
+    await rest(`${getUrl()}/api/users/reset-password`, args);
+    const user = await getUser();
     setUser(user);
   };
 
   // On mount, get user and set
   useEffect(() => {
     const fetchMe = async () => {
-      const user = await rest(
-        `${getUrl()}/api/users/me`,
-        {},
-        {
-          method: "GET",
-        }
-      );
+      const user = await getUser();
       setUser(user);
     };
 

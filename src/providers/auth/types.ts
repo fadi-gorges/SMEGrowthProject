@@ -1,4 +1,6 @@
-import type { User } from "@/payload-types";
+import type { Media, User } from "@/payload-types";
+
+export type UserWithPicture = User & { picture: Media };
 
 export type ResetPassword = (args: {
   password: string;
@@ -13,8 +15,8 @@ export type GoogleLogin = () => void;
 export type Logout = () => void;
 
 export interface AuthContext {
-  user?: User | null;
-  setUser: (user: User | null) => void;
+  user?: UserWithPicture | null;
+  setUser: (user: UserWithPicture | null) => void;
   logout: Logout;
   login: Login;
   // googleLogin: GoogleLogin;

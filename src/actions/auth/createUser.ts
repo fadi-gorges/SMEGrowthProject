@@ -34,12 +34,17 @@ export const createUser = async (
       },
     });
 
+    const picture = await payload.create({
+      collection: "media",
+      file: validation.data.picture
+    })
+
     const user = await payload.create({
       collection: "users",
       data: {
-        email: validation.data.email,
-        password: validation.data.password,
-      },
+        ...validation.data,
+        picture: undefined
+      }
       showHiddenFields: true,
       disableVerificationEmail: true,
     });
