@@ -2,7 +2,7 @@
 import { Icons } from "@/components/Icons";
 import { usePathname } from "next/navigation";
 
-const hiddenPaths = ["/auth", "/auth", "/admin"];
+const hiddenPaths = ["/admin"];
 
 const Footer = () => {
   const pathname = usePathname() ?? "";

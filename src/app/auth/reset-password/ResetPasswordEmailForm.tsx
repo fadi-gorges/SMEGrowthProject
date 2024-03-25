@@ -109,7 +109,6 @@ const ResetPasswordEmailForm = ({
                           placeholder="name@example.com"
                           autoCapitalize="none"
                           autoComplete="email"
-                          autoCorrect="off"
                           required
                           {...field}
                         />

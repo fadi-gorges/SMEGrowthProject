@@ -1,3 +1,4 @@
+import validator from "validator";
 import * as z from "zod";
 
 export const signupSchema = z.object({
@@ -22,7 +23,9 @@ export const signupSchema = z.object({
   }),
   jobTitle: z.string(),
   organisation: z.string(),
-  mobileNumber: z.string().length(10, "Please enter a valid mobile number"),
+  mobileNumber: z
+    .string()
+    .refine(validator.isMobilePhone, "Please enter a valid phone number"),
 });
 
 export type SignupData = z.infer<typeof signupSchema>;

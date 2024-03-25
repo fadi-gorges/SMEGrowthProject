@@ -36,15 +36,15 @@ export const createUser = async (
 
     const picture = await payload.create({
       collection: "media",
-      file: validation.data.picture
-    })
+      file: validation.data.picture,
+    });
 
     const user = await payload.create({
       collection: "users",
       data: {
         ...validation.data,
-        picture: undefined
-      }
+        picture: undefined,
+      },
       showHiddenFields: true,
       disableVerificationEmail: true,
     });
