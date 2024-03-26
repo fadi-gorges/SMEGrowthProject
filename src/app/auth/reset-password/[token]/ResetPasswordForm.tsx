@@ -69,10 +69,10 @@ const ResetPasswordForm = ({ className, ...props }: ResetPasswordFormProps) => {
 
   const passwordFormEl = (
     <Card
-      className={cn("w-[90%] max-w-lg flex flex-col justify-center", className)}
+      className={cn("w-full max-w-xl flex flex-col justify-center", className)}
       {...props}
     >
-      <div className="animate-in fade-in-25 slide-in-from-top-1 duration-300">
+      <div className="form-slide-in">
         <CardHeader>
           <CardTitle>Reset Password</CardTitle>
           <CardDescription>
@@ -140,7 +140,7 @@ const ResetPasswordForm = ({ className, ...props }: ResetPasswordFormProps) => {
   return (
     <>
       {error && (
-        <Alert className="w-[90%] max-w-lg bg-destructive mb-4">
+        <Alert className="w-full max-w-xl bg-destructive mb-4">
           <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 text-destructive-foreground font-semibold">
             <AlertCircle className="h-5 w-5" />
             {error}

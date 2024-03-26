@@ -1,5 +1,6 @@
 import { forgotPasswordAction } from "@/actions/auth/forgotPassword";
 import ResetPasswordEmailForm from "@/app/auth/reset-password/ResetPasswordEmailForm";
+import Main from "@/components/page/Main";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { AlertCircleIcon, CheckCircleIcon } from "lucide-react";
@@ -26,11 +27,11 @@ const ResetPasswordEmailPage = async () => {
   }
 
   return (
-    <main className="flex-1 flex flex-col justify-center items-center">
+    <Main className="items-center">
       {user ? (
         success !== undefined && (
           <Alert
-            className={`w-[90%] max-w-lg px-2 mt-3 ${
+            className={`w-full max-w-xl px-2 mt-3 ${
               success
                 ? "bg-secondary text-secondary-foreground"
                 : "bg-destructive text-destructive-foreground"
@@ -49,7 +50,7 @@ const ResetPasswordEmailPage = async () => {
       ) : (
         <ResetPasswordEmailForm />
       )}
-    </main>
+    </Main>
   );
 };
 

@@ -12,7 +12,14 @@ const Users: CollectionConfig = {
   admin: {
     useAsTitle: "email",
     defaultColumns: ["email", "firstName", "lastName", "roles", "createdAt"],
-    listSearchableFields: ["email", "firstName", "lastName", "organisation"],
+    listSearchableFields: [
+      "email",
+      "mobileNumber",
+      "firstName",
+      "lastName",
+      "jobTitle",
+      "organisation",
+    ],
   },
   access: {
     read: adminsAndUser,
