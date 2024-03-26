@@ -73,16 +73,15 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
     setError("");
     setIsLoading(true);
 
-    const res = await login(data);
-
-    setIsLoading(false);
-
-    if (res.success) {
+    try {
+      await login(data);
+      setIsLoading(false);
       toast.success("You have logged in successfully.");
-      router.replace(searchParams?.get("next") || "/dashboard");
+      router.replace(searchParams?.get("next") || "/");
       router.refresh();
-    } else {
-      setError(res.error.replace("Error: ", ""));
+    } catch (e: any) {
+      setError((e.message as string).replace("Error: ", ""));
+      setIsLoading(false);
       loginForm.resetField("password");
       loginForm.resetField("password");
     }
