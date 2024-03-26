@@ -18,7 +18,7 @@ export type Login = (args: {
 
 export type GoogleLogin = () => void;
 
-export type Logout = () => void;
+export type Logout = () => Promise<void>;
 
 export interface AuthContext {
   user?: UserWithPicture | null;

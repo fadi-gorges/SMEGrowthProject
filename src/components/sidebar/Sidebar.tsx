@@ -69,7 +69,7 @@ const Sidebar = () => {
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogout = async () => {
-    logout();
+    await logout();
     toast.success("You have logged out successfully.");
     router.push("/");
     router.refresh();

@@ -92,6 +92,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout: Logout = async () => {
     logoutAction();
     setUser(null);
+    await new Promise((resolve) => setTimeout(resolve, 100));
   };
 
   const resetPassword: ResetPassword = async (args) => {
