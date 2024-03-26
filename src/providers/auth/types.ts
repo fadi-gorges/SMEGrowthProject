@@ -1,7 +1,4 @@
-import { ActionError } from "@/lib/utils/actionError";
-import type { ProfilePicture, User } from "@/payload-types";
-
-export type UserWithPicture = User & { picture: ProfilePicture };
+import { User } from "@/payload-types";
 
 export type IsAdmin = boolean;
 
@@ -14,16 +11,16 @@ export type ResetPassword = (args: {
 export type Login = (args: {
   email: string;
   password: string;
-}) => Promise<{ success: true; user: UserWithPicture } | ActionError>;
+}) => Promise<void>;
 
 export type GoogleLogin = () => void;
 
 export type Logout = () => Promise<void>;
 
 export interface AuthContext {
-  user?: UserWithPicture | null;
+  user?: User | null;
   isAdmin: IsAdmin;
-  setUser: (user: UserWithPicture | null) => void;
+  setUser: (user: User | null) => void;
   logout: Logout;
   login: Login;
   // googleLogin: GoogleLogin;

@@ -92,10 +92,7 @@ const AccountDropdown = ({
           <TooltipTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
               <Avatar>
-                <AvatarImage
-                  src={user.picture.url as string}
-                  alt={user.firstName}
-                />
+                <AvatarImage src={user.pictureUrl!} alt={user.firstName} />
                 <AvatarFallback>
                   <UserIcon />
                 </AvatarFallback>

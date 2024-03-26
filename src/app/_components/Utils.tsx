@@ -1,12 +1,10 @@
 "use client";
 import { cn } from "@/lib/utils/cn";
-import { useAuth } from "@/providers/auth";
 import { usePathname } from "next/navigation";
 import React from "react";
 
 export const Utils = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const { user } = useAuth();
 
   return (
     <div

@@ -1,8 +1,9 @@
 "use client";
 
-import { loginUser } from "@/actions/auth/loginUser";
 import { logoutAction } from "@/actions/auth/logout";
 import { getUrl } from "@/lib/utils/getUrl";
+import { User } from "@/payload-types";
+import { checkRole } from "@/payload/collections/Users/checkRole";
 import { usePathname } from "next/navigation";
 import React, {
   createContext,
@@ -12,14 +13,7 @@ import React, {
   useState,
 } from "react";
 import { rest } from "./rest";
-import {
-  AuthContext,
-  Login,
-  Logout,
-  ResetPassword,
-  UserWithPicture,
-} from "./types";
-import { checkRole } from "@/payload/collections/Users/checkRole";
+import { AuthContext, Login, Logout, ResetPassword } from "./types";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -35,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 // AuthProvider component
 export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const [user, setUser] = useState<UserWithPicture | null>();
+  const [user, setUser] = useState<User | null>();
 
   // useGoogleOneTapLogin({
   //   onSuccess: ({ credential }) => googleLoginSuccess({ credential }),
@@ -61,32 +55,14 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //   onSuccess: ({ access_token }) => googleLoginSuccess({ access_token }),
   // });
 
-  const fetchMe = async () => {
-    const res = await fetch("/api2/me");
-
-    if (!res.ok) {
-      setUser(null);
-      return;
-    }
-
-    const { user } = await res.json();
-
-    setUser(user);
-  };
-
   const isAdmin = useMemo(
     () => (user ? checkRole(["admin"], user) : false),
     [user]
   );
 
   const login: Login = async (args) => {
-    const res = await loginUser(args);
-
-    if (res.success) {
-      setUser(res.user);
-    }
-
-    return res;
+    const user = await rest(`${getUrl()}/api/users/login`, args);
+    setUser(user);
   };
 
   const logout: Logout = async () => {
@@ -96,12 +72,23 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const resetPassword: ResetPassword = async (args) => {
-    await rest(`${getUrl()}/api/users/reset-password`, args);
-    await fetchMe();
+    const user = await rest(`${getUrl()}/api/users/reset-password`, args);
+    setUser(user);
   };
 
   // On mount, get user and set
   useEffect(() => {
+    const fetchMe = async () => {
+      const user = await rest(
+        `${getUrl()}/api/users/me`,
+        {},
+        {
+          method: "GET",
+        }
+      );
+      setUser(user);
+    };
+
     fetchMe();
   }, [pathname]);
 

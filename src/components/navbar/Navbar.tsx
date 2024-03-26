@@ -58,9 +58,12 @@ const Navbar = () => {
       {!user && (
         <Link
           href="/auth"
-          className={buttonVariants({
-            variant: "outline",
-          })}
+          className={cn(
+            buttonVariants({
+              variant: "outline",
+            }),
+            "hidden lg:inline-flex"
+          )}
         >
           Log In
           <LogInIcon size={16} />
