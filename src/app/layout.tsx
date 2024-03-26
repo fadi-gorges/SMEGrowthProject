@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout = async ({ children }: { children: React.ReactNode }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body

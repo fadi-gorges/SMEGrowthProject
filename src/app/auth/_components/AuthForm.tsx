@@ -371,6 +371,8 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
     </Form>
   );
 
+  if (user) return null;
+
   return (
     <Card
       key={type}
