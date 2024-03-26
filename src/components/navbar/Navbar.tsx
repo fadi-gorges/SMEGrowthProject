@@ -79,7 +79,7 @@ const Navbar = () => {
     <nav className="sticky top-0 shrink-0 w-full h-16 bg-background/75 backdrop-blur-md border-b z-40">
       {user && (
         <div className="hidden lg:grid grid-cols-12 h-full">
-          <div className="col-span-3 2xl:col-span-2 padding flex items-center border-r">
+          <div className="col-span-3 2xl:col-span-2 padding flex items-center bg-muted/40 border-r animate-in slide-in-from-left-full">
             {navSheetAndLogo}
           </div>
           <div className="col-span-9 2xl:col-span-10 padding pl-5 flex justify-end items-center gap-3">
