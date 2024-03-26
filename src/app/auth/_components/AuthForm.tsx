@@ -40,7 +40,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { user, login } = useAuth();
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [signUpSuccess, setSignUpSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -253,7 +253,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
               control={signupForm.control}
               name="firstName"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex-1">
                   <FormLabel>First Name *</FormLabel>
                   <FormControl>
                     <Input
@@ -273,7 +273,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
               control={signupForm.control}
               name="lastName"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex-1">
                   <FormLabel>Last Name *</FormLabel>
                   <FormControl>
                     <Input
@@ -369,8 +369,6 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
       </form>
     </Form>
   );
-
-  if (user) return null;
 
   return (
     <Card
