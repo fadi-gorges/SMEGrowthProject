@@ -1,12 +1,20 @@
 "use server";
-import { ActionError, actionError } from "@/lib/utils/actionError";
+import { ActionError } from "@/lib/utils/actionError";
+import { capitalise } from "@/lib/utils/capitalise";
+import { getBuffer } from "@/lib/utils/getBuffer";
 import { getUrl } from "@/lib/utils/getUrl";
-import { SignupData, signupSchema } from "@/lib/validations/auth/signupSchema";
+import { signupSchema } from "@/lib/validations/auth/signupSchema";
 import getPayloadClient from "@/payload/payloadClient";
+import { actionError } from "./../../lib/utils/actionError";
 
 export const createUser = async (
-  data: SignupData
+  body: FormData
 ): Promise<{ success: true } | ActionError> => {
+  const data: {
+    [key: string]: string | File;
+  } = {};
+  body.forEach((value, key) => (data[key] = value));
+
   const validation = signupSchema.safeParse(data);
 
   if (!validation.success) {
@@ -34,11 +42,28 @@ export const createUser = async (
       },
     });
 
+    const picture = await payload.create({
+      collection: "profilePictures",
+      data: {},
+      file: {
+        data: await getBuffer(validation.data.picture),
+        name: validation.data.picture.name,
+        mimetype: validation.data.picture.type,
+        size: validation.data.picture.size,
+      },
+    });
+
     const user = await payload.create({
       collection: "users",
       data: {
         email: validation.data.email,
         password: validation.data.password,
+        firstName: capitalise(validation.data.firstName),
+        lastName: capitalise(validation.data.lastName),
+        mobileNumber: validation.data.mobileNumber,
+        jobTitle: capitalise(validation.data.jobTitle),
+        organisation: capitalise(validation.data.organisation),
+        picture: picture.id,
       },
       showHiddenFields: true,
       disableVerificationEmail: true,

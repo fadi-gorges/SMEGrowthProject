@@ -10,7 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Drawer,
@@ -97,7 +97,7 @@ const Navbar = () => {
     setLogoutDialogOpen(false);
   };
 
-  const accountDropdown = (
+  const accountDropdown = user && (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
@@ -113,6 +113,10 @@ const Navbar = () => {
                   className="rounded-full"
                 >
                   <Avatar>
+                    <AvatarImage
+                      src={user.picture.url as string}
+                      alt={user.firstName}
+                    />
                     <AvatarFallback>
                       <UserIcon />
                     </AvatarFallback>
@@ -127,8 +131,13 @@ const Navbar = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="center" forceMount>
-        <DropdownMenuLabel className="font-bold">
-          {user?.email}
+        <DropdownMenuLabel className="flex flex-col">
+          <small>
+            {user.firstName} {user.lastName}
+          </small>
+          <small className="text-xs font-normal text-muted-foreground">
+            {user.email}
+          </small>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

@@ -1,4 +1,5 @@
 import { Utils } from "@/app/_components/Utils";
+import Footer from "@/components/page/Footer";
 import Navbar from "@/components/page/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -35,7 +36,10 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             <Navbar />
-            <Utils>{children}</Utils>
+            <Utils>
+              {children}
+              <Footer />
+            </Utils>
             <Toaster richColors closeButton />
           </AuthProvider>
         </ThemeProvider>

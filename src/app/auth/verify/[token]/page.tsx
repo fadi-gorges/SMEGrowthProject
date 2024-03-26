@@ -1,14 +1,20 @@
 import { buttonVariants } from "@/components/ui/button";
+import { getServerUser } from "@/lib/utils/getServerUser";
 import getPayloadClient from "@/payload/payloadClient";
 import { LogInIcon } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Verify Account",
 };
 
 const VerifyPage = async ({ params }: { params: { token: string } }) => {
+  const user = await getServerUser();
+
+  if (user) redirect("/");
+
   const payload = await getPayloadClient();
 
   try {

@@ -9,6 +9,7 @@
 export interface Config {
   collections: {
     users: User;
+    profilePictures: ProfilePicture;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -21,6 +22,12 @@ export interface Config {
 export interface User {
   id: string;
   roles?: ('admin' | 'user')[] | null;
+  firstName: string;
+  lastName: string;
+  picture: string | ProfilePicture;
+  jobTitle: string;
+  organisation: string;
+  mobileNumber: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -33,6 +40,22 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "profilePictures".
+ */
+export interface ProfilePicture {
+  id: string;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

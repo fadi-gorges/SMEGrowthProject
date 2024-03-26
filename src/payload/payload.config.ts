@@ -1,5 +1,7 @@
 import { webpackBundler } from "@payloadcms/bundler-webpack";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
+import { cloudStorage } from "@payloadcms/plugin-cloud-storage";
+import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
 import { slateEditor } from "@payloadcms/richtext-slate";
 import dotenv from "dotenv";
 import path from "path";
@@ -7,6 +9,7 @@ import { buildConfig } from "payload/config";
 import { Icons } from "../components/Icons";
 import ReturnToSite from "../components/admin/ReturnToSite";
 import { getUrl } from "../lib/utils/getUrl";
+import { ProfilePictures } from "./collections/ProfilePictures";
 import Users from "../payload/collections/Users";
 
 const mockModulePath = path.resolve(__dirname, "./emptyModuleMock.js");
@@ -51,7 +54,7 @@ export default buildConfig({
       };
     },
   },
-  collections: [Users],
+  collections: [Users, ProfilePictures],
   globals: [
     // Your globals here
   ],
@@ -65,6 +68,25 @@ export default buildConfig({
   graphQL: {
     disable: true,
   },
+  plugins: [
+    cloudStorage({
+      collections: {
+        profilePictures: {
+          // Create the S3 adapter
+          adapter: s3Adapter({
+            config: {
+              region: process.env.S3_REGION,
+              credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+              },
+            },
+            bucket: process.env.NEXT_PUBLIC_S3_BUCKET!,
+          }),
+        },
+      },
+    }),
+  ],
   cors: [getUrl()].filter(Boolean),
   csrf: [getUrl()].filter(Boolean),
 });
