@@ -10,11 +10,11 @@ const Footer = () => {
   if (hiddenPaths.some((path) => pathname.startsWith(path))) return null;
 
   return (
-    <footer className="bg-foreground/5 py-4 md:py-8">
-      <div className="page-container flex justify-between items-start">
+    <footer className="top-margin bg-muted/40 py-4 lg:py-6">
+      <div className="padding flex justify-between items-start">
         <div className="flex items-center gap-y-2 gap-x-4">
           <Icons.icon size={36} />
-          <small className="md:text-base">
+          <small className="lg:text-base">
             AusBizGrowth <br />
             <i className="text-muted-foreground">Slogan here</i>
           </small>

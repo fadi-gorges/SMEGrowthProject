@@ -104,6 +104,18 @@ const DrawerDescription = React.forwardRef<
 ));
 DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 
+const DrawerMenuItem = React.forwardRef<
+  React.ElementRef<typeof DrawerPrimitive.Close>,
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Close>
+>(({ className, ...props }, ref) => (
+  <DrawerPrimitive.Close
+    ref={ref}
+    className={cn("py-1 flex items-center gap-3", className)}
+    {...props}
+  />
+));
+DrawerMenuItem.displayName = "DrawerMenuItem";
+
 export {
   Drawer,
   DrawerClose,
@@ -111,6 +123,7 @@ export {
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
+  DrawerMenuItem,
   DrawerOverlay,
   DrawerPortal,
   DrawerTitle,

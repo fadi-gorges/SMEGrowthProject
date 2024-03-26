@@ -9,8 +9,8 @@ import { buildConfig } from "payload/config";
 import { Icons } from "../components/Icons";
 import ReturnToSite from "../components/admin/ReturnToSite";
 import { getUrl } from "../lib/utils/getUrl";
-import { ProfilePictures } from "./collections/ProfilePictures";
 import Users from "../payload/collections/Users";
+import { ProfilePictures } from "./collections/ProfilePictures";
 
 const mockModulePath = path.resolve(__dirname, "./emptyModuleMock.js");
 
@@ -31,7 +31,7 @@ export default buildConfig({
     meta: {
       favicon: "/icon.png",
       ogImage: "/icon.png",
-      titleSuffix: "• SME@UTS Admin",
+      titleSuffix: "• AusBizGrowth Admin",
     },
     components: {
       graphics: {

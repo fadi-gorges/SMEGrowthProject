@@ -32,7 +32,7 @@ const PayloadLogo = ({ className }: IMGIconProps) => (
       height={75}
       className={cn("h-16 w-16 md:h-20 md:w-20", className)}
     />
-    SME@UTS Admin
+    AusBizGrowth Admin
   </h2>
 );
 

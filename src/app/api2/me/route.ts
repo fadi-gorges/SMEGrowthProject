@@ -1,10 +1,10 @@
 import { getUrl } from "@/lib/utils/getUrl";
 import { User } from "@/payload-types";
 import getPayloadClient from "@/payload/payloadClient";
-import { UserWithPicture } from "@/providers/auth/types";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-export const getServerUser = async () => {
+export const GET = async () => {
   const token = cookies().get("payload-token")?.value;
 
   const meUserReq = await fetch(`${getUrl()}/api/users/me`, {
@@ -15,7 +15,8 @@ export const getServerUser = async () => {
 
   const { user }: { user: User | null } = await meUserReq.json();
 
-  if (!user) return user;
+  if (!user)
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
 
   const payload = await getPayloadClient();
 
@@ -25,5 +26,5 @@ export const getServerUser = async () => {
     depth: 1,
   });
 
-  return fullUser as UserWithPicture;
+  return NextResponse.json({ user: fullUser });
 };

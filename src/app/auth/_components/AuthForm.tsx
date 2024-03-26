@@ -28,7 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, MailIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -69,13 +69,6 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
     },
   });
 
-  useEffect(() => {
-    if (user) {
-      router.replace(searchParams?.get("next") || "/");
-      router.refresh();
-    }
-  }, [user]);
-
   const onLogin = async (data: LoginData) => {
     setError("");
     setIsLoading(true);
@@ -86,6 +79,8 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
 
     if (res.success) {
       toast.success("You have logged in successfully.");
+      router.replace(searchParams?.get("next") || "/dashboard");
+      router.refresh();
     } else {
       setError(res.error.replace("Error: ", ""));
       loginForm.resetField("password");
@@ -178,7 +173,12 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
                   </Link>
                 </FormLabel>
                 <FormControl>
-                  <Input type="password" required {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Password..."
+                    required
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -240,6 +240,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
                   <Input
                     type="password"
                     minLength={type === "login" ? 1 : 8}
+                    placeholder="Password..."
                     required
                     {...field}
                   />
@@ -381,8 +382,8 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
           <CardTitle>{type === "login" ? "Log In" : "Sign Up"}</CardTitle>
           <CardDescription>
             {type === "login"
-              ? "Log in to access your SME@UTS account."
-              : "Create a new SME@UTS account."}
+              ? "Log in to access your AusBizGrowth account."
+              : "Create a new AusBizGrowth account."}
           </CardDescription>
         </CardHeader>
         {type === "login" ? loginFormEl : signupFormContent}
