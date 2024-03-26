@@ -14,6 +14,7 @@ import {
   ResetPassword,
   UserWithPicture,
 } from "./types";
+import { loginUser } from "@/actions/auth/loginUser";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -56,8 +57,13 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // });
 
   const login: Login = async (args) => {
-    const user = await rest(`${getUrl()}/api/users/login`, args);
-    setUser(user);
+    const res = await loginUser(args);
+
+    if (res.success) {
+      setUser(res.user);
+    }
+
+    return res;
   };
 
   const logout: Logout = async () => {

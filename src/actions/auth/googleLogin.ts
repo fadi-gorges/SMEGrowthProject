@@ -4,7 +4,9 @@
 // import getPayloadClient from "@/payload/payloadClient";
 // import customLocalLogin from "@/payload/utilities/auth/customLocalLogin";
 // import cryptoRandomString from "crypto-random-string";
+// import { CookieOptions } from "express";
 // import { cookies } from "next/headers";
+// import getCookieExpiration from "payload/dist/utilities/getCookieExpiration";
 
 // function parseJwt(token: string) {
 //   return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
@@ -76,12 +78,15 @@
 
 //       if (!token || !exp) throw new Error();
 
-//       cookies().set("payload-token", token, {
+//       const cookieOptions: CookieOptions = {
+//         domain: undefined,
+//         expires: getCookieExpiration(exp),
 //         httpOnly: true,
 //         path: "/",
 //         sameSite: "lax",
-//         expires: new Date(exp * 1000),
-//       });
+//       };
+
+//       cookies().set("payload-token", token, cookieOptions);
 
 //       return { success: true, user };
 //     } else {
@@ -92,12 +97,15 @@
 
 //       if (!token || !exp) throw new Error();
 
-//       cookies().set("payload-token", token, {
+//       const cookieOptions: CookieOptions = {
+//         domain: undefined,
+//         expires: getCookieExpiration(exp),
 //         httpOnly: true,
 //         path: "/",
 //         sameSite: "lax",
-//         expires: new Date(exp * 1000),
-//       });
+//       };
+
+//       cookies().set("payload-token", token, cookieOptions);
 
 //       return { success: true, user };
 //     }

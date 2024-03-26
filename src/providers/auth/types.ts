@@ -1,3 +1,4 @@
+import { ActionError } from "@/lib/utils/actionError";
 import type { ProfilePicture, User } from "@/payload-types";
 
 export type UserWithPicture = User & { picture: ProfilePicture };
@@ -8,7 +9,10 @@ export type ResetPassword = (args: {
   token: string;
 }) => void;
 
-export type Login = (args: { email: string; password: string }) => void;
+export type Login = (args: {
+  email: string;
+  password: string;
+}) => Promise<{ success: true; user: UserWithPicture } | ActionError>;
 
 export type GoogleLogin = () => void;
 

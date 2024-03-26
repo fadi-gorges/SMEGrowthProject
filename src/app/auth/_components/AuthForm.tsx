@@ -81,13 +81,14 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
     setError("");
     setIsLoading(true);
 
-    try {
-      await login(data);
-      setIsLoading(false);
+    const res = await login(data);
+
+    setIsLoading(false);
+
+    if (res.success) {
       toast.success("You have logged in successfully.");
-    } catch (e: any) {
-      setError((e.message as string).replace("Error: ", ""));
-      setIsLoading(false);
+    } else {
+      setError(res.error.replace("Error: ", ""));
       loginForm.resetField("password");
       loginForm.resetField("password");
     }

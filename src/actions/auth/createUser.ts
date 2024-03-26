@@ -1,11 +1,11 @@
-import { actionError } from "./../../lib/utils/actionError";
-("use server");
+"use server";
 import { ActionError } from "@/lib/utils/actionError";
 import { capitalise } from "@/lib/utils/capitalise";
 import { getBuffer } from "@/lib/utils/getBuffer";
 import { getUrl } from "@/lib/utils/getUrl";
 import { signupSchema } from "@/lib/validations/auth/signupSchema";
 import getPayloadClient from "@/payload/payloadClient";
+import { actionError } from "./../../lib/utils/actionError";
 
 export const createUser = async (
   body: FormData
