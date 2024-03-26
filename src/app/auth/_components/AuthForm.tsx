@@ -98,8 +98,18 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
     setSignUpSuccess(false);
     setIsLoading(true);
 
+    const body = new FormData();
+    body.append("email", data.email);
+    body.append("password", data.password);
+    body.append("firstName", data.firstName);
+    body.append("lastName", data.lastName);
+    body.append("mobileNumber", data.mobileNumber);
+    body.append("jobTitle", data.jobTitle);
+    body.append("organisation", data.organisation);
+    body.append("picture", data.picture);
+
     try {
-      await createUser(data);
+      await createUser(body);
       setIsLoading(false);
       setSignUpSuccess(true);
     } catch (e: any) {
@@ -109,6 +119,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
 
     signupForm.resetField("password");
     signupForm.resetField("password");
+    window.scrollTo(0, 0);
   };
 
   const formFooter = (
@@ -187,7 +198,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
   const signupFormContent = (
     <Form {...signupForm}>
       <form onSubmit={signupForm.handleSubmit(onSignup)}>
-        <CardContent className="space-y-4">
+        <CardContent className="flex flex-col gap-4">
           {error && (
             <Alert className="bg-destructive">
               <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 text-destructive-foreground font-semibold">
@@ -204,6 +215,46 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
               </AlertDescription>
             </Alert>
           )}
+          <FormField
+            control={signupForm.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email *</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    placeholder="name@example.com"
+                    required
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={signupForm.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password *</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Password..."
+                    minLength={type === "login" ? 1 : 8}
+                    required
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Separator className="my-3" />
           <FormField
             control={signupForm.control}
             name="firstName"
@@ -261,45 +312,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
               </FormItem>
             )}
           />
-          <FormField
-            control={signupForm.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email *</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    autoCapitalize="none"
-                    autoComplete="email"
-                    required
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={signupForm.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password *</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Password..."
-                    minLength={type === "login" ? 1 : 8}
-                    required
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Separator />
+
           <FormField
             control={signupForm.control}
             name="picture"
@@ -309,7 +322,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
                 <FormControl>
                   <Input
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/png"
                     required
                     {...field}
                     value={undefined}

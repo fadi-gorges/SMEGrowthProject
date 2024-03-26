@@ -93,7 +93,7 @@ const Users: CollectionConfig = {
     {
       name: "picture",
       type: "upload",
-      relationTo: "media",
+      relationTo: "profilePictures",
       required: true,
     },
     {

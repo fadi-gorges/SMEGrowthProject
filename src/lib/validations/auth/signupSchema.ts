@@ -18,9 +18,14 @@ export const signupSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(8, "Password must contain at least 8 characters"),
 
-  picture: z.custom<File>((v) => v instanceof File, {
-    message: "Picture is required",
-  }),
+  picture: z
+    .custom<File>((v) => v instanceof File, {
+      message: "Picture is required",
+    })
+    .refine(
+      (v) => v.type === "image/jpeg" || v.type === "image/png",
+      "Please upload a valid image"
+    ),
   jobTitle: z.string(),
   organisation: z.string(),
   mobileNumber: z

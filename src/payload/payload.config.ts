@@ -9,7 +9,7 @@ import { buildConfig } from "payload/config";
 import { Icons } from "../components/Icons";
 import ReturnToSite from "../components/admin/ReturnToSite";
 import { getUrl } from "../lib/utils/getUrl";
-import { Media } from "../payload/collections/Media";
+import { ProfilePictures } from "./collections/ProfilePictures";
 import Users from "../payload/collections/Users";
 
 const mockModulePath = path.resolve(__dirname, "./emptyModuleMock.js");
@@ -54,7 +54,7 @@ export default buildConfig({
       };
     },
   },
-  collections: [Users, Media],
+  collections: [Users, ProfilePictures],
   globals: [
     // Your globals here
   ],
@@ -71,8 +71,7 @@ export default buildConfig({
   plugins: [
     cloudStorage({
       collections: {
-        // Enable cloud storage for Media collection
-        media: {
+        profilePictures: {
           // Create the S3 adapter
           adapter: s3Adapter({
             config: {

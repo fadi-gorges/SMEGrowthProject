@@ -9,7 +9,7 @@
 export interface Config {
   collections: {
     users: User;
-    media: Media;
+    profilePictures: ProfilePicture;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -24,7 +24,7 @@ export interface User {
   roles?: ('admin' | 'user')[] | null;
   firstName: string;
   lastName: string;
-  picture: string | Media;
+  picture: string | ProfilePicture;
   jobTitle: string;
   organisation: string;
   mobileNumber: string;
@@ -43,9 +43,9 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "profilePictures".
  */
-export interface Media {
+export interface ProfilePicture {
   id: string;
   alt?: string | null;
   updatedAt: string;

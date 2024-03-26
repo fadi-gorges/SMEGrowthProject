@@ -1,6 +1,6 @@
-import type { Media, User } from "@/payload-types";
+import type { ProfilePicture, User } from "@/payload-types";
 
-export type UserWithPicture = User & { picture: Media };
+export type UserWithPicture = User & { picture: ProfilePicture };
 
 export type ResetPassword = (args: {
   password: string;

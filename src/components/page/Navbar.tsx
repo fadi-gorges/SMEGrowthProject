@@ -46,7 +46,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils/cn";
-import { Media } from "@/payload-types";
+import { ProfilePicture } from "@/payload-types";
 import { checkRole } from "@/payload/collections/Users/checkRole";
 import { useAuth } from "@/providers/auth";
 import {

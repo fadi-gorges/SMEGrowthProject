@@ -20,7 +20,7 @@ export const getServerUser = async () => {
   const payload = await getPayloadClient();
 
   const picture = await payload.findByID({
-    collection: "media",
+    collection: "profilePictures",
     id: user.picture as string,
   });
 
