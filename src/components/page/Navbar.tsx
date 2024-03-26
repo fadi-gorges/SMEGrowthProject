@@ -46,7 +46,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils/cn";
-import { ProfilePicture } from "@/payload-types";
 import { checkRole } from "@/payload/collections/Users/checkRole";
 import { useAuth } from "@/providers/auth";
 import {
@@ -132,8 +131,13 @@ const Navbar = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="center" forceMount>
-        <DropdownMenuLabel className="font-bold">
-          {user.email}
+        <DropdownMenuLabel className="flex flex-col">
+          <small>
+            {user.firstName} {user.lastName}
+          </small>
+          <small className="text-xs font-normal text-muted-foreground">
+            {user.email}
+          </small>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

@@ -20,7 +20,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils/cn";
 import { LoginData, loginSchema } from "@/lib/validations/auth/loginSchema";
 import { SignupData, signupSchema } from "@/lib/validations/auth/signupSchema";
@@ -128,14 +127,6 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
       <Button type="submit" loading={isLoading} className="w-full mb-3">
         Continue
       </Button>
-      {type === "login" && (
-        <Link
-          href="/auth/reset-password"
-          className="text-sm text-center underline"
-        >
-          Forgot your password?
-        </Link>
-      )}
     </CardFooter>
   );
 
@@ -177,14 +168,17 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel className="flex justify-between items-center">
+                  Password
+                  <Link
+                    href="/auth/reset-password"
+                    className="text-xs md:text-sm text-center underline"
+                  >
+                    Forgot your password?
+                  </Link>
+                </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Password..."
-                    required
-                    {...field}
-                  />
+                  <Input type="password" required {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -245,7 +239,6 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder="Password..."
                     minLength={type === "login" ? 1 : 8}
                     required
                     {...field}
@@ -255,45 +248,48 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
               </FormItem>
             )}
           />
-          <Separator className="my-3" />
-          <FormField
-            control={signupForm.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name *</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    autoCapitalize="on"
-                    autoComplete="given-name"
-                    required
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={signupForm.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Last Name *</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    autoCapitalize="on"
-                    autoComplete="family-name"
-                    required
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex gap-4">
+            <FormField
+              control={signupForm.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name *</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      autoCapitalize="on"
+                      autoComplete="given-name"
+                      placeholder="John"
+                      required
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={signupForm.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name *</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      autoCapitalize="on"
+                      autoComplete="family-name"
+                      placeholder="Doe"
+                      required
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={signupForm.control}
             name="mobileNumber"
@@ -305,6 +301,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
                     type="tel"
                     autoCapitalize="on"
                     autoComplete="tel"
+                    placeholder="0412345678"
                     required
                     {...field}
                   />

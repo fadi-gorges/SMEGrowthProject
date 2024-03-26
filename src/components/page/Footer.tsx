@@ -10,7 +10,7 @@ const Footer = () => {
   if (hiddenPaths.some((path) => pathname.startsWith(path))) return null;
 
   return (
-    <footer className="bg-foreground/5 py-2 md:py-8">
+    <footer className="bg-foreground/5 py-4 md:py-8">
       <div className="page-container flex justify-between items-start">
         <div className="flex items-center gap-y-2 gap-x-4">
           <Icons.icon size={36} />
