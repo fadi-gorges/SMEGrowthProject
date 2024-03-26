@@ -65,7 +65,7 @@ const ResetPasswordEmailForm = ({
   return (
     !user &&
     (success ? (
-      <Alert className="w-[90%] max-w-lg bg-secondary text-secondary-foreground">
+      <Alert className="w-full max-w-xl bg-secondary text-secondary-foreground">
         <AlertDescription className="flex justify-center items-center gap-2 md:gap-3">
           <CheckCircleIcon className="w-6 h-6 mr-2" />
           <p className="font-bold">{message}</p>
@@ -74,12 +74,12 @@ const ResetPasswordEmailForm = ({
     ) : (
       <Card
         className={cn(
-          "w-[90%] max-w-lg flex flex-col justify-center",
+          "w-full max-w-xl flex flex-col justify-center",
           className
         )}
         {...props}
       >
-        <div className="animate-in fade-in-25 slide-in-from-top-1 duration-300">
+        <div className="form-slide-in">
           <CardHeader>
             <CardTitle>Forgot Password</CardTitle>
             <CardDescription>

@@ -260,7 +260,7 @@ const Navbar = () => {
   if (hiddenPaths.some((path) => pathname?.startsWith(path))) return null;
 
   return (
-    <nav className="fixed w-full bg-background border-b z-40">
+    <nav className="fixed w-full bg-background/75 backdrop-blur-md border-b z-40">
       <div className="page-container px-4 py-2 lg:py-4 flex gap-2 items-center justify-between">
         <Link
           href="/"

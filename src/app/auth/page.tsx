@@ -17,7 +17,7 @@ const AuthPage = async () => {
 
   return (
     <Main className="items-center">
-      <Tabs defaultValue="login" className="w-[90%] max-w-lg">
+      <Tabs defaultValue="login" className="w-full max-w-xl">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Log In</TabsTrigger>
           <TabsTrigger value="signup">Sign Up</TabsTrigger>

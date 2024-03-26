@@ -1,4 +1,5 @@
 import ResetPasswordForm from "@/app/auth/reset-password/[token]/ResetPasswordForm";
+import Main from "@/components/page/Main";
 
 export const metadata = {
   title: "Reset Password",
@@ -7,9 +8,9 @@ export const metadata = {
 
 const ResetPasswordPage = async () => {
   return (
-    <main className="flex-1 flex flex-col justify-center items-center">
+    <Main className="items-center">
       <ResetPasswordForm />
-    </main>
+    </Main>
   );
 };
 

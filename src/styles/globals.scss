@@ -96,6 +96,10 @@
   .page-container {
     @apply container px-4;
   }
+
+  .form-slide-in {
+    @apply animate-in fade-in-25 slide-in-from-top-1 duration-300;
+  }
 }
 
 @layer utilities {
