@@ -1,5 +1,4 @@
 import AuthForm from "@/app/auth/_components/AuthForm";
-import Main from "@/components/page/Main";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
@@ -16,7 +15,7 @@ const AuthPage = async () => {
   if (user) redirect("/");
 
   return (
-    <Main className="items-center">
+    <main className="padding top-margin flex-1 flex flex-col items-center">
       <Tabs defaultValue="login" className="w-full max-w-xl">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Log In</TabsTrigger>
@@ -29,7 +28,7 @@ const AuthPage = async () => {
           <AuthForm type="signup" />
         </TabsContent>
       </Tabs>
-    </Main>
+    </main>
   );
 };
 

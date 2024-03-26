@@ -1,6 +1,6 @@
+import SidebarLayout from "@/app/_components/SidebarLayout";
 import { Utils } from "@/app/_components/Utils";
-import Footer from "@/components/page/Footer";
-import Navbar from "@/components/page/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { inter } from "@/lib/fonts";
@@ -12,8 +12,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s • SME@UTS",
-    default: "SME@UTS",
+    template: "%s • AusBizGrowth",
+    default: "AusBizGrowth",
   },
   description: "",
 
@@ -25,20 +25,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
-      <body className={cn("relative antialiased", inter.className)}>
+      <body
+        className={cn(
+          "relative antialiased overflow-x-hidden",
+          inter.className
+        )}
+      >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
-            <Navbar />
             <Utils>
-              {children}
-              <Footer />
+              <Navbar />
+              <SidebarLayout>{children}</SidebarLayout>
+              {/* <Footer /> */}
             </Utils>
             <Toaster richColors closeButton />
           </AuthProvider>
@@ -47,4 +48,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

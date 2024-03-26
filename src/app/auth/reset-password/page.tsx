@@ -1,6 +1,5 @@
 import { forgotPasswordAction } from "@/actions/auth/forgotPassword";
 import ResetPasswordEmailForm from "@/app/auth/reset-password/ResetPasswordEmailForm";
-import Main from "@/components/page/Main";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { AlertCircleIcon, CheckCircleIcon } from "lucide-react";
@@ -8,7 +7,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Forgot Password",
-  description: "Recover your SME@UTS account.",
+  description: "Recover your AusBizGrowth account.",
 };
 
 const ResetPasswordEmailPage = async () => {
@@ -27,7 +26,7 @@ const ResetPasswordEmailPage = async () => {
   }
 
   return (
-    <Main className="items-center">
+    <main className="padding top-margin flex-1 flex flex-col items-center">
       {user ? (
         success !== undefined && (
           <Alert
@@ -50,7 +49,7 @@ const ResetPasswordEmailPage = async () => {
       ) : (
         <ResetPasswordEmailForm />
       )}
-    </Main>
+    </main>
   );
 };
 

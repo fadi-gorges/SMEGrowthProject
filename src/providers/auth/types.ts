@@ -3,6 +3,8 @@ import type { ProfilePicture, User } from "@/payload-types";
 
 export type UserWithPicture = User & { picture: ProfilePicture };
 
+export type IsAdmin = boolean;
+
 export type ResetPassword = (args: {
   password: string;
   passwordConfirm: string;
@@ -20,6 +22,7 @@ export type Logout = () => void;
 
 export interface AuthContext {
   user?: UserWithPicture | null;
+  isAdmin: IsAdmin;
   setUser: (user: UserWithPicture | null) => void;
   logout: Logout;
   login: Login;

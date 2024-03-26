@@ -93,8 +93,12 @@
 }
 
 @layer components {
-  .page-container {
-    @apply container px-4;
+  .padding {
+    @apply px-2 lg:px-5;
+  }
+
+  .top-margin {
+    @apply mt-5 lg:mt-8;
   }
 
   .form-slide-in {

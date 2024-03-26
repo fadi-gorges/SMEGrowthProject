@@ -1,11 +1,16 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
-
-import { getUser } from "@/actions/auth/getUser";
+import { loginUser } from "@/actions/auth/loginUser";
 import { logoutAction } from "@/actions/auth/logout";
 import { getUrl } from "@/lib/utils/getUrl";
 import { usePathname } from "next/navigation";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { rest } from "./rest";
 import {
   AuthContext,
@@ -14,7 +19,7 @@ import {
   ResetPassword,
   UserWithPicture,
 } from "./types";
-import { loginUser } from "@/actions/auth/loginUser";
+import { checkRole } from "@/payload/collections/Users/checkRole";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -56,6 +61,24 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //   onSuccess: ({ access_token }) => googleLoginSuccess({ access_token }),
   // });
 
+  const fetchMe = async () => {
+    const res = await fetch("/api2/me");
+
+    if (!res.ok) {
+      setUser(null);
+      return;
+    }
+
+    const { user } = await res.json();
+
+    setUser(user);
+  };
+
+  const isAdmin = useMemo(
+    () => (user ? checkRole(["admin"], user) : false),
+    [user]
+  );
+
   const login: Login = async (args) => {
     const res = await loginUser(args);
 
@@ -73,17 +96,11 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const resetPassword: ResetPassword = async (args) => {
     await rest(`${getUrl()}/api/users/reset-password`, args);
-    const user = await getUser();
-    setUser(user);
+    await fetchMe();
   };
 
   // On mount, get user and set
   useEffect(() => {
-    const fetchMe = async () => {
-      const user = await getUser();
-      setUser(user);
-    };
-
     fetchMe();
   }, [pathname]);
 
@@ -92,6 +109,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <Context.Provider
       value={{
         user,
+        isAdmin,
         setUser,
         login,
         // googleLogin,

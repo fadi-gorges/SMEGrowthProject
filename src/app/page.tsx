@@ -1,28 +1,22 @@
-import Main from "@/components/page/Main";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Home • SME@UTS",
+  title: "AusBizGrowth",
   description: "",
 };
 
 const HomePage = async () => {
   const user = await getServerUser();
 
+  if (user) redirect("/dashboard");
+
   return (
-    <Main>
+    <main className="padding top-margin flex-1 flex flex-col gap-5">
       <h1>Home Page</h1>
-      <h5>
-        {user ? (
-          <>
-            You are signed in as <b>{user.email}</b>
-          </>
-        ) : (
-          "You are not logged in."
-        )}
-      </h5>
-    </Main>
+      <h5>You are not logged in.</h5>
+    </main>
   );
 };
 
