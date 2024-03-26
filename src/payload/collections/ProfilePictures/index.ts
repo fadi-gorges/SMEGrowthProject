@@ -20,10 +20,5 @@ export const ProfilePictures: CollectionConfig = {
     update: admins,
     delete: none,
   },
-  fields: [
-    {
-      name: "alt",
-      type: "text",
-    },
-  ],
+  fields: [],
 };
