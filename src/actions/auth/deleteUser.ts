@@ -23,6 +23,6 @@ export const deleteUser = async (): Promise<
 
     return { success: true };
   } catch (e: any) {
-    return actionError(e, "Error deleting user.");
+    return actionError(e, "An error occurred. Please try again.");
   }
 };

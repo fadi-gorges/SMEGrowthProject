@@ -1,4 +1,4 @@
-export const getBuffer = async (file: File) => {
+export const readBuffer = async (file: File) => {
   const fileReader = file.stream().getReader();
   const fileDataU8 = [];
 
