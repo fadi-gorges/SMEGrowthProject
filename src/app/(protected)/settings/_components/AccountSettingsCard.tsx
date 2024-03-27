@@ -79,17 +79,21 @@ const AccountSettingsCard = () => {
       }
     });
 
-    const res = await updateUser(body);
+    try {
+      const res = await updateUser(body);
+      setIsLoading(false);
 
-    setIsLoading(false);
+      if (res.success) {
+        toast.success("Your account has been updated.");
+        fetchMe();
+        return;
+      }
 
-    if (res.success) {
-      toast.success("Your account has been updated.");
-      fetchMe();
-      return;
+      toast.error(res.error);
+    } catch (e) {
+      setIsLoading(false);
+      toast.error("An error occurred. Please try again.");
     }
-
-    toast.error(res.error);
   };
 
   if (!user) return null;
