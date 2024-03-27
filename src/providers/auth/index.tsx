@@ -11,7 +11,7 @@ import React, {
   useState,
 } from "react";
 import { rest } from "./rest";
-import { AuthContext, FullUser, Login, Logout, ResetPassword } from "./types";
+import { AuthContext, Login, Logout, ResetPassword } from "./types";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -54,6 +54,24 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //   onSuccess: ({ access_token }) => googleLoginSuccess({ access_token }),
   // });
 
+  const fetchMe = async () => {
+    const user = await rest(
+      `${getUrl()}/api/users/me`,
+      {},
+      {
+        method: "GET",
+      }
+    );
+    setUser(user);
+
+    if (!user) return;
+
+    const res = await fetch(`${getUrl()}/api2/users/me/picture`);
+    const { picture } = await res.json();
+
+    setUserPicture(picture);
+  };
+
   const isAdmin = useMemo(
     () => (user ? checkRole(["admin"], user) : false),
     [user]
@@ -76,24 +94,6 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // On mount, get user and set
   useEffect(() => {
-    const fetchMe = async () => {
-      const user = await rest(
-        `${getUrl()}/api/users/me`,
-        {},
-        {
-          method: "GET",
-        }
-      );
-      setUser(user);
-
-      if (!user) return;
-
-      const res = await fetch(`${getUrl()}/api2/users/me/picture`);
-      const { picture } = await res.json();
-
-      setUserPicture(picture);
-    };
-
     fetchMe();
   }, [pathname]);
 
@@ -104,6 +104,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
         user,
         userPicture,
         isAdmin,
+        fetchMe,
         setUser,
         login,
         // googleLogin,

@@ -30,15 +30,12 @@ import {
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User2Icon, XCircleIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const AccountSettingsCard = () => {
-  const router = useRouter();
-
-  const { user, userPicture } = useAuth();
+  const { user, userPicture, fetchMe } = useAuth();
 
   const [pictureInputKey, setPictureInputKey] = useState(0);
   const [pictureUrl, setPictureUrl] = useState("");
@@ -88,7 +85,7 @@ const AccountSettingsCard = () => {
 
     if (res.success) {
       toast.success("Your account has been updated.");
-      router.refresh();
+      fetchMe();
       return;
     }
 
@@ -98,7 +95,7 @@ const AccountSettingsCard = () => {
   if (!user) return null;
 
   return (
-    <Card className="w-full max-w-3xl">
+    <Card className="w-full lg:max-w-3xl">
       <CardHeader>
         <CardTitle>Account Settings</CardTitle>
         <CardDescription>
@@ -318,7 +315,7 @@ const AccountSettingsCard = () => {
           </CardContent>
 
           <CardFooter>
-            <Button type="submit" loading={isLoading}>
+            <Button type="submit" loading={isLoading} className="w-full">
               Save Changes
             </Button>
           </CardFooter>

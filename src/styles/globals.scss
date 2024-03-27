@@ -93,8 +93,12 @@
 }
 
 @layer components {
-  .padding {
+  .x-padding {
     @apply px-2 lg:px-5;
+  }
+
+  .small-page-padding {
+    @apply p-2 lg:p-4;
   }
 
   .page-padding {

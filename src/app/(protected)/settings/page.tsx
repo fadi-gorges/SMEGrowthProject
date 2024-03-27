@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const AccountSettingsPage = () => {
   return (
-    <Main>
+    <Main padding="small">
       <AccountSettingsCard />
     </Main>
   );
