@@ -2,8 +2,6 @@ import type { CollectionConfig } from "payload/types";
 
 import { getUrl } from "../../../lib/utils/getUrl";
 import { admins } from "../../access/admins";
-import { readOnlyField } from "../../access/fields/readOnlyField";
-import { populatePictureUrl } from "../../collections/Users/hooks/populatePictureUrl";
 import adminsAndUser from "./access/adminsAndUser";
 import { checkRole } from "./checkRole";
 import { ensureFirstUserIsAdmin } from "./hooks/ensureFirstUserIsAdmin";
@@ -119,20 +117,6 @@ const Users: CollectionConfig = {
       name: "mobileNumber",
       type: "text",
       required: true,
-    },
-    {
-      name: "pictureUrl",
-      type: "text",
-      access: readOnlyField,
-      index: true,
-      hooks: {
-        beforeChange: [
-          ({ siblingData }) => {
-            siblingData.pictureUrl = undefined;
-          },
-        ],
-        afterRead: [populatePictureUrl],
-      },
     },
   ],
   timestamps: true,

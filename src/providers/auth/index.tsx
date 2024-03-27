@@ -1,8 +1,6 @@
 "use client";
-
-import { logoutAction } from "@/actions/auth/logout";
 import { getUrl } from "@/lib/utils/getUrl";
-import { User } from "@/payload-types";
+import { ProfilePicture, User } from "@/payload-types";
 import { checkRole } from "@/payload/collections/Users/checkRole";
 import { usePathname } from "next/navigation";
 import React, {
@@ -13,7 +11,7 @@ import React, {
   useState,
 } from "react";
 import { rest } from "./rest";
-import { AuthContext, Login, Logout, ResetPassword } from "./types";
+import { AuthContext, FullUser, Login, Logout, ResetPassword } from "./types";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -30,6 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>();
+  const [userPicture, setUserPicture] = useState<ProfilePicture | null>();
 
   // useGoogleOneTapLogin({
   //   onSuccess: ({ credential }) => googleLoginSuccess({ credential }),
@@ -66,9 +65,8 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout: Logout = async () => {
-    logoutAction();
+    await rest(`${getUrl()}/api/users/logout`, {}, { method: "POST" });
     setUser(null);
-    await new Promise((resolve) => setTimeout(resolve, 100));
   };
 
   const resetPassword: ResetPassword = async (args) => {
@@ -87,6 +85,13 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       );
       setUser(user);
+
+      if (!user) return;
+
+      const res = await fetch(`${getUrl()}/api2/users/me/picture`);
+      const { picture } = await res.json();
+
+      setUserPicture(picture);
     };
 
     fetchMe();
@@ -97,6 +102,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <Context.Provider
       value={{
         user,
+        userPicture,
         isAdmin,
         setUser,
         login,

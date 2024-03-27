@@ -28,7 +28,6 @@ export interface User {
   jobTitle: string;
   organisation: string;
   mobileNumber: string;
-  pictureUrl?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
