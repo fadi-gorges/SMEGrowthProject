@@ -24,7 +24,7 @@ const VerifyPage = async ({ params }: { params: { token: string } }) => {
     });
 
     return (
-      <div className="padding top-margin flex-1 flex flex-col items-center gap-5">
+      <div className="page-padding flex-1 flex flex-col items-center gap-5">
         <h5>Your account has been verified.</h5>
         <Link
           href="/auth"

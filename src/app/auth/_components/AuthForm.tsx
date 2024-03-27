@@ -93,14 +93,11 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
     setIsLoading(true);
 
     const body = new FormData();
-    body.append("email", data.email);
-    body.append("password", data.password);
-    body.append("firstName", data.firstName);
-    body.append("lastName", data.lastName);
-    body.append("mobileNumber", data.mobileNumber);
-    body.append("jobTitle", data.jobTitle);
-    body.append("organisation", data.organisation);
-    body.append("picture", data.picture);
+    Object.entries(data).forEach(([key, value]) => {
+      if (value) {
+        body.append(key, value);
+      }
+    });
 
     try {
       await createUser(body);
@@ -130,7 +127,7 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
         <CardContent className="space-y-4">
           {error && (
             <Alert className="bg-destructive">
-              <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 text-destructive-foreground font-semibold">
+              <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 text-xs sm:text-sm text-destructive-foreground font-semibold">
                 <AlertCircle className="h-4 w-4" />
                 {error}
               </AlertDescription>

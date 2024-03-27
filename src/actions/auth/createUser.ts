@@ -1,8 +1,8 @@
 "use server";
 import { ActionError } from "@/lib/utils/actionError";
 import { capitalise } from "@/lib/utils/capitalise";
-import { getBuffer } from "@/lib/utils/getBuffer";
 import { getUrl } from "@/lib/utils/getUrl";
+import { readBuffer } from "@/lib/utils/readBuffer";
 import { signupSchema } from "@/lib/validations/auth/signupSchema";
 import getPayloadClient from "@/payload/payloadClient";
 import { actionError } from "./../../lib/utils/actionError";
@@ -46,7 +46,7 @@ export const createUser = async (
       collection: "profilePictures",
       data: {},
       file: {
-        data: await getBuffer(validation.data.picture),
+        data: await readBuffer(validation.data.picture),
         name: validation.data.picture.name,
         mimetype: validation.data.picture.type,
         size: validation.data.picture.size,
@@ -85,6 +85,6 @@ export const createUser = async (
 
     return { success: true };
   } catch (e) {
-    return actionError(e, "Error creating user.");
+    return actionError(e, "An error occurred. Please try again.");
   }
 };

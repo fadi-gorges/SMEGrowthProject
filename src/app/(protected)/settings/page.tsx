@@ -1,3 +1,5 @@
+import AccountSettingsCard from "@/app/(protected)/settings/_components/AccountSettingsCard";
+import Main from "@/components/page/Main";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -5,12 +7,12 @@ export const metadata: Metadata = {
   description: "",
 };
 
-const SettingsPage = () => {
+const AccountSettingsPage = () => {
   return (
-    <main className="padding top-margin flex-1 flex flex-col gap-5">
-      <h1>Settings</h1>
-    </main>
+    <Main>
+      <AccountSettingsCard />
+    </Main>
   );
 };
 
-export default SettingsPage;
+export default AccountSettingsPage;

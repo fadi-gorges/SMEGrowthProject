@@ -1,16 +1,9 @@
-import { getUrl } from "@/lib/utils/getUrl";
+import { getServerUser } from "@/lib/utils/getServerUser";
 import getPayloadClient from "@/payload/payloadClient";
-import { rest } from "@/providers/auth/rest";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
-  const user = await rest(
-    `${getUrl()}/api/users/me`,
-    {},
-    {
-      method: "GET",
-    }
-  );
+  const user = await getServerUser();
 
   if (!user)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

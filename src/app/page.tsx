@@ -1,3 +1,4 @@
+import Main from "@/components/page/Main";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -13,10 +14,10 @@ const HomePage = async () => {
   if (user) redirect("/dashboard");
 
   return (
-    <main className="padding top-margin flex-1 flex flex-col gap-5">
+    <Main>
       <h1>Home Page</h1>
       <h5>You are not logged in.</h5>
-    </main>
+    </Main>
   );
 };
 

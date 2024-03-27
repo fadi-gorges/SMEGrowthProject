@@ -84,8 +84,8 @@
   .padding {
     @apply px-2 lg:px-5;
   }
-  .top-margin {
-    @apply mt-5 lg:mt-8;
+  .page-padding {
+    @apply p-4 lg:p-8;
   }
   .form-slide-in {
     @apply animate-in fade-in-25 slide-in-from-top-1 duration-300;
