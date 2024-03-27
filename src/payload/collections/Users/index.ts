@@ -124,6 +124,7 @@ const Users: CollectionConfig = {
       name: "pictureUrl",
       type: "text",
       access: readOnlyField,
+      index: true,
       hooks: {
         beforeChange: [
           ({ siblingData }) => {
