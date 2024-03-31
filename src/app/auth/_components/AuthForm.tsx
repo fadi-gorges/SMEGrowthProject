@@ -76,7 +76,6 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
     try {
       await login(data);
       setIsLoading(false);
-      toast.success("You have logged in successfully.");
       router.replace(searchParams?.get("next") || "/dashboard");
       router.refresh();
     } catch (e: any) {

@@ -1,5 +1,16 @@
 "use client";
+import { deleteUser } from "@/actions/auth/deleteUser";
 import { updateUser } from "@/actions/auth/updateUser";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -20,7 +31,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Toggle } from "@/components/ui/toggle";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils/cn";
 import { readDataURL } from "@/lib/utils/readDataUrl";
 import { resizeImage } from "@/lib/utils/resizeImage";
@@ -31,17 +43,20 @@ import {
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User2Icon, XCircleIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { ControllerRenderProps, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const AccountSettingsCard = () => {
+  const router = useRouter();
   const { user, userPicture, fetchMe } = useAuth();
 
   const [pictureInputKey, setPictureInputKey] = useState(0);
   const [pictureUrl, setPictureUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const updateUserForm = useForm<UpdateUserData>({
     resolver: zodResolver(updateUserSchema),
@@ -107,6 +122,26 @@ const AccountSettingsCard = () => {
       document.getElementById("page-div")?.scrollTo(0, 0);
     } catch (e) {
       setIsLoading(false);
+      toast.error("An error occurred. Please try again.");
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    setIsDeleting(true);
+
+    try {
+      const res = await deleteUser();
+      setIsDeleting(false);
+
+      if (!res.success) {
+        toast.error(res.error);
+        return;
+      }
+
+      toast.success("Your account has been deleted.");
+      router.replace("/");
+    } catch (e) {
+      setIsDeleting(false);
       toast.error("An error occurred. Please try again.");
     }
   };
@@ -286,51 +321,65 @@ const AccountSettingsCard = () => {
                 />
               </div>
             </div>
-            <div className="border-t border-gray-200 dark:border-gray-800 pt-8 space-y-2">
-              <h3 className="text-lg font-medium leading-6">
-                Security Settings
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="two-factor">Two-factor authentication</Label>
-                  <div className="ml-auto">
-                    <Toggle id="two-factor" />
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Enabling two-factor authentication makes your account more
-                  secure.
-                </p>
+            <Separator />
+            <div className="flex flex-col gap-2">
+              <h6 className="font-medium">Security Settings</h6>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="two-factor">Two-factor authentication</Label>
+                <Switch id="two-factor" />
               </div>
+              <small className="text-muted-foreground">
+                Enabling two-factor authentication makes your account more
+                secure.
+              </small>
             </div>
-            <div className="border-t border-gray-200 dark:border-gray-800 pt-8 space-y-2">
-              <h3 className="text-lg font-medium leading-6">
-                Notification Preferences
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="email-newsletter">Email newsletter</Label>
-                  <div className="ml-auto">
-                    <Toggle defaultChecked id="email-newsletter" />
-                  </div>
-                </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Receive the latest updates and news in your inbox.
-                </p>
+            <Separator />
+            <div className="flex flex-col gap-2">
+              <h6 className="font-medium">Notification Preferences</h6>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="email-newsletter">Email newsletter</Label>
+                <Switch id="email-newsletter" />
               </div>
+              <small className="text-muted-foreground">
+                Receive the latest updates and news in your inbox.
+              </small>
             </div>
-            <div className="border-t border-gray-200 dark:border-gray-800 pt-8 space-y-2">
-              <h3 className="text-lg font-medium leading-6">
-                Account Deletion
-              </h3>
-              <div className="space-y-2">
-                <Button type="button" variant="outline">
-                  Delete Account
-                </Button>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+            <Separator />
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-lg font-medium leading-6">
+                  Account Deletion
+                </h3>
+                <small className="text-muted-foreground">
                   Once you delete your account, there is no way to recover it.
-                </p>
+                </small>
               </div>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button type="button" variant="outline">
+                    Delete Account
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <Button
+                      variant="destructive"
+                      loading={isDeleting}
+                      onClick={handleDeleteUser}
+                    >
+                      Delete Account
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </CardContent>
 
