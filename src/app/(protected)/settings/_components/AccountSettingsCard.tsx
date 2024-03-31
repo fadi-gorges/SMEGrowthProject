@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils/cn";
 import { readDataURL } from "@/lib/utils/readDataUrl";
+import { resizeImage } from "@/lib/utils/resizeImage";
 import {
   UpdateUserData,
   updateUserSchema,
@@ -61,7 +62,11 @@ const AccountSettingsCard = () => {
   ) => {
     const file = e.target.files?.[0];
 
-    if (!file) return;
+    if (!file) {
+      setPictureUrl("");
+      field.onChange(undefined);
+      return;
+    }
 
     const url = await readDataURL(file);
     setPictureUrl(url);
@@ -79,13 +84,23 @@ const AccountSettingsCard = () => {
       }
     });
 
+    if (data.picture) {
+      const resizedPicture = await resizeImage(data.picture, 320, 320);
+      body.set("picture", resizedPicture);
+    }
+
     try {
       const res = await updateUser(body);
       setIsLoading(false);
 
       if (res.success) {
         toast.success("Your account has been updated.");
+
         fetchMe();
+        setPictureUrl("");
+        setPictureInputKey((k) => k + 1);
+
+        document.getElementById("page-div")?.scrollTo(0, 0);
         return;
       }
 
@@ -144,6 +159,7 @@ const AccountSettingsCard = () => {
                               variant="ghost"
                               size="icon"
                               onClick={() => {
+                                field.onChange(undefined);
                                 setPictureUrl("");
                                 setPictureInputKey((k) => k + 1);
                               }}

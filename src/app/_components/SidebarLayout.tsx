@@ -11,7 +11,10 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   return user && !pathname?.startsWith("/admin") ? (
     <div className="flex-1 grid grid-cols-12">
       <Sidebar />
-      <div className="col-span-12 lg:col-span-9 2xl:col-span-10 flex flex-col max-h-[calc(100vh-64px)] overflow-auto">
+      <div
+        id="page-div"
+        className="col-span-12 lg:col-span-9 2xl:col-span-10 flex flex-col max-h-[calc(100vh-64px)] overflow-auto"
+      >
         {children}
       </div>
     </div>
