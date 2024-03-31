@@ -93,18 +93,18 @@ const AccountSettingsCard = () => {
       const res = await updateUser(body);
       setIsLoading(false);
 
-      if (res.success) {
-        toast.success("Your account has been updated.");
-
-        fetchMe();
-        setPictureUrl("");
-        setPictureInputKey((k) => k + 1);
-
-        document.getElementById("page-div")?.scrollTo(0, 0);
+      if (!res.success) {
+        toast.error(res.error);
         return;
       }
 
-      toast.error(res.error);
+      toast.success("Your account has been updated.");
+
+      fetchMe();
+      setPictureUrl("");
+      setPictureInputKey((k) => k + 1);
+
+      document.getElementById("page-div")?.scrollTo(0, 0);
     } catch (e) {
       setIsLoading(false);
       toast.error("An error occurred. Please try again.");

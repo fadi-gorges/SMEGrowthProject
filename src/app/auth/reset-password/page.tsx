@@ -18,12 +18,17 @@ const ResetPasswordEmailPage = async () => {
   let message;
 
   if (user) {
-    const res = await forgotPasswordAction({ email: user.email });
+    try {
+      const res = await forgotPasswordAction({ email: user.email });
 
-    success = res.success;
-    message = res.success
-      ? "Please follow the password reset link that was sent to your email."
-      : res.error;
+      success = res.success;
+      message = res.success
+        ? "Please follow the password reset link that was sent to your email."
+        : res.error;
+    } catch (e) {
+      success = false;
+      message = "An error occurred. Please try again.";
+    }
   }
 
   return (
