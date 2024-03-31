@@ -1,5 +1,5 @@
 "use server";
-import { ActionError, actionError } from "@/lib/utils/actionError";
+import { ActionError } from "@/lib/utils/actionError";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import getPayloadClient from "@/payload/payloadClient";
 
@@ -13,16 +13,12 @@ export const deleteUser = async (): Promise<
 
   const payload = await getPayloadClient();
 
-  try {
-    await payload.delete({
-      collection: "users",
-      id: user.id,
-    });
+  await payload.delete({
+    collection: "users",
+    id: user.id,
+  });
 
-    // TODO: Send user deletion alert email
+  // TODO: Send user deletion alert email
 
-    return { success: true };
-  } catch (e: any) {
-    return actionError(e, "An error occurred. Please try again.");
-  }
+  return { success: true };
 };

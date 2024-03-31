@@ -32,7 +32,6 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await logout();
-    toast.success("You have logged out successfully.");
     router.push("/");
     router.refresh();
     setSheetOpen(false);

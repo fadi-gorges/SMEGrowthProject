@@ -11,7 +11,10 @@ export const updateUser = async (
   const user = await getServerUser();
 
   if (!user) {
-    return { success: false, error: "Unauthorized" };
+    return {
+      success: false,
+      error: "You must be logged in to edit your profile.",
+    };
   }
 
   const data: {
@@ -22,41 +25,37 @@ export const updateUser = async (
   const validation = updateUserSchema.safeParse(data);
 
   if (!validation.success) {
-    return { success: false, error: validation.error.message };
+    return { success: false, error: "Bad request." };
   }
 
   const payload = await getPayloadClient();
 
-  try {
-    await payload.update({
-      collection: "users",
-      id: user.id,
-      data: {
-        firstName: validation.data.firstName,
-        lastName: validation.data.lastName,
-        jobTitle: validation.data.jobTitle,
-        organisation: validation.data.organisation,
-        mobileNumber: validation.data.mobileNumber,
-      },
-    });
+  await payload.update({
+    collection: "users",
+    id: user.id,
+    data: {
+      firstName: validation.data.firstName,
+      lastName: validation.data.lastName,
+      jobTitle: validation.data.jobTitle,
+      organisation: validation.data.organisation,
+      mobileNumber: validation.data.mobileNumber,
+    },
+  });
 
-    if (!validation.data.picture) return { success: true };
+  if (!validation.data.picture) return { success: true };
 
-    await payload.update({
-      collection: "profilePictures",
-      id: user.picture as string,
-      data: {},
-      file: {
-        data: await readBuffer(validation.data.picture),
-        name: validation.data.picture.name,
-        mimetype: validation.data.picture.type,
-        size: validation.data.picture.size,
-      },
-      overwriteExistingFiles: true,
-    });
+  await payload.update({
+    collection: "profilePictures",
+    id: user.picture as string,
+    data: {},
+    file: {
+      data: await readBuffer(validation.data.picture),
+      name: validation.data.picture.name,
+      mimetype: validation.data.picture.type,
+      size: validation.data.picture.size,
+    },
+    overwriteExistingFiles: true,
+  });
 
-    return { success: true };
-  } catch (e: any) {
-    return { success: false, error: "An error occurred. Please try again." };
-  }
+  return { success: true };
 };

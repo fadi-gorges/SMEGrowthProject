@@ -19,7 +19,6 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnchorHTMLAttributes, useState } from "react";
-import { toast } from "sonner";
 
 export const sidebarLinks = {
   dashboard: { text: "Dashboard", link: "/dashboard", icon: HomeIcon },
@@ -84,7 +83,6 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     await logout();
-    toast.success("You have logged out successfully.");
     router.push("/");
     router.refresh();
     setLogoutDialogOpen(false);

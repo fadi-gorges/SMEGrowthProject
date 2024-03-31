@@ -30,7 +30,7 @@ const LogoutDialog = ({
   setLogoutDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleLogout: () => void;
 }) => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return isMobile ? (
     <Drawer open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
@@ -74,8 +74,11 @@ const LogoutDialog = ({
           </AlertDialogCancel>
           <Button
             variant="destructive"
-            loading={loading}
-            onClick={handleLogout}
+            loading={isLoading}
+            onClick={() => {
+              setIsLoading(true);
+              handleLogout();
+            }}
           >
             Log Out
           </Button>
