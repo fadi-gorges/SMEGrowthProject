@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils/cn";
+import { resizeImage } from "@/lib/utils/resizeImage";
 import { LoginData, loginSchema } from "@/lib/validations/auth/loginSchema";
 import { SignupData, signupSchema } from "@/lib/validations/auth/signupSchema";
 import { useAuth } from "@/providers/auth";
@@ -98,12 +99,23 @@ const AuthForm = ({ type, className, ...props }: AuthFormProps) => {
       }
     });
 
+    if (data.picture) {
+      const resizedPicture = await resizeImage(data.picture, 320, 320);
+      body.set("picture", resizedPicture);
+    }
+
     try {
-      await createUser(body);
+      const res = await createUser(body);
       setIsLoading(false);
+
+      if (!res.success) {
+        setError(res.error);
+        return;
+      }
+
       setSignUpSuccess(true);
     } catch (e: any) {
-      setError("Something went wrong. Please try again.");
+      setError("An error occurred. Please try again.");
       setIsLoading(false);
     }
 
