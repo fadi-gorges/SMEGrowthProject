@@ -1,16 +1,7 @@
 "use client";
 import { deleteUser } from "@/actions/auth/deleteUser";
 import { updateUser } from "@/actions/auth/updateUser";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -56,6 +47,8 @@ const AccountSettingsCard = () => {
   const [pictureUrl, setPictureUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const updateUserForm = useForm<UpdateUserData>({
@@ -345,7 +338,7 @@ const AccountSettingsCard = () => {
               </small>
             </div>
             <Separator />
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-6">
               <div className="flex flex-col gap-2">
                 <h3 className="text-lg font-medium leading-6">
                   Account Deletion
@@ -354,35 +347,29 @@ const AccountSettingsCard = () => {
                   Once you delete your account, there is no way to recover it.
                 </small>
               </div>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button type="button" variant="outline">
-                    Delete Account
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <Button
-                      variant="destructive"
-                      loading={isDeleting}
-                      onClick={handleDeleteUser}
-                    >
-                      Delete Account
-                    </Button>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                Delete Account
+              </Button>
+              <ResponsiveAlertDialog
+                title="Are you sure?"
+                description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
+                open={deleteDialogOpen}
+                setOpen={setDeleteDialogOpen}
+              >
+                <Button
+                  variant="destructive"
+                  loading={isDeleting}
+                  onClick={handleDeleteUser}
+                >
+                  Delete Account
+                </Button>
+              </ResponsiveAlertDialog>
             </div>
           </CardContent>
-
           <CardFooter>
             <Button type="submit" loading={isLoading} className="w-full">
               Save Changes

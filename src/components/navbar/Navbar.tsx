@@ -1,10 +1,10 @@
 "use client";
 
 import { Icons } from "@/components/Icons";
-import LogoutDialog from "@/components/navbar/LogoutDialog";
+import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
 import NavLink from "@/components/navbar/NavLink";
 import NavSheet from "@/components/navbar/NavSheet";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { cn } from "@/lib/utils/cn";
 import { useAuth } from "@/providers/auth";
@@ -12,7 +12,6 @@ import { HomeIcon, InfoIcon, LockKeyholeIcon, LogInIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner";
 
 export const navLinks = {
   home: { text: "Home", link: "/", icon: HomeIcon },
@@ -28,31 +27,32 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogout = async () => {
+    setIsLogoutLoading(true);
     await logout();
+    setIsLogoutLoading(false);
+
     router.push("/");
     router.refresh();
     setSheetOpen(false);
     setLogoutDialogOpen(false);
   };
 
-  const navSheetAndLogo = (
-    <>
-      <NavSheet
-        sheetOpen={sheetOpen}
-        setSheetOpen={setSheetOpen}
-        setLogoutDialogOpen={setLogoutDialogOpen}
-      />
-      <Link href="/" className="flex items-center w-fit gap-3">
-        <Icons.icon size={30} />
-        <h6 className="font-medium">AusBizGrowth</h6>
-      </Link>
-    </>
+  const logo = (
+    <Link
+      href={user ? "/dashboard" : "/"}
+      className="h-full flex items-center w-fit gap-3"
+    >
+      <Icons.icon size={30} />
+      <h6 className="font-medium">AusBizGrowth</h6>
+    </Link>
   );
 
-  const loginAndDarkMode = (
+  const rightSide = (
     <>
       {!user && (
         <Link
@@ -69,6 +69,11 @@ const Navbar = () => {
         </Link>
       )}
       <ModeToggle />
+      <NavSheet
+        sheetOpen={sheetOpen}
+        setSheetOpen={setSheetOpen}
+        setLogoutDialogOpen={setLogoutDialogOpen}
+      />
     </>
   );
 
@@ -78,11 +83,11 @@ const Navbar = () => {
     <nav className="sticky top-0 shrink-0 w-full h-16 bg-background/75 backdrop-blur-md border-b z-40">
       {user && (
         <div className="hidden lg:grid grid-cols-12 h-full">
-          <div className="col-span-3 2xl:col-span-2 x-padding flex items-center bg-muted/40 border-r animate-in slide-in-from-left-full">
-            {navSheetAndLogo}
+          <div className="col-span-3 2xl:col-span-2 x-padding bg-muted/40 border-r animate-in slide-in-from-left-full">
+            {logo}
           </div>
           <div className="col-span-9 2xl:col-span-10 x-padding pl-5 flex justify-end items-center gap-3">
-            {loginAndDarkMode}
+            {rightSide}
           </div>
         </div>
       )}
@@ -92,18 +97,27 @@ const Navbar = () => {
           user ? "lg:hidden" : ""
         )}
       >
-        <div className="flex items-center gap-3">{navSheetAndLogo}</div>
+        {logo}
         <div className="flex-1 flex items-center gap-1">
           <NavLink link={navLinks.home} />
           <NavLink link={navLinks.about} />
         </div>
-        <div className="flex items-center gap-2">{loginAndDarkMode}</div>
+        <div className="flex items-center gap-2">{rightSide}</div>
       </div>
-      <LogoutDialog
-        logoutDialogOpen={logoutDialogOpen}
-        setLogoutDialogOpen={setLogoutDialogOpen}
-        handleLogout={handleLogout}
-      />
+      <ResponsiveAlertDialog
+        title="Log Out"
+        description="Are you sure you want to log out?"
+        open={logoutDialogOpen}
+        setOpen={setLogoutDialogOpen}
+      >
+        <Button
+          variant="destructive"
+          loading={isLogoutLoading}
+          onClick={handleLogout}
+        >
+          Log Out
+        </Button>
+      </ResponsiveAlertDialog>
     </nav>
   );
 };

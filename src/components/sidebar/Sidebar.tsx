@@ -1,5 +1,5 @@
 "use client";
-import LogoutDialog from "@/components/navbar/LogoutDialog";
+import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
 import { NavLinkItem } from "@/components/navbar/NavLink";
 import { navLinks } from "@/components/navbar/Navbar";
 import { Badge } from "@/components/ui/badge";
@@ -79,10 +79,14 @@ const Sidebar = () => {
   const router = useRouter();
   const { isAdmin, logout } = useAuth();
 
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogout = async () => {
+    setIsLogoutLoading(true);
     await logout();
+    setIsLogoutLoading(false);
+
     router.push("/");
     router.refresh();
     setLogoutDialogOpen(false);
@@ -98,16 +102,6 @@ const Sidebar = () => {
         <SidebarLink link={sidebarLinks.notifications} alertCount={6} />
         <SidebarLink link={sidebarLinks.settings} />
         {isAdmin && <SidebarLink link={navLinks.admin} />}
-        {/* <Link
-        href="#"
-        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-      >
-        <ShoppingCart className="h-4 w-4" />
-        Orders
-        <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-          6
-        </Badge>
-      </Link> */}
       </div>
       <Button
         variant="default"
@@ -117,11 +111,20 @@ const Sidebar = () => {
         <LogOutIcon size={20} />
         <p>Log out</p>
       </Button>
-      <LogoutDialog
-        handleLogout={handleLogout}
-        logoutDialogOpen={logoutDialogOpen}
-        setLogoutDialogOpen={setLogoutDialogOpen}
-      />
+      <ResponsiveAlertDialog
+        title="Log Out"
+        description="Are you sure you want to log out?"
+        open={logoutDialogOpen}
+        setOpen={setLogoutDialogOpen}
+      >
+        <Button
+          variant="destructive"
+          loading={isLogoutLoading}
+          onClick={handleLogout}
+        >
+          Log Out
+        </Button>
+      </ResponsiveAlertDialog>
     </nav>
   );
 };
