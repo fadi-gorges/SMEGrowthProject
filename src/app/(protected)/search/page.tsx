@@ -23,6 +23,18 @@ export const metadata: Metadata = {
   title: "Search",
   description: "",
 };
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+
+
 
 const SearchPage = () => {
   return (  
@@ -96,15 +108,26 @@ const SearchPage = () => {
                   <SelectItem value="b">b</SelectItem>
                 </SelectGroup>
               </SelectContent>
-            </Select>
-            <Button type ="button" className="Save Search mt-8" >Save Search Settings</Button>
+            </Select> 
+            <Button type ="button" className="Save Search mt-8" variant={"outline"}>Save Search Settings</Button>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
       <Button type ="submit">Search<SearchIcon></SearchIcon></Button>
       </div>
+    <Table hidden>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">ID</TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Contact</TableHead>
+        </TableRow>
+      </TableHeader>
+    </Table>
     </main>
   );
 };
 
 export default SearchPage;
+
