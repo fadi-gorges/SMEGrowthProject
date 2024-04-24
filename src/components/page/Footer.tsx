@@ -10,8 +10,8 @@ const Footer = () => {
   if (hiddenPaths.some((path) => pathname.startsWith(path))) return null;
 
   return (
-    <footer className="top-margin bg-muted/40 py-4 lg:py-6">
-      <div className="padding flex justify-between items-start">
+    <footer className="mt-10 bg-muted/40 py-4 lg:py-6">
+      <div className="x-padding flex justify-between items-start">
         <div className="flex items-center gap-y-2 gap-x-4">
           <Icons.icon size={36} />
           <small className="lg:text-base">

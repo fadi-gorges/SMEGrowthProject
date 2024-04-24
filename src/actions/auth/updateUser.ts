@@ -1,38 +1,61 @@
-// TODO: Add email update functionality
-// "use server"
-// import { getServerUser } from "@/lib/utils/getServerUser";
-// import {
-//   UpdateUserData,
-//   updateUserSchema,
-// } from "@/lib/validations/auth/updateUserSchema";
-// import getPayloadClient from "@/payload/payloadClient";
+"use server";
+import { ActionError } from "@/lib/utils/actionError";
+import { getServerUser } from "@/lib/utils/getServerUser";
+import { readBuffer } from "@/lib/utils/readBuffer";
+import { updateUserSchema } from "@/lib/validations/auth/updateUserSchema";
+import getPayloadClient from "@/payload/payloadClient";
 
-// export const updateUser = async (
-//   data: UpdateUserData
-// ): Promise<{ success: true } | ActionResponseFail> => {
-//   const user = await getServerUser();
+export const updateUser = async (
+  body: FormData
+): Promise<{ success: true } | ActionError> => {
+  const user = await getServerUser();
 
-//   if (!user) {
-//     return { success: false, error: "Unauthorized" };
-//   }
+  if (!user) {
+    return {
+      success: false,
+      error: "You must be logged in to edit your profile.",
+    };
+  }
 
-//   const validation = updateUserSchema.safeParse(data);
+  const data: {
+    [key: string]: string | File;
+  } = {};
+  body.forEach((value, key) => (data[key] = value));
 
-//   if (!validation.success) {
-//     return { success: false, errors: validation.error.errors };
-//   }
+  const validation = updateUserSchema.safeParse(data);
 
-//   const payload = await getPayloadClient();
+  if (!validation.success) {
+    return { success: false, error: "Bad request." };
+  }
 
-//   try {
-//     await payload.update({
-//       collection: "users",
-//       id: user.id,
-//       data,
-//     });
+  const payload = await getPayloadClient();
 
-//     return { success: true };
-//   } catch (e: any) {
-//     return { success: false, error: "Error updating user." };
-//   }
-// };
+  await payload.update({
+    collection: "users",
+    id: user.id,
+    data: {
+      firstName: validation.data.firstName,
+      lastName: validation.data.lastName,
+      jobTitle: validation.data.jobTitle,
+      organisation: validation.data.organisation,
+      mobileNumber: validation.data.mobileNumber,
+    },
+  });
+
+  if (!validation.data.picture) return { success: true };
+
+  await payload.update({
+    collection: "profilePictures",
+    id: user.picture as string,
+    data: {},
+    file: {
+      data: await readBuffer(validation.data.picture),
+      name: validation.data.picture.name,
+      mimetype: validation.data.picture.type,
+      size: validation.data.picture.size,
+    },
+    overwriteExistingFiles: true,
+  });
+
+  return { success: true };
+};

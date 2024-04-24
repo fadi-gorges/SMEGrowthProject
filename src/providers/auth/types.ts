@@ -1,6 +1,10 @@
-import { User } from "@/payload-types";
+import { ProfilePicture, User } from "@/payload-types";
+
+export type FullUser = User & { picture?: ProfilePicture };
 
 export type IsAdmin = boolean;
+
+export type FetchMe = () => Promise<void>;
 
 export type ResetPassword = (args: {
   password: string;
@@ -19,7 +23,9 @@ export type Logout = () => Promise<void>;
 
 export interface AuthContext {
   user?: User | null;
+  userPicture?: ProfilePicture | null;
   isAdmin: IsAdmin;
+  fetchMe: FetchMe;
   setUser: (user: User | null) => void;
   logout: Logout;
   login: Login;

@@ -1,5 +1,6 @@
 import { forgotPasswordAction } from "@/actions/auth/forgotPassword";
 import ResetPasswordEmailForm from "@/app/auth/reset-password/ResetPasswordEmailForm";
+import Main from "@/components/page/Main";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { AlertCircleIcon, CheckCircleIcon } from "lucide-react";
@@ -17,16 +18,21 @@ const ResetPasswordEmailPage = async () => {
   let message;
 
   if (user) {
-    const res = await forgotPasswordAction({ email: user.email });
+    try {
+      const res = await forgotPasswordAction({ email: user.email });
 
-    success = res.success;
-    message = res.success
-      ? "Please follow the password reset link that was sent to your email."
-      : res.error;
+      success = res.success;
+      message = res.success
+        ? "Please follow the password reset link that was sent to your email."
+        : res.error;
+    } catch (e) {
+      success = false;
+      message = "An error occurred. Please try again.";
+    }
   }
 
   return (
-    <main className="padding top-margin flex-1 flex flex-col items-center">
+    <Main className="items-center">
       {user ? (
         success !== undefined && (
           <Alert
@@ -49,7 +55,7 @@ const ResetPasswordEmailPage = async () => {
       ) : (
         <ResetPasswordEmailForm />
       )}
-    </main>
+    </Main>
   );
 };
 

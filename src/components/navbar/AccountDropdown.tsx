@@ -81,7 +81,7 @@ const AccountDropdown = ({
 }: {
   setLogoutDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { user, isAdmin } = useAuth();
+  const { user, userPicture, isAdmin } = useAuth();
 
   if (!user) return null;
 
@@ -92,7 +92,7 @@ const AccountDropdown = ({
           <TooltipTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
               <Avatar>
-                <AvatarImage src={user.pictureUrl!} alt={user.firstName} />
+                <AvatarImage src={userPicture?.url!} alt={user.firstName} />
                 <AvatarFallback>
                   <UserIcon />
                 </AvatarFallback>

@@ -1,3 +1,4 @@
+"use client";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -17,6 +18,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import { useState } from "react";
 import { isMobile } from "react-device-detect";
 
 const LogoutDialog = ({
@@ -28,6 +30,8 @@ const LogoutDialog = ({
   setLogoutDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleLogout: () => void;
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   return isMobile ? (
     <Drawer open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
       <DrawerContent>
@@ -68,7 +72,14 @@ const LogoutDialog = ({
           <AlertDialogCancel onClick={() => setLogoutDialogOpen(false)}>
             Cancel
           </AlertDialogCancel>
-          <Button variant="destructive" onClick={handleLogout}>
+          <Button
+            variant="destructive"
+            loading={isLoading}
+            onClick={() => {
+              setIsLoading(true);
+              handleLogout();
+            }}
+          >
             Log Out
           </Button>
         </AlertDialogFooter>

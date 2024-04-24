@@ -1,3 +1,4 @@
+import Main from "@/components/page/Main";
 import { Metadata } from "next";
 import {
   SearchIcon,

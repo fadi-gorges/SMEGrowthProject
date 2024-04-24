@@ -2,11 +2,13 @@
 import LogoutDialog from "@/components/navbar/LogoutDialog";
 import { NavLinkItem } from "@/components/navbar/NavLink";
 import { navLinks } from "@/components/navbar/Navbar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
 import { useLinkActive } from "@/lib/utils/useLinkActive";
 import { useAuth } from "@/providers/auth";
 import {
+  BellIcon,
   Building2Icon,
   HomeIcon,
   LogOutIcon,
@@ -17,7 +19,6 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnchorHTMLAttributes, useState } from "react";
-import { toast } from "sonner";
 
 export const sidebarLinks = {
   dashboard: { text: "Dashboard", link: "/dashboard", icon: HomeIcon },
@@ -28,19 +29,26 @@ export const sidebarLinks = {
     icon: TextSearchIcon,
   },
   editBusiness: {
-    text: "Edit Business Details",
+    text: "Edit Business",
     link: "/business",
     icon: Building2Icon,
+  },
+  notifications: {
+    text: "Notifications",
+    link: "/notifications",
+    icon: BellIcon,
   },
   settings: { text: "Account Settings", link: "/settings", icon: SettingsIcon },
 };
 
 const SidebarLink = ({
   link,
+  alertCount,
   className,
   ...props
 }: {
   link: NavLinkItem;
+  alertCount?: number;
 } & AnchorHTMLAttributes<HTMLAnchorElement>) => {
   const isActive = useLinkActive(link.link);
 
@@ -48,7 +56,7 @@ const SidebarLink = ({
     <Link
       href={link.link}
       className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2",
+        "flex items-center gap-3 rounded-lg px-3 py-2 transition-colors",
         isActive
           ? "bg-muted text-foreground"
           : "text-muted-foreground hover:text-foreground",
@@ -58,19 +66,23 @@ const SidebarLink = ({
     >
       <link.icon size={20} />
       <p>{link.text}</p>
+      {alertCount && (
+        <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+          {alertCount > 99 ? "99+" : alertCount}
+        </Badge>
+      )}
     </Link>
   );
 };
 
 const Sidebar = () => {
   const router = useRouter();
-  const { user, isAdmin, logout } = useAuth();
+  const { isAdmin, logout } = useAuth();
 
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
-    toast.success("You have logged out successfully.");
     router.push("/");
     router.refresh();
     setLogoutDialogOpen(false);
@@ -83,6 +95,7 @@ const Sidebar = () => {
         <SidebarLink link={sidebarLinks.simpleSearch} />
         <SidebarLink link={sidebarLinks.advancedSearch} />
         <SidebarLink link={sidebarLinks.editBusiness} />
+        <SidebarLink link={sidebarLinks.notifications} alertCount={6} />
         <SidebarLink link={sidebarLinks.settings} />
         {isAdmin && <SidebarLink link={navLinks.admin} />}
         {/* <Link

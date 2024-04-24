@@ -2,16 +2,16 @@ import Main from "@/components/page/Main";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Edit Business Details",
+  title: "Notifications",
   description: "",
 };
 
-const EditBusinessPage = () => {
+const NotificationsPage = () => {
   return (
     <Main>
-      <h1>Edit Business</h1>
+      <h1>Notifications</h1>
     </Main>
   );
 };
 
-export default EditBusinessPage;
+export default NotificationsPage;

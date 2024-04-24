@@ -50,14 +50,19 @@ const ResetPasswordEmailForm = ({
     setMessage("");
     setIsLoading(true);
 
-    const res = await forgotPasswordAction({ email: data.email });
+    try {
+      const res = await forgotPasswordAction({ email: data.email });
 
-    setSuccess(res.success);
-    setMessage(
-      res.success
-        ? "Please follow the password reset link that was sent to your email."
-        : res.error
-    );
+      setSuccess(res.success);
+      setMessage(
+        res.success
+          ? "Please follow the password reset link that was sent to your email."
+          : res.error
+      );
+    } catch (e) {
+      setSuccess(false);
+      setMessage("An error occurred. Please try again.");
+    }
 
     setIsLoading(false);
   };

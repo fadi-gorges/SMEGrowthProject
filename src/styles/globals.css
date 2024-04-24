@@ -81,11 +81,14 @@
   }
 }
 @layer components {
-  .padding {
+  .x-padding {
     @apply px-2 lg:px-5;
   }
-  .top-margin {
-    @apply mt-5 lg:mt-8;
+  .small-page-padding {
+    @apply p-2 lg:p-4;
+  }
+  .page-padding {
+    @apply p-4 lg:p-8;
   }
   .form-slide-in {
     @apply animate-in fade-in-25 slide-in-from-top-1 duration-300;

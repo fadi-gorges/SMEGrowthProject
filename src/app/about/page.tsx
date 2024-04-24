@@ -1,3 +1,4 @@
+import Main from "@/components/page/Main";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,9 +8,9 @@ export const metadata: Metadata = {
 
 const AboutPage = () => {
   return (
-    <main className="padding top-margin flex-1 flex flex-col gap-5">
+    <Main>
       <h1>About</h1>
-    </main>
+    </Main>
   );
 };
 

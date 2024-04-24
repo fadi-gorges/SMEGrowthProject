@@ -1,8 +1,6 @@
 "use client";
-
-import { logoutAction } from "@/actions/auth/logout";
 import { getUrl } from "@/lib/utils/getUrl";
-import { User } from "@/payload-types";
+import { ProfilePicture, User } from "@/payload-types";
 import { checkRole } from "@/payload/collections/Users/checkRole";
 import { usePathname } from "next/navigation";
 import React, {
@@ -30,6 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>();
+  const [userPicture, setUserPicture] = useState<ProfilePicture | null>();
 
   // useGoogleOneTapLogin({
   //   onSuccess: ({ credential }) => googleLoginSuccess({ credential }),
@@ -55,6 +54,24 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //   onSuccess: ({ access_token }) => googleLoginSuccess({ access_token }),
   // });
 
+  const fetchMe = async () => {
+    const user = await rest(
+      `${getUrl()}/api/users/me`,
+      {},
+      {
+        method: "GET",
+      }
+    );
+    setUser(user);
+
+    if (!user) return;
+
+    const res = await fetch(`${getUrl()}/api2/users/me/picture`);
+    const { picture } = await res.json();
+
+    setUserPicture(picture);
+  };
+
   const isAdmin = useMemo(
     () => (user ? checkRole(["admin"], user) : false),
     [user]
@@ -66,9 +83,8 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout: Logout = async () => {
-    logoutAction();
+    await rest(`${getUrl()}/api/users/logout`, {}, { method: "POST" });
     setUser(null);
-    await new Promise((resolve) => setTimeout(resolve, 100));
   };
 
   const resetPassword: ResetPassword = async (args) => {
@@ -78,17 +94,6 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // On mount, get user and set
   useEffect(() => {
-    const fetchMe = async () => {
-      const user = await rest(
-        `${getUrl()}/api/users/me`,
-        {},
-        {
-          method: "GET",
-        }
-      );
-      setUser(user);
-    };
-
     fetchMe();
   }, [pathname]);
 
@@ -97,7 +102,9 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <Context.Provider
       value={{
         user,
+        userPicture,
         isAdmin,
+        fetchMe,
         setUser,
         login,
         // googleLogin,
