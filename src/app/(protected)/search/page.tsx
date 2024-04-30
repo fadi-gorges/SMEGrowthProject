@@ -1,29 +1,23 @@
-import Main from "@/components/page/Main";
+'use client'
+import React, { useState } from "react";
 import { Metadata } from "next";
-import {
-  SearchIcon,
-} from "lucide-react";
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { SearchIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/components/ui/accordion";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-export const metadata: Metadata = {
-  title: "Search",
-  description: "",
-};
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -33,17 +27,36 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-
+/*export const metadata: Metadata = {
+  title: "Search",
+  description: "",
+};*/
 
 const SearchPage = () => {
+  
+  const [isTableVisible, setIsTableVisible] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState("");
+
+  const toggleTableVisibility = () => {
+    setIsTableVisible((prevState) => true);
+    setOpenAccordion("");
+  };
   return (  
-    <main className="padding top-margin flex-1 flex flex-col gap-5">
+    <main className="flex-1 flex flex-col gap-5 px-10 pt-6">
       <h1>Search SME</h1>
       <div className = "simple search">
-      <Input type = "name" placeholder = "Search for highgrowth SME's" />
-      <Accordion type = "single" collapsible className="w-full" >
+        <div className="flex items-center gap-2">
+        <Input type = "name" placeholder = "Search for highgrowth SME's" />
+        <Button type ="submit" onClick={toggleTableVisibility}>Search<SearchIcon></SearchIcon></Button>
+        </div>
+      <Accordion 
+        type = "single" 
+        collapsible className="w-full" 
+        value={openAccordion} // Control which section is open
+        onValueChange={(val) => setOpenAccordion(val)} // Update accordion state
+      >
         <AccordionItem value="item-1">
           <AccordionTrigger><p>Advanced Options</p></AccordionTrigger>
           <AccordionContent>
@@ -114,18 +127,29 @@ const SearchPage = () => {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <Button type ="submit">Search<SearchIcon></SearchIcon></Button>
       </div>
-    <Table hidden>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">ID</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Contact</TableHead>
-        </TableRow>
-      </TableHeader>
-    </Table>
+      <p>Search Results</p>
+      {isTableVisible && (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">ID</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Contact</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {/* Example data - you can replace it with real data when needed */}
+            <TableRow>
+              <TableCell>1</TableCell>
+              <TableCell>Company A</TableCell>
+              <TableCell>Active</TableCell>
+              <TableCell>email@companya.com</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      )}
     </main>
   );
 };
