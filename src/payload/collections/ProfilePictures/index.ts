@@ -14,6 +14,9 @@ export const ProfilePictures: CollectionConfig = {
       height: 320,
     },
   },
+  admin: {
+    hidden: true,
+  },
   access: {
     create: admins,
     read: admins,

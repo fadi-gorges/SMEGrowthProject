@@ -1,6 +1,7 @@
 import type { NavLinkItem } from "@/components/navbar/NavLink";
 import { navLinks } from "@/components/navbar/Navbar";
 import { sidebarLinks } from "@/components/sidebar/Sidebar";
+import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,17 +16,17 @@ import { useLinkActive } from "@/lib/utils/useLinkActive";
 import { useAuth } from "@/providers/auth";
 import { LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { AnchorHTMLAttributes } from "react";
 
 export const SheetLink = ({
   link,
+  alertCount,
   className,
   ...props
 }: {
   link: NavLinkItem;
+  alertCount?: number;
 } & AnchorHTMLAttributes<HTMLAnchorElement>) => {
-  const pathname = usePathname();
   const isActive = useLinkActive(link.link);
 
   return (
@@ -43,6 +44,11 @@ export const SheetLink = ({
       >
         <link.icon size={24} />
         <h6>{link.text}</h6>
+        {alertCount && (
+          <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+            {alertCount > 99 ? "99+" : alertCount}
+          </Badge>
+        )}
       </Link>
     </SheetClose>
   );
@@ -66,7 +72,7 @@ const NavSheet = ({
           <MenuIcon size={24} />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="flex flex-col gap-6 pt-10">
+      <SheetContent className="flex flex-col gap-6 pt-10">
         <SheetHeader>
           <SheetTitle asChild>
             <SheetClose asChild>
@@ -83,6 +89,7 @@ const NavSheet = ({
               <SheetLink link={sidebarLinks.simpleSearch} />
               <SheetLink link={sidebarLinks.advancedSearch} />
               <SheetLink link={sidebarLinks.editBusiness} />
+              <SheetLink link={sidebarLinks.notifications} alertCount={6} />
               <SheetLink link={sidebarLinks.settings} />
               {isAdmin && <SheetLink link={navLinks.admin} />}
             </>

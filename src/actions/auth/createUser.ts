@@ -45,7 +45,7 @@ export const createUser = async (
     data: {},
     file: {
       data: await readBuffer(validation.data.picture),
-      name: validation.data.picture.name,
+      name: validation.data.email,
       mimetype: validation.data.picture.type,
       size: validation.data.picture.size,
     },

@@ -50,7 +50,7 @@ export const updateUser = async (
     data: {},
     file: {
       data: await readBuffer(validation.data.picture),
-      name: validation.data.picture.name,
+      name: user.email,
       mimetype: validation.data.picture.type,
       size: validation.data.picture.size,
     },
