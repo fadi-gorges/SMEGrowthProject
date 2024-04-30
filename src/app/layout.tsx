@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { inter } from "@/lib/fonts";
 import { cn } from "@/lib/utils/cn";
 import { AuthProvider } from "@/providers/auth";
-import "@/styles/globals.css";
+import "@/styles/globals.scss";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 
