@@ -58,9 +58,8 @@ const AccountSettingsCard = () => {
       firstName: user?.firstName,
       lastName: user?.lastName,
       picture: undefined,
-      jobTitle: user?.jobTitle,
-      organisation: user?.organisation,
-      mobileNumber: user?.mobileNumber,
+      jobTitle: user?.jobTitle || "",
+      mobileNumber: user?.mobileNumber || "",
     },
   });
 
@@ -266,7 +265,7 @@ const AccountSettingsCard = () => {
                           type="tel"
                           autoCapitalize="on"
                           autoComplete="tel"
-                          placeholder={user.mobileNumber}
+                          placeholder={user.mobileNumber || ""}
                           required
                           {...field}
                         />
@@ -284,26 +283,7 @@ const AccountSettingsCard = () => {
                       <FormControl>
                         <Input
                           type="text"
-                          placeholder={user.jobTitle}
-                          required
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={updateUserForm.control}
-                  name="organisation"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Organisation</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          autoComplete="organization"
-                          placeholder={user.organisation}
+                          placeholder={user.jobTitle || ""}
                           required
                           {...field}
                         />

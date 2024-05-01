@@ -1,3 +1,4 @@
+import SidebarLayout from "@/app/(protected)/_components/SidebarLayout";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { redirect } from "next/navigation";
 
@@ -6,7 +7,7 @@ const ProtectedLayout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!user) redirect("/");
 
-  return <>{children}</>;
+  return <SidebarLayout>{children}</SidebarLayout>;
 };
 
 export default ProtectedLayout;

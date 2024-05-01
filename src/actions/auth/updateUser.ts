@@ -37,7 +37,6 @@ export const updateUser = async (
       firstName: validation.data.firstName,
       lastName: validation.data.lastName,
       jobTitle: validation.data.jobTitle,
-      organisation: validation.data.organisation,
       mobileNumber: validation.data.mobileNumber,
     },
   });
