@@ -5,7 +5,6 @@ import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
 import NavLink from "@/components/navbar/NavLink";
 import NavSheet from "@/components/navbar/NavSheet";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import { cn } from "@/lib/utils/cn";
 import { useAuth } from "@/providers/auth";
 import { HomeIcon, InfoIcon, LockKeyholeIcon, LogInIcon } from "lucide-react";
@@ -68,7 +67,6 @@ const Navbar = () => {
           <LogInIcon size={16} />
         </Link>
       )}
-      <ModeToggle />
       <NavSheet
         sheetOpen={sheetOpen}
         setSheetOpen={setSheetOpen}
