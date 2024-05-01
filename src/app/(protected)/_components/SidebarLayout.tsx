@@ -1,14 +1,9 @@
 "use client";
 import Sidebar from "@/components/sidebar/Sidebar";
-import { useAuth } from "@/providers/auth";
-import { usePathname } from "next/navigation";
 import React from "react";
 
 const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
-  const { user } = useAuth();
-
-  return user && !pathname?.startsWith("/admin") ? (
+  return (
     <div className="flex-1 grid grid-cols-12">
       <Sidebar />
       <div
@@ -18,8 +13,6 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
         {children}
       </div>
     </div>
-  ) : (
-    children
   );
 };
 

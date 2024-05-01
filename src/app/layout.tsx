@@ -1,4 +1,4 @@
-import SidebarLayout from "@/app/_components/SidebarLayout";
+import SidebarLayout from "@/app/(protected)/_components/SidebarLayout";
 import { Utils } from "@/app/_components/Utils";
 import Navbar from "@/components/navbar/Navbar";
 import { Toaster } from "@/components/ui/sonner";
@@ -36,7 +36,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <AuthProvider>
           <Utils>
             <Navbar />
-            <SidebarLayout>{children}</SidebarLayout>
+            {children}
             {/* <Footer /> */}
           </Utils>
           <Toaster richColors closeButton />
