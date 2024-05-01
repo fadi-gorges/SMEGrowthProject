@@ -33,23 +33,122 @@ import {
   title: "Search",
   description: "",
 };*/
+interface Business {
+  id: number;
+  name: string;
+  sector: string;
+  location: string;
+  primaryProduct: string;
+  primaryService: string;
+  numberOfStaff: number;
+  contact: string;
+}
+const businesses: Business[] = [
+  {
+    id: 1,
+    name: "Company A",
+    sector: "Technology",
+    location: "New York",
+    primaryProduct: "Software",
+    primaryService: "Consulting",
+    numberOfStaff: 75,
+    contact: "email@companya.com",
+  },
+  {
+    id: 2,
+    name: "Company B",
+    sector: "Retail",
+    location: "San Francisco",
+    primaryProduct: "Clothing",
+    primaryService: "Customer Service",
+    numberOfStaff: 25,
+    contact: "contact@companyb.com",
+  },
+  {
+    id: 3,
+    name: "Company C",
+    sector: "Healthcare",
+    location: "Chicago",
+    primaryProduct: "Pharmaceuticals",
+    primaryService: "Healthcare",
+    numberOfStaff: 150,
+    contact: "info@companyc.com",
+  },
+  {
+    id: 4,
+    name: "Company D",
+    sector: "Finance",
+    location: "Los Angeles",
+    primaryProduct: "Financial Services",
+    primaryService: "Advisory",
+    numberOfStaff: 5,
+    contact: "support@companyd.com",
+  },
+  {
+    id: 5,
+    name: "BIG NAME",
+    sector: "Finance",
+    location: "Los Angeles",
+    primaryProduct: "Financial Services",
+    primaryService: "Advisory",
+    numberOfStaff: 8,
+    contact: "bigname@company.com",
+  },
+];
+type StaffRangeKey = "1-10" | "10-50" | "50-100" | "100-200" | ">200";
+type StaffRange = { [key in StaffRangeKey]: [number, number] };
+const staffRanges: StaffRange = {
+  "1-10": [1, 10],
+  "10-50": [10, 50],
+  "50-100": [50, 100],
+  "100-200": [100, 200],
+  ">200": [200, Infinity],
+};
+
+const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
+  const [min, max] = staffRanges[range];
+  return count >= min && count <= max;
+};
 
 const SearchPage = () => {
   
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [openAccordion, setOpenAccordion] = useState("");
+  const [searchQuery, setSearchQuery] = useState(""); // State variable for the search query
+  const [selectedStaffRange, setSelectedStaffRange] = useState<StaffRangeKey | "">("");
+  const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>(businesses); // State for filtered business list
 
-  const toggleTableVisibility = () => {
-    setIsTableVisible((prevState) => true);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const performSearch = () => {
+    const results = businesses.filter((business) => {
+      const nameMatch = business.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const staffMatch = selectedStaffRange
+        ? isInStaffRange(business.numberOfStaff, selectedStaffRange)
+        : true;
+
+      return nameMatch && staffMatch;
+    });
+
+    setFilteredBusinesses(results); // Update the filtered businesses
+    setIsTableVisible(true); // Show the table with the search results
     setOpenAccordion("");
   };
   return (  
-    <main className="flex-1 flex flex-col gap-5 px-10 pt-6">
+    <main className="flex-1 flex flex-col gap-5 px-20 pt-10">
+      <div className="border border-gray-100">
       <h1>Search SME</h1>
       <div className = "simple search">
         <div className="flex items-center gap-2">
-        <Input type = "name" placeholder = "Search for highgrowth SME's" />
-        <Button type ="submit" onClick={toggleTableVisibility}>Search<SearchIcon></SearchIcon></Button>
+        <Input
+            type="text"
+            placeholder="Search for highgrowth SME's"
+            value={searchQuery} // Bind the search query state to the input
+            onChange={handleSearchChange} // Handle input changes
+          />
+        <Button type ="submit" onClick={performSearch}>Search<SearchIcon></SearchIcon></Button>
         </div>
       <Accordion 
         type = "single" 
@@ -60,10 +159,13 @@ const SearchPage = () => {
         <AccordionItem value="item-1">
           <AccordionTrigger><p>Advanced Options</p></AccordionTrigger>
           <AccordionContent>
-            <Select>
+            <Select
+              value={selectedStaffRange}
+              onValueChange={(val) => setSelectedStaffRange(val as StaffRangeKey)}
+            >
               <p>Number of Staff</p>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select.." />
+              <SelectValue placeholder="Select Staff Range" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -73,7 +175,7 @@ const SearchPage = () => {
                   <SelectItem value="100-200">100-200</SelectItem>
                   <SelectItem value=">200">Over 200</SelectItem>
                 </SelectGroup>
-              </SelectContent>
+              </SelectContent>  
             </Select>
             <Select>
             <p>Industry Sector</p>
@@ -133,23 +235,27 @@ const SearchPage = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">ID</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Sector</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead>Number of Staff</TableHead>
               <TableHead>Contact</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* Example data - you can replace it with real data when needed */}
-            <TableRow>
-              <TableCell>1</TableCell>
-              <TableCell>Company A</TableCell>
-              <TableCell>Active</TableCell>
-              <TableCell>email@companya.com</TableCell>
-            </TableRow>
+            {filteredBusinesses.map((business) => (
+              <TableRow key={business.id}>
+                <TableCell>{business.name}</TableCell>
+                <TableCell>{business.sector}</TableCell>
+                <TableCell>{business.location}</TableCell>
+                <TableCell>{business.numberOfStaff}</TableCell>
+                <TableCell>{business.contact}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       )}
+      </div>
     </main>
   );
 };
