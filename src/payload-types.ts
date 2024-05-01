@@ -10,6 +10,10 @@ export interface Config {
   collections: {
     users: User;
     profilePictures: ProfilePicture;
+    organisations: Organisation;
+    enterprises: Enterprise;
+    engagements: Engagement;
+    searchProfiles: SearchProfile;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -24,10 +28,11 @@ export interface User {
   roles?: ('admin' | 'user')[] | null;
   firstName: string;
   lastName: string;
-  picture: string | ProfilePicture;
-  jobTitle: string;
-  organisation: string;
-  mobileNumber: string;
+  mobileNumber?: string | null;
+  jobTitle?: string | null;
+  organisation?: (string | null) | Organisation;
+  userType?: ('university' | 'vet' | 'rto' | 'non-profit' | 'government' | 'rdi' | 'industry') | null;
+  picture?: string | ProfilePicture | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -43,6 +48,17 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "organisations".
+ */
+export interface Organisation {
+  id: string;
+  name: string;
+  members: string[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "profilePictures".
  */
 export interface ProfilePicture {
@@ -55,6 +71,57 @@ export interface ProfilePicture {
   filesize?: number | null;
   width?: number | null;
   height?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "enterprises".
+ */
+export interface Enterprise {
+  id: string;
+  name: string;
+  abn?: string | null;
+  industrySector?: string | null;
+  numEmployees?: number | null;
+  website?: string | null;
+  address?: string | null;
+  revenue?: number | null;
+  valuation?: number | null;
+  establishedDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engagements".
+ */
+export interface Engagement {
+  id: string;
+  user: string | User;
+  enterprise: string | Enterprise;
+  contacted?: boolean | null;
+  connected?: boolean | null;
+  engaged?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "searchProfiles".
+ */
+export interface SearchProfile {
+  id: string;
+  name: string;
+  user: string | User;
+  searchQuery?: string | null;
+  industrySector?: string[] | null;
+  minEmployees?: number | null;
+  maxEmployees?: number | null;
+  minRevenue?: number | null;
+  maxRevenue?: number | null;
+  minValuation?: number | null;
+  maxValuation?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

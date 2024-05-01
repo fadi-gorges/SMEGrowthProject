@@ -10,7 +10,11 @@ import { Icons } from "../components/Icons";
 import ReturnToSite from "../components/admin/ReturnToSite";
 import { getUrl } from "../lib/utils/getUrl";
 import Users from "../payload/collections/Users";
+import { Engagements } from "./collections/Engagements";
+import { Enterprises } from "./collections/Enterprises";
+import { Organisations } from "./collections/Organisations";
 import { ProfilePictures } from "./collections/ProfilePictures";
+import { SearchProfiles } from "./collections/SearchProfiles";
 
 const mockModulePath = path.resolve(__dirname, "./emptyModuleMock.js");
 
@@ -54,7 +58,14 @@ export default buildConfig({
       };
     },
   },
-  collections: [Users, ProfilePictures],
+  collections: [
+    Users,
+    ProfilePictures,
+    Organisations,
+    Enterprises,
+    Engagements,
+    SearchProfiles,
+  ],
   globals: [
     // Your globals here
   ],
