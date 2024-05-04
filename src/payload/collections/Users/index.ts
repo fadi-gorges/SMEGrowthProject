@@ -145,6 +145,25 @@ const Users: CollectionConfig = {
       ],
     },
     {
+      name: "notificationFrequency",
+      type: "select",
+      options: [
+        {
+          label: "Off",
+          value: "off",
+        },
+        {
+          label: "Daily",
+          value: "daily",
+        },
+        {
+          label: "Weekly",
+          value: "weekly",
+        },
+      ],
+      defaultValue: "off",
+    },
+    {
       name: "picture",
       type: "upload",
       relationTo: "profilePictures",
