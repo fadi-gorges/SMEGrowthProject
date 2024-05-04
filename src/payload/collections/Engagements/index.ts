@@ -28,14 +28,17 @@ export const Engagements: CollectionConfig = {
     {
       name: "contacted",
       type: "checkbox",
+      defaultValue: false,
     },
     {
       name: "connected",
       type: "checkbox",
+      defaultValue: false,
     },
     {
       name: "engaged",
       type: "checkbox",
+      defaultValue: false,
     },
   ],
 };
