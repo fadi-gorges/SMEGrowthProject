@@ -32,6 +32,7 @@ export interface User {
   jobTitle?: string | null;
   organisation?: (string | null) | Organisation;
   userType?: ('university' | 'vet' | 'rto' | 'non-profit' | 'government' | 'rdi' | 'industry') | null;
+  notificationFrequency?: ('off' | 'daily' | 'weekly') | null;
   picture?: string | ProfilePicture | null;
   updatedAt: string;
   createdAt: string;
