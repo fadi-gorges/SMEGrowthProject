@@ -2,17 +2,14 @@
 import { ActionResponse } from "@/lib/utils/actionResponse";
 import { capitalise } from "@/lib/utils/capitalise";
 import { getUrl } from "@/lib/utils/getUrl";
-import { readBuffer } from "@/lib/utils/readBuffer";
-import { signupSchema } from "@/lib/validations/auth/signupSchema";
+import {
+  InitialSignupData,
+  initialSignupSchema,
+} from "@/lib/validations/auth/initialSignupSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
-export const createUser = async (body: FormData): ActionResponse => {
-  const data: {
-    [key: string]: string | File;
-  } = {};
-  body.forEach((value, key) => (data[key] = value));
-
-  const validation = signupSchema.safeParse(data);
+export const createUser = async (data: InitialSignupData): ActionResponse => {
+  const validation = initialSignupSchema.safeParse(data);
 
   if (!validation.success) {
     return { success: false, error: "Bad request." };
@@ -38,17 +35,6 @@ export const createUser = async (body: FormData): ActionResponse => {
     },
   });
 
-  const picture = await payload.create({
-    collection: "profilePictures",
-    data: {},
-    file: {
-      data: await readBuffer(validation.data.picture),
-      name: validation.data.email,
-      mimetype: validation.data.picture.type,
-      size: validation.data.picture.size,
-    },
-  });
-
   const user = await payload.create({
     collection: "users",
     data: {
@@ -56,10 +42,6 @@ export const createUser = async (body: FormData): ActionResponse => {
       password: validation.data.password,
       firstName: capitalise(validation.data.firstName),
       lastName: capitalise(validation.data.lastName),
-      mobileNumber: validation.data.mobileNumber,
-      jobTitle: capitalise(validation.data.jobTitle),
-      organisation: capitalise(validation.data.organisation),
-      picture: picture.id,
     },
     showHiddenFields: true,
     disableVerificationEmail: true,

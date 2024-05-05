@@ -8,7 +8,7 @@ export const metadata = {
 
 const ResetPasswordPage = async () => {
   return (
-    <Main className="items-center">
+    <Main className="items-center justify-center">
       <ResetPasswordForm />
     </Main>
   );

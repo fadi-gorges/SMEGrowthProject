@@ -67,7 +67,7 @@ const LoginForm = ({ className, ...props }: LoginForm) => {
   return (
     <Card
       className={cn(
-        "flex flex-col justify-center w-full max-w-xl -translate-y-7",
+        "flex flex-col justify-center -translate-y-6 w-full max-w-xl",
         className
       )}
       {...props}
@@ -78,7 +78,7 @@ const LoginForm = ({ className, ...props }: LoginForm) => {
             <h3>Sign In</h3>
           </CardTitle>
           <CardDescription>
-            Please log in to continue to your account.
+            <p>Please log in to continue to your account.</p>
           </CardDescription>
         </CardHeader>
         <Form {...loginForm}>
