@@ -1,4 +1,4 @@
-import AuthTabs from "@/app/auth/_components/AuthTabs";
+import LoginForm from "@/app/auth/login/_components/LoginForm";
 import Main from "@/components/page/Main";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
@@ -6,19 +6,19 @@ import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Log In",
-  description: "",
+  description: "Log in to your AusBizGrowth account.",
 };
 
-const AuthPage = async () => {
+const LoginPage = async () => {
   const user = await getServerUser();
 
   if (user) redirect("/");
 
   return (
-    <Main className="items-center">
-      <AuthTabs />
+    <Main className="justify-center items-center">
+      <LoginForm />
     </Main>
   );
 };
 
-export default AuthPage;
+export default LoginPage;
