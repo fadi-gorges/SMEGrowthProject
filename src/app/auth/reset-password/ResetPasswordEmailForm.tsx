@@ -130,7 +130,7 @@ const ResetPasswordEmailForm = ({
                   className="w-full mb-3"
                 >
                   Continue
-                  <ArrowRightIcon size={20} />
+                  <ArrowRightIcon size={16} />
                 </Button>
                 <Link
                   href="/auth/login"

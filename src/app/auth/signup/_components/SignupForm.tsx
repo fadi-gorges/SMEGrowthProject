@@ -224,7 +224,7 @@ const SignupForm = ({ className, ...props }: SignupFormProps) => {
                 className="w-full"
               >
                 Continue
-                <ArrowRightIcon size={20} />
+                <ArrowRightIcon size={16} />
               </Button>
               <div className="flex items-center justify-center gap-2">
                 <small>Already a member?</small>
