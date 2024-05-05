@@ -100,10 +100,11 @@ const Navbar = () => {
       <div className="x-padding h-full flex items-center gap-8">
         {logo}
         <div className="flex-1 flex justify-end items-center gap-3">
-          <NavLink link={navLinks.home} />
-          <NavLink link={navLinks.about} />
           {!user && (
             <>
+              <NavLink link={navLinks.home} />
+              <NavLink link={navLinks.about} />
+
               <NavLink link={navLinks.login} />
               <Link
                 href="/auth/signup"
