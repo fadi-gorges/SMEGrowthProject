@@ -21,29 +21,28 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils/cn";
 import {
-  SignupData,
+  InitialSignupData,
   initialSignupSchema,
 } from "@/lib/validations/auth/initialSignupSchema";
-import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, ArrowRightIcon, MailIcon } from "lucide-react";
+import { AlertCircle, ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-type SignupFormProps = React.HTMLAttributes<HTMLDivElement>;
+type InitialSignupFormProps = React.HTMLAttributes<HTMLDivElement> & {
+  initialSignupComplete: (id: string) => void;
+};
 
-const SignupForm = ({ className, ...props }: SignupFormProps) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const { login } = useAuth();
+const InitialSignupForm = ({
+  initialSignupComplete,
+  className,
+  ...props
+}: InitialSignupFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [signUpSuccess, setSignUpSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  const signupForm = useForm<SignupData>({
+  const signupForm = useForm<InitialSignupData>({
     resolver: zodResolver(initialSignupSchema),
     disabled: isLoading,
     defaultValues: {
@@ -55,9 +54,8 @@ const SignupForm = ({ className, ...props }: SignupFormProps) => {
     },
   });
 
-  const onSignup = async (data: SignupData) => {
+  const onSignup = async (data: InitialSignupData) => {
     setError("");
-    setSignUpSuccess(false);
     setIsLoading(true);
 
     try {
@@ -69,7 +67,7 @@ const SignupForm = ({ className, ...props }: SignupFormProps) => {
         return;
       }
 
-      setSignUpSuccess(true);
+      initialSignupComplete(res.id);
     } catch (e: any) {
       setError("An error occurred. Please try again.");
       setIsLoading(false);
@@ -109,15 +107,7 @@ const SignupForm = ({ className, ...props }: SignupFormProps) => {
                 <Alert className="bg-destructive">
                   <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 text-destructive-foreground font-semibold">
                     <AlertCircle className="h-4 w-4" />
-                    {error}
-                  </AlertDescription>
-                </Alert>
-              )}
-              {signUpSuccess && (
-                <Alert className="bg-secondary text-secondary-foreground">
-                  <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 font-semibold text-xs sm:text-sm">
-                    <MailIcon className="h-4 w-4" />
-                    Please check your email for a sign-in link
+                    <small>{error}</small>
                   </AlertDescription>
                 </Alert>
               )}
@@ -246,4 +236,4 @@ const SignupForm = ({ className, ...props }: SignupFormProps) => {
   );
 };
 
-export default SignupForm;
+export default InitialSignupForm;

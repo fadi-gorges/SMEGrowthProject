@@ -1,14 +1,15 @@
 "use server";
 import { ActionResponse } from "@/lib/utils/actionResponse";
 import { capitalise } from "@/lib/utils/capitalise";
-import { getUrl } from "@/lib/utils/getUrl";
 import {
   InitialSignupData,
   initialSignupSchema,
 } from "@/lib/validations/auth/initialSignupSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
-export const createUser = async (data: InitialSignupData): ActionResponse => {
+export const createUser = async (
+  data: InitialSignupData
+): ActionResponse<{ id: string }> => {
   const validation = initialSignupSchema.safeParse(data);
 
   if (!validation.success) {
@@ -47,19 +48,29 @@ export const createUser = async (data: InitialSignupData): ActionResponse => {
     disableVerificationEmail: true,
   });
 
+  const verificationToken = Math.floor(
+    100000 + Math.random() * 900000
+  ).toString();
+
+  await payload.update({
+    collection: "users",
+    id: user.id,
+    data: {
+      _verificationToken: verificationToken,
+    },
+  });
+
   await payload.sendEmail({
     from: `${process.env.EMAIL_NAME} <${process.env.EMAIL_USER}>`,
     to: user.email,
-    subject: `Verify your ${process.env.EMAIL_NAME} account`,
+    subject: `${verificationToken} is your one-time passcode`,
     html: `
         <h1 style="margin-bottom: 16px;">Verify your email</h1>
-        <p style="margin-bottom: 8px;">Hi ${user.email},</p>
-        <p style="margin-bottom: 16px;">Click the button below to verify your email address:</p>
-        <a href="${getUrl()}/auth/verify/${
-      user._verificationToken
-    }" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Verify your email</a>
+        <p style="margin-bottom: 8px;">Hi ${user.firstName},</p>
+        <p>Please enter this one-time passcode to verify your ${process.env.EMAIL_NAME} account:</p>
+        <h2 style="font-weight: bold;">${verificationToken}</h2>
       `,
   });
 
-  return { success: true };
+  return { success: true, id: user.id };
 };

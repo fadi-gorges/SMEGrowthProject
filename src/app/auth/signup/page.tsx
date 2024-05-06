@@ -1,4 +1,4 @@
-import SignupForm from "@/app/auth/signup/_components/SignupForm";
+import SignupFlow from "@/app/auth/signup/_components/SignupFlow";
 import Main from "@/components/page/Main";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
@@ -17,7 +17,7 @@ const SignupPage = async () => {
 
   return (
     <Main className="justify-center items-center">
-      <SignupForm />
+      <SignupFlow />
     </Main>
   );
 };

@@ -12,7 +12,9 @@ import {
   InfoIcon,
   LockKeyholeIcon,
   LogInIcon,
+  LogOutIcon,
   LucideIcon,
+  UserPlus2Icon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -100,7 +102,16 @@ const Navbar = () => {
       <div className="x-padding h-full flex items-center gap-8">
         {logo}
         <div className="flex-1 flex justify-end items-center gap-4">
-          {!user && (
+          {user ? (
+            <Button
+              variant="outline"
+              onClick={() => setLogoutDialogOpen(true)}
+              className="hidden lg:inline-flex"
+            >
+              <LogOutIcon size={16} />
+              Log out
+            </Button>
+          ) : (
             <>
               <NavLink link={navLinks.home} />
               <NavLink link={navLinks.about} />
@@ -110,6 +121,7 @@ const Navbar = () => {
                 href="/auth/signup"
                 className={cn(buttonVariants(), "hidden lg:inline-flex")}
               >
+                <UserPlus2Icon size={16} />
                 Sign up
               </Link>
             </>
