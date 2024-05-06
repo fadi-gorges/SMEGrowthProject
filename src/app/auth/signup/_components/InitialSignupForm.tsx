@@ -11,11 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -31,7 +33,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 type InitialSignupFormProps = React.HTMLAttributes<HTMLDivElement> & {
-  initialSignupComplete: (id: string) => void;
+  initialSignupComplete: () => void;
 };
 
 const InitialSignupForm = ({
@@ -67,7 +69,7 @@ const InitialSignupForm = ({
         return;
       }
 
-      initialSignupComplete(res.id);
+      initialSignupComplete();
     } catch (e: any) {
       setError("An error occurred. Please try again.");
       setIsLoading(false);
@@ -77,7 +79,6 @@ const InitialSignupForm = ({
     signupForm.resetField("password");
     signupForm.resetField("confirmPassword");
     signupForm.resetField("confirmPassword");
-    window.scrollTo(0, 0);
   };
 
   return (
@@ -101,8 +102,11 @@ const InitialSignupForm = ({
           </CardDescription>
         </CardHeader>
         <Form {...signupForm}>
-          <form onSubmit={signupForm.handleSubmit(onSignup)}>
-            <CardContent className="space-y-3">
+          <form
+            onSubmit={signupForm.handleSubmit(onSignup)}
+            className="space-y-3"
+          >
+            <CardContent className="space-y-4">
               {error && (
                 <Alert className="bg-destructive">
                   <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 text-destructive-foreground font-semibold">
@@ -111,7 +115,7 @@ const InitialSignupForm = ({
                   </AlertDescription>
                 </Alert>
               )}
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <FormField
                   control={signupForm.control}
                   name="firstName"
@@ -179,6 +183,7 @@ const InitialSignupForm = ({
                       <Input
                         type="password"
                         minLength={8}
+                        autoComplete="new-password"
                         placeholder="Password"
                         required
                         {...field}
@@ -196,11 +201,45 @@ const InitialSignupForm = ({
                     <FormControl>
                       <Input
                         type="password"
+                        autoComplete="new-password"
                         placeholder="Confirm Password"
                         required
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={signupForm.control}
+                name="acceptTerms"
+                render={({ field }) => (
+                  <FormItem className="pt-2">
+                    <div className="flex gap-3 items-center">
+                      <FormControl>
+                        <Checkbox
+                          className="rounded-[4px]"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          disabled={field.disabled}
+                        />
+                      </FormControl>
+                      <FormLabel>
+                        <small className="text-foreground">
+                          I accept the{" "}
+                          <Link
+                            href="/terms"
+                            className={cn(
+                              buttonVariants({ variant: "link" }),
+                              "p-0 h-0"
+                            )}
+                          >
+                            <small>terms and conditions</small>
+                          </Link>
+                        </small>
+                      </FormLabel>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}

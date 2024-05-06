@@ -7,9 +7,7 @@ import {
 } from "@/lib/validations/auth/initialSignupSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
-export const createUser = async (
-  data: InitialSignupData
-): ActionResponse<{ id: string }> => {
+export const createUser = async (data: InitialSignupData): ActionResponse => {
   const validation = initialSignupSchema.safeParse(data);
 
   if (!validation.success) {
@@ -63,7 +61,7 @@ export const createUser = async (
   await payload.sendEmail({
     from: `${process.env.EMAIL_NAME} <${process.env.EMAIL_USER}>`,
     to: user.email,
-    subject: `${verificationToken} is your one-time passcode`,
+    subject: `${verificationToken} is your AusBizGrowth passcode`,
     html: `
         <h1 style="margin-bottom: 16px;">Verify your email</h1>
         <p style="margin-bottom: 8px;">Hi ${user.firstName},</p>
@@ -72,5 +70,5 @@ export const createUser = async (
       `,
   });
 
-  return { success: true, id: user.id };
+  return { success: true };
 };

@@ -34,7 +34,8 @@ export interface User {
   userType?: ('university' | 'vet' | 'rto' | 'non-profit' | 'government' | 'rdi' | 'industry') | null;
   notificationFrequency?: ('off' | 'daily' | 'weekly') | null;
   picture?: string | ProfilePicture | null;
-  verificationOtp?: string | null;
+  signupComplete?: boolean | null;
+  paymentSuccessful?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;

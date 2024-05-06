@@ -100,7 +100,7 @@ const OTPVerificationForm = ({
                             <InputOTPSlot
                               key={index}
                               index={index}
-                              className="h-12 w-12 lg:h-16 lg:w-16 text-xl lg:text-2xl"
+                              className="h-12 w-12 text-xl sm:h-16 sm:w-16 sm:text-2xl md:h-20 md:w-20 md:text-3xl"
                             />
                           ))}
                         </InputOTPGroup>

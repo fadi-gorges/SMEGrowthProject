@@ -164,6 +164,20 @@ const Users: CollectionConfig = {
       type: "upload",
       relationTo: "profilePictures",
     },
+    {
+      name: "signupComplete",
+      type: "checkbox",
+      admin: {
+        hidden: true,
+      },
+    },
+    {
+      name: "paymentSuccessful",
+      type: "checkbox",
+      admin: {
+        hidden: true,
+      },
+    },
   ],
 };
 

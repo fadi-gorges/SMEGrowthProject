@@ -83,7 +83,7 @@ const LoginForm = ({ className, ...props }: LoginForm) => {
         </CardHeader>
         <Form {...loginForm}>
           <form onSubmit={loginForm.handleSubmit(onLogin)}>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-4">
               {error && (
                 <Alert className="bg-destructive">
                   <AlertDescription className="flex justify-center items-center gap-2 md:gap-3 text-xs sm:text-sm text-destructive-foreground font-semibold">
@@ -119,6 +119,7 @@ const LoginForm = ({ className, ...props }: LoginForm) => {
                     <FormControl>
                       <Input
                         type="password"
+                        autoComplete="current-password"
                         placeholder="Password"
                         required
                         {...field}

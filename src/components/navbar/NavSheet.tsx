@@ -1,4 +1,4 @@
-import type { NavLinkItem } from "@/components/navbar/NavLink";
+import type { NavLinkItem } from "@/components/navbar/Navbar";
 import { navLinks } from "@/components/navbar/Navbar";
 import { sidebarLinks } from "@/components/sidebar/Sidebar";
 import { Badge } from "@/components/ui/badge";

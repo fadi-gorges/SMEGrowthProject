@@ -2,7 +2,7 @@
 
 import httpstatus from "http-status";
 import { Payload } from "payload";
-import errors from "payload/dist/errors";
+import { APIError } from "payload/dist/errors";
 import { commitTransaction } from "payload/dist/utilities/commitTransaction";
 import { createLocalReq } from "payload/dist/utilities/createLocalReq";
 import { initTransaction } from "payload/dist/utilities/initTransaction";
@@ -15,7 +15,7 @@ async function _customVerifyEmail(args: {
 }) {
   const { collection, req, token } = args;
   if (!Object.prototype.hasOwnProperty.call(args, "token")) {
-    throw new errors.APIError("Missing required data.", httpstatus.BAD_REQUEST);
+    throw new APIError("Missing required data.", httpstatus.BAD_REQUEST);
   }
   try {
     const shouldCommit = await initTransaction(req);
@@ -29,12 +29,12 @@ async function _customVerifyEmail(args: {
       },
     });
     if (!user)
-      throw new errors.APIError(
+      throw new APIError(
         "Verification token is invalid.",
         httpstatus.BAD_REQUEST
       );
     if (user && user._verified === true)
-      throw new errors.APIError(
+      throw new APIError(
         "This account has already been activated.",
         httpstatus.ACCEPTED
       );
@@ -64,7 +64,7 @@ export async function customVerifyEmail(
   const { collection: collectionSlug, token } = options;
   const collection = payload.collections[collectionSlug];
   if (!collection) {
-    throw new errors.APIError(
+    throw new APIError(
       `The collection with slug ${String(
         collectionSlug
       )} can't be found. Verify Email Operation.`

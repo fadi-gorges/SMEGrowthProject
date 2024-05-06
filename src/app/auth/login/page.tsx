@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const LoginPage = async () => {
   const user = await getServerUser();
 
-  if (user) redirect("/");
+  if (user) redirect("/dashboard");
 
   return (
     <Main className="justify-center items-center">

@@ -6,10 +6,7 @@ import { useState } from "react";
 const SignupFlow = () => {
   const [stage, setStage] = useState<"initial" | "otp">("initial");
 
-  const [userId, setUserId] = useState("");
-
-  const handleInitialSignupComplete = (id: string) => {
-    setUserId(id);
+  const handleInitialSignupComplete = () => {
     setStage("otp");
   };
 

@@ -1,5 +1,5 @@
 "use client";
-import { NavLinkItem } from "@/components/navbar/NavLink";
+import { NavLinkItem } from "@/components/navbar/Navbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {

@@ -1,25 +1,26 @@
-import SignupFlow from "@/app/auth/signup/_components/SignupFlow";
+import PaymentDetailsForm from "@/app/auth/payment/_components/PaymentDetailsForm";
 import Main from "@/components/page/Main";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Sign Up",
-  description:
-    "Sign up to get started with our Australian Business Growth Recommender Platform.",
+  title: "Payment Details",
+  description: "",
 };
 
-const SignupPage = async () => {
+const PaymentDetailsPage = async () => {
   const user = await getServerUser();
 
-  if (user) redirect("/dashboard");
+  if (!user) redirect("/");
+
+  if (!user.signupComplete || user.paymentSuccessful) redirect("/dashboard");
 
   return (
     <Main className="justify-center items-center">
-      <SignupFlow />
+      <PaymentDetailsForm />
     </Main>
   );
 };
 
-export default SignupPage;
+export default PaymentDetailsPage;
