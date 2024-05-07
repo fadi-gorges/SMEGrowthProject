@@ -1,31 +1,34 @@
-// @ts-nocheck
 // DOESN'T REQUIRE PASSWORD
 // DOESN'T REQUIRE VERIFIED
 
 import type { CookieOptions, Response } from "express";
 import jwt from "jsonwebtoken";
-import { GeneratedTypes } from "payload";
+import { GeneratedTypes, Payload, RequestContext } from "payload";
 import { getFieldsToSign } from "payload/dist/auth/operations/getFieldsToSign";
 import { resetLoginAttempts } from "payload/dist/auth/strategies/local/resetLoginAttempts";
 import { User } from "payload/dist/auth/types";
 import { Collection } from "payload/dist/collections/config/types";
+import { getDataLoader } from "payload/dist/collections/dataloader";
 import { buildAfterOperation } from "payload/dist/collections/operations/utils";
 import { AuthenticationError } from "payload/dist/errors";
+import APIError from "payload/dist/errors/APIError";
+import { setRequestContext } from "payload/dist/express/setRequestContext";
 import { PayloadRequest } from "payload/dist/express/types";
 import { afterRead } from "payload/dist/fields/hooks/afterRead";
+import { i18nInit } from "payload/dist/translations/init";
 import { commitTransaction } from "payload/dist/utilities/commitTransaction";
 import getCookieExpiration from "payload/dist/utilities/getCookieExpiration";
 import { initTransaction } from "payload/dist/utilities/initTransaction";
 import { killTransaction } from "payload/dist/utilities/killTransaction";
 import sanitizeInternalFields from "payload/dist/utilities/sanitizeInternalFields";
 
-export type Result = {
+type Result = {
   exp?: number;
   token?: string;
   user?: User;
 };
 
-export type Arguments = {
+type Arguments = {
   collection: Collection;
   data: {
     email: string;
@@ -37,7 +40,7 @@ export type Arguments = {
   showHiddenFields?: boolean;
 };
 
-async function customLogin<TSlug extends keyof GeneratedTypes["collections"]>(
+async function _customLogin<TSlug extends keyof GeneratedTypes["collections"]>(
   incomingArgs: Arguments
 ): Promise<Result & { user: GeneratedTypes["collections"][TSlug] }> {
   let args = incomingArgs;
@@ -91,7 +94,7 @@ async function customLogin<TSlug extends keyof GeneratedTypes["collections"]>(
     let user = await payload.db.findOne<any>({
       collection: collectionConfig.slug,
       req,
-      where: { email: { equals: email.toLowerCase() } },
+      where: { email: { equals: email?.toLowerCase() } },
     });
 
     if (!user) {
@@ -114,7 +117,7 @@ async function customLogin<TSlug extends keyof GeneratedTypes["collections"]>(
 
     const fieldsToSign = getFieldsToSign({
       collectionConfig,
-      email,
+      email: email as string,
       user,
     });
 
@@ -176,12 +179,14 @@ async function customLogin<TSlug extends keyof GeneratedTypes["collections"]>(
     user = await afterRead({
       collection: collectionConfig,
       context: req.context,
-      depth,
+      depth: depth as number,
       doc: user,
       global: null,
-      overrideAccess,
+      overrideAccess: overrideAccess as boolean,
       req,
-      showHiddenFields,
+      showHiddenFields: showHiddenFields as boolean,
+      locale: undefined as any,
+      fallbackLocale: undefined as any,
     });
 
     // /////////////////////////////////////
@@ -250,4 +255,85 @@ async function customLogin<TSlug extends keyof GeneratedTypes["collections"]>(
   }
 }
 
-export default customLogin;
+type Options<TSlug extends keyof GeneratedTypes["collections"]> = {
+  collection: TSlug;
+  context?: RequestContext;
+  data: {
+    email: string;
+    password: string;
+  };
+  depth?: number;
+  fallbackLocale?: string;
+  locale?: string;
+  overrideAccess?: boolean;
+  req?: PayloadRequest;
+  res?: Response;
+  showHiddenFields?: boolean;
+};
+
+export async function customLogin<
+  TSlug extends keyof GeneratedTypes["collections"]
+>(
+  payload: Payload,
+  options: Omit<Options<TSlug>, "data"> & { data: { email: string } }
+): Promise<Result & { user: GeneratedTypes["collections"][TSlug] }> {
+  const {
+    collection: collectionSlug,
+    context,
+    data,
+    depth,
+    fallbackLocale: fallbackLocaleArg = options?.req?.fallbackLocale,
+    locale: localeArg = null,
+    overrideAccess = true,
+    req = {} as PayloadRequest,
+    res,
+    showHiddenFields,
+  } = options;
+  setRequestContext(req, context);
+
+  const collection = payload.collections[collectionSlug];
+  const localizationConfig = payload?.config?.localization;
+  const defaultLocale = localizationConfig
+    ? localizationConfig.defaultLocale
+    : null;
+  const locale = localeArg || req?.locale || defaultLocale;
+  const fallbackLocale = localizationConfig
+    ? localizationConfig.locales.find(({ code }) => locale === code)
+        ?.fallbackLocale
+    : null;
+
+  if (!collection) {
+    throw new APIError(
+      `The collection with slug ${String(
+        collectionSlug
+      )} can't be found. Login Operation.`
+    );
+  }
+
+  req.payloadAPI = req.payloadAPI || "local";
+  req.payload = payload;
+  req.i18n = i18nInit(payload.config.i18n);
+
+  if (!req.t) req.t = req.i18n.t;
+  if (!req.payloadDataLoader) req.payloadDataLoader = getDataLoader(req);
+
+  const args = {
+    collection,
+    data,
+    depth,
+    overrideAccess,
+    req,
+    res,
+    showHiddenFields,
+  };
+
+  if (locale) args.req.locale = locale;
+  if (fallbackLocale) {
+    args.req.fallbackLocale =
+      typeof fallbackLocaleArg !== "undefined"
+        ? fallbackLocaleArg
+        : fallbackLocale || (defaultLocale as string | undefined);
+  }
+
+  return _customLogin<TSlug>(args);
+}

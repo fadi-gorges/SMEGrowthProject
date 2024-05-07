@@ -1,7 +1,6 @@
 import { webpackBundler } from "@payloadcms/bundler-webpack";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { cloudStorage } from "@payloadcms/plugin-cloud-storage";
-import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
 import { slateEditor } from "@payloadcms/richtext-slate";
 import dotenv from "dotenv";
 import path from "path";
@@ -13,7 +12,6 @@ import Users from "../payload/collections/Users";
 import { Engagements } from "./collections/Engagements";
 import { Enterprises } from "./collections/Enterprises";
 import { Organisations } from "./collections/Organisations";
-import { ProfilePictures } from "./collections/ProfilePictures";
 import { SearchProfiles } from "./collections/SearchProfiles";
 
 const mockModulePath = path.resolve(__dirname, "./emptyModuleMock.js");
@@ -58,14 +56,7 @@ export default buildConfig({
       };
     },
   },
-  collections: [
-    Users,
-    ProfilePictures,
-    Organisations,
-    Enterprises,
-    Engagements,
-    SearchProfiles,
-  ],
+  collections: [Users, Organisations, Enterprises, Engagements, SearchProfiles],
   globals: [
     // Your globals here
   ],
@@ -82,19 +73,19 @@ export default buildConfig({
   plugins: [
     cloudStorage({
       collections: {
-        profilePictures: {
-          // Create the S3 adapter
-          adapter: s3Adapter({
-            config: {
-              region: process.env.S3_REGION,
-              credentials: {
-                accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-              },
-            },
-            bucket: process.env.NEXT_PUBLIC_S3_BUCKET!,
-          }),
-        },
+        // profilePictures: {
+        //   // Create the S3 adapter
+        //   adapter: s3Adapter({
+        //     config: {
+        //       region: process.env.S3_REGION,
+        //       credentials: {
+        //         accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+        //         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+        //       },
+        //     },
+        //     bucket: process.env.NEXT_PUBLIC_S3_BUCKET!,
+        //   }),
+        // },
       },
     }),
   ],
