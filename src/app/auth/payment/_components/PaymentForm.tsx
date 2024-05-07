@@ -174,7 +174,6 @@ const PaymentForm = ({
                         <FormItem>
                           <Select
                             onValueChange={field.onChange}
-                            defaultValue={field.value}
                             autoComplete="cc-exp-month"
                             required
                           >
@@ -205,7 +204,6 @@ const PaymentForm = ({
                         <FormItem>
                           <Select
                             onValueChange={field.onChange}
-                            defaultValue={field.value}
                             autoComplete="cc-exp-year"
                             required
                           >

@@ -2,10 +2,8 @@
 
 import { ActionResponse } from "@/lib/utils/actionResponse";
 import { getServerUser } from "@/lib/utils/getServerUser";
-import { readBuffer } from "@/lib/utils/readBuffer";
 import { completeSignupSchema } from "@/lib/validations/auth/completeSignupSchema";
 import getPayloadClient from "@/payload/payloadClient";
-import { v4 as uuidv4 } from "uuid";
 
 export const completeSignup = async (body: FormData): ActionResponse => {
   const data: {
@@ -27,16 +25,16 @@ export const completeSignup = async (body: FormData): ActionResponse => {
 
   const payload = await getPayloadClient();
 
-  const picture = await payload.create({
-    collection: "profilePictures",
-    data: {},
-    file: {
-      data: await readBuffer(validation.data.picture),
-      name: uuidv4(),
-      mimetype: validation.data.picture.type,
-      size: validation.data.picture.size,
-    },
-  });
+  // const picture = await payload.create({
+  //   collection: "profilePictures",
+  //   data: {},
+  //   file: {
+  //     data: await readBuffer(validation.data.picture),
+  //     name: uuidv4(),
+  //     mimetype: validation.data.picture.type,
+  //     size: validation.data.picture.size,
+  //   },
+  // });
 
   const organisation = await payload.create({
     collection: "organisations",
@@ -54,7 +52,7 @@ export const completeSignup = async (body: FormData): ActionResponse => {
       userType: validation.data.userType,
       organisation: organisation.id,
       jobTitle: validation.data.jobTitle,
-      picture: picture.id,
+      // picture: picture.id,
       signupComplete: true,
     },
   });

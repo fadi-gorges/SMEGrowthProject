@@ -160,11 +160,6 @@ const Users: CollectionConfig = {
       defaultValue: "off",
     },
     {
-      name: "picture",
-      type: "upload",
-      relationTo: "profilePictures",
-    },
-    {
       name: "signupComplete",
       type: "checkbox",
       admin: {

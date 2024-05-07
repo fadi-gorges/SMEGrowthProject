@@ -2,8 +2,7 @@
 import { deleteUser } from "@/actions/auth/deleteUser";
 import { updateUser } from "@/actions/auth/updateUser";
 import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -24,27 +23,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils/cn";
-import { readDataURL } from "@/lib/utils/readDataUrl";
-import { resizeImage } from "@/lib/utils/resizeImage";
 import {
   UpdateUserData,
   updateUserSchema,
 } from "@/lib/validations/auth/updateUserSchema";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User2Icon, XCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
-import { ControllerRenderProps, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const AccountSettingsCard = () => {
   const router = useRouter();
-  const { user, userPicture, fetchMe } = useAuth();
+  const { user, fetchMe } = useAuth();
 
-  const [pictureInputKey, setPictureInputKey] = useState(0);
-  const [pictureUrl, setPictureUrl] = useState("");
+  // const [pictureInputKey, setPictureInputKey] = useState(0);
+  // const [pictureUrl, setPictureUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -57,29 +52,29 @@ const AccountSettingsCard = () => {
     defaultValues: {
       firstName: user?.firstName,
       lastName: user?.lastName,
-      picture: undefined,
+      // picture: undefined,
       jobTitle: user?.jobTitle || "",
       mobileNumber: user?.mobileNumber || "",
     },
   });
 
-  const onPictureChange = async (
-    field: ControllerRenderProps<UpdateUserData, "picture">,
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0];
+  // const onPictureChange = async (
+  //   field: ControllerRenderProps<UpdateUserData, "picture">,
+  //   e: ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const file = e.target.files?.[0];
 
-    if (!file) {
-      setPictureUrl("");
-      field.onChange(undefined);
-      return;
-    }
+  //   if (!file) {
+  //     setPictureUrl("");
+  //     field.onChange(undefined);
+  //     return;
+  //   }
 
-    const url = await readDataURL(file);
-    setPictureUrl(url);
+  //   const url = await readDataURL(file);
+  //   setPictureUrl(url);
 
-    field.onChange(file);
-  };
+  //   field.onChange(file);
+  // };
 
   const onSubmit = async (data: UpdateUserData) => {
     setIsLoading(true);
@@ -91,10 +86,10 @@ const AccountSettingsCard = () => {
       }
     });
 
-    if (data.picture) {
-      const resizedPicture = await resizeImage(data.picture, 320, 320);
-      body.set("picture", resizedPicture);
-    }
+    // if (data.picture) {
+    //   const resizedPicture = await resizeImage(data.picture, 320, 320);
+    //   body.set("picture", resizedPicture);
+    // }
 
     try {
       const res = await updateUser(body);
@@ -108,8 +103,8 @@ const AccountSettingsCard = () => {
       toast.success("Your account has been updated.");
 
       fetchMe();
-      setPictureUrl("");
-      setPictureInputKey((k) => k + 1);
+      // setPictureUrl("");
+      // setPictureInputKey((k) => k + 1);
 
       document.getElementById("page-div")?.scrollTo(0, 0);
     } catch (e) {
@@ -156,7 +151,7 @@ const AccountSettingsCard = () => {
                 Profile Information
               </h3>
               <div className="grid gap-2">
-                <div className="flex items-center space-x-4">
+                {/* <div className="flex items-center space-x-4">
                   <Avatar className="w-16 h-16">
                     <AvatarImage
                       alt="Profile Picture"
@@ -211,7 +206,7 @@ const AccountSettingsCard = () => {
                       </FormItem>
                     )}
                   />
-                </div>
+                </div> */}
                 <div className="flex gap-4">
                   <FormField
                     control={updateUserForm.control}

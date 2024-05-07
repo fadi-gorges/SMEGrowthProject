@@ -4,7 +4,7 @@ import * as z from "zod";
 export const paymentSchema = z
   .object({
     name: z.string(),
-    cardNumber: z.string(),
+    cardNumber: z.string().refine(validator.isNumeric, "Invalid card number"),
     expMonth: z.enum([
       ...(Array.from({ length: 12 }, (_, i) =>
         (i + 1).toString().padStart(2, "0")

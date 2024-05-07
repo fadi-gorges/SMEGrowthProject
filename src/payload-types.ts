@@ -9,7 +9,6 @@
 export interface Config {
   collections: {
     users: User;
-    profilePictures: ProfilePicture;
     organisations: Organisation;
     enterprises: Enterprise;
     engagements: Engagement;
@@ -33,7 +32,6 @@ export interface User {
   organisation?: (string | null) | Organisation;
   userType?: ('university' | 'vet' | 'rto' | 'non-profit' | 'government' | 'rdi' | 'industry') | null;
   notificationFrequency?: ('off' | 'daily' | 'weekly') | null;
-  picture?: string | ProfilePicture | null;
   signupComplete?: boolean | null;
   paymentSuccessful?: boolean | null;
   updatedAt: string;
@@ -59,21 +57,6 @@ export interface Organisation {
   members: string[];
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "profilePictures".
- */
-export interface ProfilePicture {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
