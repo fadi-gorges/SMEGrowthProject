@@ -1,14 +1,12 @@
 "use server";
-import { ActionError } from "@/lib/utils/actionError";
+import { ActionResponse } from "@/lib/utils/actionResponse";
 import { capitalise } from "@/lib/utils/capitalise";
 import { getUrl } from "@/lib/utils/getUrl";
 import { readBuffer } from "@/lib/utils/readBuffer";
 import { signupSchema } from "@/lib/validations/auth/signupSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
-export const createUser = async (
-  body: FormData
-): Promise<{ success: true } | ActionError> => {
+export const createUser = async (body: FormData): ActionResponse => {
   const data: {
     [key: string]: string | File;
   } = {};

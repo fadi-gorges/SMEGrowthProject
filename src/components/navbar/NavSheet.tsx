@@ -35,9 +35,7 @@ export const SheetLink = ({
         href={link.link}
         className={cn(
           "flex justify-start items-center gap-4",
-          isActive
-            ? "text-primary dark:text-foreground font-bold"
-            : "text-muted-foreground",
+          isActive ? "text-primary font-bold" : "text-muted-foreground",
           className
         )}
         {...props}

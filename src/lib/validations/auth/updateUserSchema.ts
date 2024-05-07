@@ -24,7 +24,6 @@ export const updateUserSchema = z.object({
     )
     .optional(),
   jobTitle: z.string(),
-  organisation: z.string(),
   mobileNumber: z
     .string()
     .refine(validator.isMobilePhone, "Please enter a valid phone number"),

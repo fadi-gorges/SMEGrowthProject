@@ -98,25 +98,75 @@ const Users: CollectionConfig = {
       required: true,
     },
     {
-      name: "picture",
-      type: "upload",
-      relationTo: "profilePictures",
-      required: true,
+      name: "mobileNumber",
+      type: "text",
     },
     {
       name: "jobTitle",
       type: "text",
-      required: true,
     },
     {
       name: "organisation",
-      type: "text",
-      required: true,
+      type: "relationship",
+      relationTo: "organisations",
     },
     {
-      name: "mobileNumber",
-      type: "text",
-      required: true,
+      name: "userType",
+      type: "select",
+      options: [
+        {
+          label: "University",
+          value: "university",
+        },
+        {
+          label: "VET",
+          value: "vet",
+        },
+        {
+          label: "RTO",
+          value: "rto",
+        },
+        {
+          label: "Non-Profit",
+          value: "non-profit",
+        },
+        {
+          label: "Government Agency",
+          value: "government",
+        },
+        {
+          label: "R&D Institute",
+          value: "rdi",
+        },
+        {
+          label: "Industry Group/Assoc",
+          value: "industry",
+        },
+      ],
+    },
+    {
+      name: "notificationFrequency",
+      type: "select",
+      options: [
+        {
+          label: "Off",
+          value: "off",
+        },
+        {
+          label: "Daily",
+          value: "daily",
+        },
+        {
+          label: "Weekly",
+          value: "weekly",
+        },
+      ],
+      defaultValue: "off",
+    },
+    {
+      name: "picture",
+      type: "upload",
+      relationTo: "profilePictures",
     },
   ],
   timestamps: true,

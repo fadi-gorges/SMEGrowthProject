@@ -5,7 +5,6 @@ import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
 import NavLink from "@/components/navbar/NavLink";
 import NavSheet from "@/components/navbar/NavSheet";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import { cn } from "@/lib/utils/cn";
 import { useAuth } from "@/providers/auth";
 import { HomeIcon, InfoIcon, LockKeyholeIcon, LogInIcon } from "lucide-react";
@@ -68,7 +67,6 @@ const Navbar = () => {
           <LogInIcon size={16} />
         </Link>
       )}
-      <ModeToggle />
       <NavSheet
         sheetOpen={sheetOpen}
         setSheetOpen={setSheetOpen}
@@ -83,9 +81,7 @@ const Navbar = () => {
     <nav className="sticky top-0 shrink-0 w-full h-16 bg-background/75 backdrop-blur-md border-b z-40">
       {user && (
         <div className="hidden lg:grid grid-cols-12 h-full">
-          <div className="col-span-3 2xl:col-span-2 x-padding bg-muted/40 border-r animate-in slide-in-from-left-full">
-            {logo}
-          </div>
+          <div className="x-padding">{logo}</div>
           <div className="col-span-9 2xl:col-span-10 x-padding pl-5 flex justify-end items-center gap-3">
             {rightSide}
           </div>

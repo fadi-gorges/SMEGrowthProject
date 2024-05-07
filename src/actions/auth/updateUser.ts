@@ -1,13 +1,11 @@
 "use server";
-import { ActionError } from "@/lib/utils/actionError";
+import { ActionResponse } from "@/lib/utils/actionResponse";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { readBuffer } from "@/lib/utils/readBuffer";
 import { updateUserSchema } from "@/lib/validations/auth/updateUserSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
-export const updateUser = async (
-  body: FormData
-): Promise<{ success: true } | ActionError> => {
+export const updateUser = async (body: FormData): ActionResponse => {
   const user = await getServerUser();
 
   if (!user) {
@@ -37,7 +35,6 @@ export const updateUser = async (
       firstName: validation.data.firstName,
       lastName: validation.data.lastName,
       jobTitle: validation.data.jobTitle,
-      organisation: validation.data.organisation,
       mobileNumber: validation.data.mobileNumber,
     },
   });
