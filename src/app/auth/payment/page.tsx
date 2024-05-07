@@ -1,4 +1,4 @@
-import PaymentDetailsForm from "@/app/auth/payment/_components/PaymentDetailsForm";
+import PaymentForm from "@/app/auth/payment/_components/PaymentForm";
 import Main from "@/components/page/Main";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
@@ -18,7 +18,7 @@ const PaymentDetailsPage = async () => {
 
   return (
     <Main className="justify-center items-center">
-      <PaymentDetailsForm />
+      <PaymentForm />
     </Main>
   );
 };
