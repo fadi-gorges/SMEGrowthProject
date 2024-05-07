@@ -49,7 +49,7 @@ interface Business {
 const businesses: Business[] = [
   {
     id: 1,
-    name: "Company A",
+    name: "TechHelp",
     sector: "Technology",
     location: "Sydney",
     numberOfStaff: 75,
@@ -58,7 +58,7 @@ const businesses: Business[] = [
   },
   {
     id: 2,
-    name: "Company B",
+    name: "ShopLand",
     sector: "Retail",
     location: "Brisbane",
     numberOfStaff: 25,
@@ -67,7 +67,7 @@ const businesses: Business[] = [
   },
   {
     id: 3,
-    name: "Company C",
+    name: "HospitalCare",
     sector: "Healthcare",
     location: "Melbourne",
     numberOfStaff: 150,
@@ -76,7 +76,7 @@ const businesses: Business[] = [
   },
   {
     id: 4,
-    name: "Company D",
+    name: "MoneyHelp",
     sector: "Finance",
     location: "Canberra",
     numberOfStaff: 5,
@@ -100,6 +100,42 @@ const businesses: Business[] = [
     numberOfStaff: 800,
     contact: "nowhere@company.com",
     about:"We plant potatoes on the moon",
+  },
+  {
+    id: 7,
+    name: "GreenMeadows",
+    sector: "Agriculture",
+    location: "Perth",
+    numberOfStaff: 50,
+    contact: "contact@greenmeadows.com",
+    about: "Organic farming and sustainable agriculture practices.",
+  },
+  {
+    id: 8,
+    name: "NextGen IT",
+    sector: "Technology",
+    location: "Adelaide",
+    numberOfStaff: 100,
+    contact: "info@nextgenit.com",
+    about: "Leading provider of cloud-based IT solutions.",
+  },
+  {
+    id: 9,
+    name: "Fashionista",
+    sector: "Retail",
+    location: "Gold Coast",
+    numberOfStaff: 30,
+    contact: "support@fashionista.com",
+    about: "Trendy clothing and accessories for the modern fashionista.",
+  },
+  {
+    id: 10,
+    name: "HealthFirst",
+    sector: "Healthcare",
+    location: "Darwin",
+    numberOfStaff: 200,
+    contact: "contact@healthfirst.com",
+    about: "Innovative healthcare solutions and patient care.",
   },
 ];
 type StaffRangeKey = "1-10" | "10-50" | "50-100" | "100-200" | ">200" |"Any";
