@@ -24,14 +24,21 @@ const HomePage = async () => {
         <meta name="description" content="Discover high-growth potential Australian businesses." />
       
 
-   
 
-      {/* Hero Section */}
+      {/* Hero Section 
         <div className="hero-gradient text-center py-48 px-4">
         
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Find Australian businesses with high growth potential.</h1>
         <p className="text-xl mb-6">Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?</p>
         <button className="bg-blue-600 text-white font-bold py-2 px-8 rounded hover:bg-blue-700 transition-colors">Get Started </button>
+      </div>
+    */}
+
+      
+      <div className="text-center py-48 px-4">
+        <span className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-teal-500 text-pretty">Find Australian businesses with high growth potential.</span>
+        <p className="text-pretty text-xl my-8">Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?</p>
+        <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">Get Started -></button>
       </div>
       
        {/* Hero Section 
@@ -45,7 +52,7 @@ const HomePage = async () => {
 
        {/* Statistics Section */}
        
-      <div className="flex justify-center mt-28">
+      <div className="flex justify-center mt-20">
   <div className="w-1/2">
     <div className="flex flex-col items-center">
       <h1 style={{ color: '#3563E9', fontFamily: 'Rubik, sans-serif'}} className="font-bold text-8xl">150,000</h1>
@@ -65,7 +72,7 @@ const HomePage = async () => {
 
       {/* What We Offer Section */}
   
-  <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+  <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-10">
     <div>
       <h1 className="text-2xl font-bold">What we offer...</h1>
       <p className="mt-4">There are many organizations across Australia that are focused on providing services that support the growth of Australian industry, 98% of which are classified as small to medium enterprises (SMEs).</p>
