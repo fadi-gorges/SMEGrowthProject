@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from "react";
-import { Metadata } from "next";
 import { RefreshCcwIcon, SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,11 +37,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { link } from "fs";
-
-/*export const metadata: Metadata = {
-  title: "Search",
-  description: "",
-};*/
 interface Business {
   id: number;
   name: string;
@@ -97,6 +91,15 @@ const businesses: Business[] = [
     numberOfStaff: 8,
     contact: "bigname@company.com",
     about:"",
+  },
+  {
+    id: 6,
+    name: "Something",
+    sector: "Agriculture",
+    location: "Knowhere",
+    numberOfStaff: 800,
+    contact: "nowhere@company.com",
+    about:"We plant potatoes on the moon",
   },
 ];
 type StaffRangeKey = "1-10" | "10-50" | "50-100" | "100-200" | ">200" |"Any";
