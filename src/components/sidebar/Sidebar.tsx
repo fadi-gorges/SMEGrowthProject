@@ -1,7 +1,6 @@
 "use client";
 import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
-import { NavLinkItem } from "@/components/navbar/NavLink";
-import { navLinks } from "@/components/navbar/Navbar";
+import { NavLinkItem, navLinks } from "@/components/navbar/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
@@ -104,7 +103,7 @@ const Sidebar = () => {
         {isAdmin && <SidebarLink link={navLinks.admin} />}
       </div>
       <Button
-        variant="default"
+        variant="secondary"
         onClick={() => setLogoutDialogOpen(true)}
         className="w-full"
       >

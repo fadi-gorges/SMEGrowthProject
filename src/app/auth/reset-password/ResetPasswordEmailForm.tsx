@@ -1,7 +1,7 @@
 "use client";
 import { forgotPasswordAction } from "@/actions/auth/forgotPassword";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,7 +15,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -23,7 +22,7 @@ import { cn } from "@/lib/utils/cn";
 import { EmailData, emailSchema } from "@/lib/validations/auth/emailSchema";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircleIcon, CheckCircleIcon } from "lucide-react";
+import { AlertCircleIcon, ArrowRightIcon, CheckCircleIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -79,16 +78,18 @@ const ResetPasswordEmailForm = ({
     ) : (
       <Card
         className={cn(
-          "w-full max-w-xl flex flex-col justify-center",
+          "w-full max-w-xl flex flex-col justify-center -translate-y-6",
           className
         )}
         {...props}
       >
         <div className="form-slide-in">
           <CardHeader>
-            <CardTitle>Forgot Password</CardTitle>
+            <CardTitle>
+              <h3>Forgot Password</h3>
+            </CardTitle>
             <CardDescription>
-              Enter your email address to receive a password reset link.
+              <p>Enter your email address to receive a password reset link.</p>
             </CardDescription>
           </CardHeader>
           <Form {...form}>
@@ -107,11 +108,10 @@ const ResetPasswordEmailForm = ({
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="name@example.com"
+                          placeholder="Email"
                           autoCapitalize="none"
                           autoComplete="email"
                           required
@@ -123,16 +123,23 @@ const ResetPasswordEmailForm = ({
                   )}
                 />
               </CardContent>
-              <CardFooter className="flex-col gap-1">
+              <CardFooter className="flex-col">
                 <Button
                   type="submit"
                   loading={isLoading}
                   className="w-full mb-3"
                 >
                   Continue
+                  <ArrowRightIcon size={16} />
                 </Button>
-                <Link href="/auth" className="text-sm text-center underline">
-                  Back to Login
+                <Link
+                  href="/auth/login"
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    "text-center underline"
+                  )}
+                >
+                  <small>Back to login</small>
                 </Link>
               </CardFooter>
             </form>

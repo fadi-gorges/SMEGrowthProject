@@ -1,24 +1,68 @@
 "use client";
 
-import { Icons } from "@/components/Icons";
+import { IMGIconProps, Icons } from "@/components/Icons";
 import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
-import NavLink from "@/components/navbar/NavLink";
 import NavSheet from "@/components/navbar/NavSheet";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
+import { useLinkActive } from "@/lib/utils/useLinkActive";
 import { useAuth } from "@/providers/auth";
-import { HomeIcon, InfoIcon, LockKeyholeIcon, LogInIcon } from "lucide-react";
+import {
+  HomeIcon,
+  InfoIcon,
+  LockKeyholeIcon,
+  LogInIcon,
+  LogOutIcon,
+  LucideIcon,
+  UserPlus2Icon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { AnchorHTMLAttributes, useState } from "react";
 
 export const navLinks = {
   home: { text: "Home", link: "/", icon: HomeIcon },
   about: { text: "About", link: "/about", icon: InfoIcon },
   admin: { text: "Admin Panel", link: "/admin", icon: LockKeyholeIcon },
+  login: { text: "Log in", link: "/auth/login", icon: LogInIcon },
 };
 
 const hiddenPaths = ["/admin"];
+
+export type NavLinkItem = {
+  text?: string;
+  link: string;
+  icon: LucideIcon | React.ComponentType<IMGIconProps>;
+};
+
+const NavLink = ({
+  link,
+  className,
+  ...props
+}: {
+  link: NavLinkItem;
+} & AnchorHTMLAttributes<HTMLAnchorElement>) => {
+  const isActive = useLinkActive(link.link);
+
+  return (
+    <Link
+      href={link.link}
+      className={cn(
+        buttonVariants({
+          variant: "ghost",
+          className: cn(
+            "hidden lg:inline-flex",
+            isActive ? "font-semibold" : "text-muted-foreground",
+            className
+          ),
+        })
+      )}
+      {...props}
+    >
+      <p>{link.text}</p>
+    </Link>
+  );
+};
 
 const Navbar = () => {
   const router = useRouter();
@@ -51,54 +95,43 @@ const Navbar = () => {
     </Link>
   );
 
-  const rightSide = (
-    <>
-      {!user && (
-        <Link
-          href="/auth"
-          className={cn(
-            buttonVariants({
-              variant: "outline",
-            }),
-            "hidden lg:inline-flex"
-          )}
-        >
-          Log In
-          <LogInIcon size={16} />
-        </Link>
-      )}
-      <NavSheet
-        sheetOpen={sheetOpen}
-        setSheetOpen={setSheetOpen}
-        setLogoutDialogOpen={setLogoutDialogOpen}
-      />
-    </>
-  );
-
   if (hiddenPaths.some((path) => pathname?.startsWith(path))) return null;
 
   return (
     <nav className="sticky top-0 shrink-0 w-full h-16 bg-background/75 backdrop-blur-md border-b z-40">
-      {user && (
-        <div className="hidden lg:grid grid-cols-12 h-full">
-          <div className="x-padding">{logo}</div>
-          <div className="col-span-9 2xl:col-span-10 x-padding pl-5 flex justify-end items-center gap-3">
-            {rightSide}
-          </div>
-        </div>
-      )}
-      <div
-        className={cn(
-          "x-padding h-full flex items-center gap-8",
-          user ? "lg:hidden" : ""
-        )}
-      >
+      <div className="x-padding h-full flex items-center gap-8">
         {logo}
-        <div className="flex-1 flex items-center gap-1">
-          <NavLink link={navLinks.home} />
-          <NavLink link={navLinks.about} />
+        <div className="flex-1 flex justify-end items-center gap-4">
+          {user ? (
+            <Button
+              variant="outline"
+              onClick={() => setLogoutDialogOpen(true)}
+              className="hidden lg:inline-flex"
+            >
+              <LogOutIcon size={16} />
+              Log out
+            </Button>
+          ) : (
+            <>
+              <NavLink link={navLinks.home} />
+              <NavLink link={navLinks.about} />
+
+              <NavLink link={navLinks.login} />
+              <Link
+                href="/auth/signup"
+                className={cn(buttonVariants(), "hidden lg:inline-flex")}
+              >
+                <UserPlus2Icon size={16} />
+                Sign up
+              </Link>
+            </>
+          )}
+          <NavSheet
+            sheetOpen={sheetOpen}
+            setSheetOpen={setSheetOpen}
+            setLogoutDialogOpen={setLogoutDialogOpen}
+          />
         </div>
-        <div className="flex items-center gap-2">{rightSide}</div>
       </div>
       <ResponsiveAlertDialog
         title="Log Out"
