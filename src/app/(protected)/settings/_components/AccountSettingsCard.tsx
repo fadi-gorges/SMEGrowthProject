@@ -2,7 +2,8 @@
 import { deleteUser } from "@/actions/auth/deleteUser";
 import { updateUser } from "@/actions/auth/updateUser";
 import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -23,12 +24,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils/cn";
 import {
   UpdateUserData,
   updateUserSchema,
 } from "@/lib/validations/auth/updateUserSchema";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { User2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -151,62 +154,25 @@ const AccountSettingsCard = () => {
                 Profile Information
               </h3>
               <div className="grid gap-2">
-                {/* <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4">
                   <Avatar className="w-16 h-16">
-                    <AvatarImage
-                      alt="Profile Picture"
-                      src={pictureUrl || (userPicture?.url as string)}
-                      className="object-cover"
-                    />
                     <AvatarFallback>
                       <User2Icon />
                     </AvatarFallback>
                   </Avatar>
-                  <FormField
-                    control={updateUserForm.control}
-                    name="picture"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex items-center gap-2">
-                          <FormLabel
-                            className={cn(
-                              buttonVariants({ variant: "outline" }),
-                              "cursor-pointer"
-                            )}
-                          >
-                            Change Profile Picture
-                          </FormLabel>
-                          {pictureUrl && (
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => {
-                                field.onChange(undefined);
-                                setPictureUrl("");
-                                setPictureInputKey((k) => k + 1);
-                              }}
-                            >
-                              <XCircleIcon />
-                            </Button>
-                          )}
-                        </div>
-
-                        <FormControl>
-                          <Input
-                            key={pictureInputKey}
-                            type="file"
-                            accept="image/jpeg,image/png"
-                            {...field}
-                            value={undefined}
-                            onChange={(e) => onPictureChange(field, e)}
-                            className="hidden"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div> */}
+                  <FormItem>
+                    <div className="flex items-center gap-2">
+                      <FormLabel
+                        className={cn(
+                          buttonVariants({ variant: "outline" }),
+                          "cursor-pointer"
+                        )}
+                      >
+                        Change Profile Picture
+                      </FormLabel>
+                    </div>
+                  </FormItem>
+                </div>
                 <div className="flex gap-4">
                   <FormField
                     control={updateUserForm.control}
