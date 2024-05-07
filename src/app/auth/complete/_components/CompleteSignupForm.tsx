@@ -1,6 +1,7 @@
 "use client";
 import { completeSignup } from "@/actions/auth/completeSignup";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,6 +15,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -25,6 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils/cn";
+import { readDataURL } from "@/lib/utils/readDataUrl";
 import {
   CompleteSignupData,
   completeSignupSchema,
@@ -32,9 +35,9 @@ import {
 } from "@/lib/validations/auth/completeSignupSchema";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, ArrowRightIcon } from "lucide-react";
+import { AlertCircle, ArrowRightIcon, User2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 
 const CompleteSignupForm = ({
@@ -44,7 +47,7 @@ const CompleteSignupForm = ({
   const router = useRouter();
   const { user } = useAuth();
 
-  // const [pictureUrl, setPictureUrl] = useState("");
+  const [pictureUrl, setPictureUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -61,23 +64,17 @@ const CompleteSignupForm = ({
     },
   });
 
-  // const onPictureChange = async (
-  //   field: ControllerRenderProps<CompleteSignupData, "picture">,
-  //   e: ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const file = e.target.files?.[0];
+  const onPictureChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
 
-  //   if (!file) {
-  //     setPictureUrl("");
-  //     field.onChange(undefined);
-  //     return;
-  //   }
+    if (!file) {
+      setPictureUrl("");
+      return;
+    }
 
-  //   const url = await readDataURL(file);
-  //   setPictureUrl(url);
-
-  //   field.onChange(file);
-  // };
+    const url = await readDataURL(file);
+    setPictureUrl(url);
+  };
 
   const onCompleteSignup = async (data: CompleteSignupData) => {
     setError("");
@@ -215,40 +212,33 @@ const CompleteSignupForm = ({
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                control={completeSignupForm.control}
-                name="picture"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center gap-4">
-                      <Avatar className="w-20 h-20 md:w-24 md:h-24">
-                        <AvatarImage
-                          alt="Profile Picture"
-                          src={pictureUrl}
-                          className="object-cover"
-                        />
-                        <AvatarFallback>
-                          <User2Icon />
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col gap-3">
-                        <FormLabel>Upload Profile Picture</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="file"
-                            accept="image/jpeg,image/png"
-                            required
-                            {...field}
-                            value={undefined}
-                            onChange={(e) => onPictureChange(field, e)}
-                          />
-                        </FormControl>
-                      </div>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
+              <FormItem>
+                <div className="flex items-center gap-4">
+                  <Avatar className="w-20 h-20 md:w-24 md:h-24">
+                    <AvatarImage
+                      alt="Profile Picture"
+                      src={pictureUrl}
+                      className="object-cover"
+                    />
+                    <AvatarFallback>
+                      <User2Icon />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col gap-3">
+                    <FormLabel>Upload Profile Picture</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/jpeg,image/png"
+                        required
+                        value={undefined}
+                        onChange={onPictureChange}
+                      />
+                    </FormControl>
+                  </div>
+                </div>
+                <FormMessage />
+              </FormItem>
             </CardContent>
             <CardFooter>
               <Button
