@@ -84,7 +84,7 @@ const InitialSignupForm = ({
   return (
     <Card
       className={cn(
-        "flex flex-col justify-center -translate-y-6 w-full max-w-xl",
+        "flex flex-col justify-center -translate-y-4 w-full max-w-xl",
         className
       )}
       {...props}
