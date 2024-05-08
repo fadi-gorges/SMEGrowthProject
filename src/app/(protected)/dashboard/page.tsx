@@ -1,88 +1,59 @@
 import Main from "@/components/page/Main";
 import { getServerUser } from "@/lib/utils/getServerUser";
+
 import { User } from "@/payload-types";
-import React from 'react';
+import { Metadata } from "next";
 
-interface Business {
-  id: number;
-  name: string;
-}
-
-const businesses: Business[] = [
-  { id: 1, name: 'Apple'},
-  { id: 2, name: 'Samsung'},
-];
-
-export const metadata = {
+export const metadata: Metadata = {
   title: "Dashboard • AusBizGrowth",
   description: "",
 };
 
-const styles = {
-  header: {
-    fontSize: '24px',
-    color: '#333',
-    paddingBottom: '10px',
-    borderBottom: '1px solid #ccc',
-    marginBottom: '10px'
-  },
-  tableHeader: {
-    display: 'grid',
-    gridTemplateColumns: '3fr 1fr 1fr 1fr 1fr', // Adjust number of columns as needed
-    padding: '10px 0',
-    fontWeight: 'bold'
-  },
-  businessRow: {
-    display: 'grid',
-    gridTemplateColumns: '3fr 1fr 1fr 1fr 1fr', // Ensure this matches the header
-    marginBottom: '10px',
-    alignItems: 'center',
-    gap: '10px' // Add gap if needed
-  },
-  statusButton: {
-    borderRadius: '50%',
-    width: '20px',
-    height: '20px',
-    border: 'none',
-    cursor: 'pointer', // Optional, for better user experience
-  }
-};
 
 const DashboardPage = async () => {
   const user = (await getServerUser()) as User;
 
+  const rows = [
+    { id: 1, name: "Boogle", contacted: true, connected: true, engaged: true, profile: "Mining NSW SME" },
+    { id: 2, name: "FaceBok", contacted: true, connected: false, engaged: false, profile: "Mining NSW SME" },
+    { id: 3, name: "Atlassian", contacted: true, connected: true, engaged: false, profile: "Mining NSW SME" },
+    { id: 4, name: "Sonic ITM", contacted: true, connected: true, engaged: true, profile: "Mining NSW SME" },
+    { id: 5, name: "SWP Mining", contacted: true, connected: true, engaged: false, profile: "Mining NSW SME" },
+    { id: 6, name: "Totoma Unlimited", contacted: true, connected: false, engaged: false, profile: "Mining NSW SME" },
+    { id: 7, name: "FramesU", contacted: true, connected: true, engaged: false, profile: "Mining NSW SME" },
+    { id: 8, name: "Naru Cit", contacted: true, connected: true, engaged: true, profile: "Mining NSW SME" },
+  ];
+
+  
+
   return (
-    <Main>
-      <h1>{user ? `${user.organisation} Dashboard` : "Loading Dashboard..."}</h1>
-      <h5>
-        You are logged in as <b>{user ? user.email : "loading..."}</b>
-      </h5>
-      <div style={{ marginTop: '20px' }} className="">
-        <div className="text-lg">Businesses Recommended</div>
-        <div className="font-bold columns-5">
-          <div>HGBs Identified</div>
-          <div>Contacted</div>
-          <div>Connected</div>
-          <div>Engaged</div>
-          <div>Name of Search Profile</div>
-        </div>
-        {businesses.map((business) => (
-          <div key={business.id} className="columns-5">
-            <div>{business.name}</div>
-            <div className="">
-              <button style={{ ...styles.statusButton, background: '#27AE60'}}></button>
-            </div>
-            <div>
-              <button style={{ ...styles.statusButton, background: '#27AE60'}}></button>
-            </div>
-            <div>
-              <button style={{ ...styles.statusButton, background: '#27AE60'}}></button>
-            </div>
-            <div>Mining NSW SME</div>
-          </div>
-        ))}
+      <div className="p-5 w-full">
+      <h1 className="text-3xl font-bold mb-4">Organisation Dashboard</h1>
+      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left text-gray-500">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+              <th scope="col" className="py-3 px-6">HGBs Identified</th>
+              <th scope="col" className="py-3 px-6">Contacted</th>
+              <th scope="col" className="py-3 px-6">Connected</th>
+              <th scope="col" className="py-3 px-6">Engaged</th>
+              <th scope="col" className="py-3 px-6">Name of Search Profile</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr className="bg-white border-b" key={row.id}>
+                <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">{row.name}</th>
+                <td className="py-4 px-6"><span className={`inline-flex rounded-full ${row.contacted ? 'bg-green-500' : 'bg-red-500'} w-3 h-3`}></span></td>
+                <td className="py-4 px-6"><span className={`inline-flex rounded-full ${row.connected ? 'bg-green-500' : 'bg-red-500'} w-3 h-3`}></span></td>
+                <td className="py-4 px-6"><span className={`inline-flex rounded-full ${row.engaged ? 'bg-green-500' : 'bg-red-500'} w-3 h-3`}></span></td>
+                <td className="py-4 px-6">{row.profile}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </Main>
+    </div>
   );
 };
 
