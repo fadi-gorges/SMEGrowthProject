@@ -38,7 +38,7 @@ const HomePage = async () => {
       <div className="text-center py-48 px-4">
         <span className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-teal-500 text-pretty">Find Australian businesses with high growth potential.</span>
         <p className="text-pretty text-xl my-8">Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?</p>
-        <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">Get Started -></button>
+        <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">Get Started</button>
       </div>
       
        {/* Hero Section 
