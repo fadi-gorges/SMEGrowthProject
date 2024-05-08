@@ -84,9 +84,8 @@ const NavSheet = ({
           {user ? (
             <>
               <SheetLink link={sidebarLinks.dashboard} />
-              <SheetLink link={sidebarLinks.simpleSearch} />
-              <SheetLink link={sidebarLinks.advancedSearch} />
-              <SheetLink link={sidebarLinks.editBusiness} />
+              <SheetLink link={sidebarLinks.search} />
+              <SheetLink link={sidebarLinks.manageProfiles} />
               <SheetLink link={sidebarLinks.notifications} alertCount={6} />
               <SheetLink link={sidebarLinks.settings} />
               {isAdmin && <SheetLink link={navLinks.admin} />}
