@@ -27,6 +27,68 @@ export const updateUser = async (body: FormData): ActionResponse => {
 
   const payload = await getPayloadClient();
 
+  const organisationDoc = await payload.find({
+    collection: "organisations",
+    where: {
+      name: {
+        equals: validation.data.organisation,
+      },
+    },
+  });
+
+  let organisation;
+
+  if (organisationDoc.docs.length === 0) {
+    organisation = await payload.create({
+      collection: "organisations",
+      data: {
+        name: validation.data.organisation,
+        members: [user.email],
+      },
+    });
+  } else {
+    organisation = organisationDoc.docs[0];
+
+    if (user.organisation !== organisation.id) {
+      const oldOrganisation = await payload.findByID({
+        collection: "organisations",
+        id: user.organisation as string,
+      });
+
+      const members = oldOrganisation.members.filter(
+        (memberEmail) => memberEmail !== user.email
+      );
+
+      console.log(members);
+
+      await payload.update({
+        collection: "organisations",
+        where: {
+          id: {
+            equals: oldOrganisation.id,
+          },
+        },
+        data: {
+          members: members,
+        },
+      });
+    }
+
+    if (!organisation.members.includes(user.email)) {
+      await payload.update({
+        collection: "organisations",
+        where: {
+          id: {
+            equals: organisation.id,
+          },
+        },
+        data: {
+          members: [...organisation.members, user.email],
+        },
+      });
+    }
+  }
+
   await payload.update({
     collection: "users",
     id: user.id,
@@ -35,6 +97,7 @@ export const updateUser = async (body: FormData): ActionResponse => {
       lastName: validation.data.lastName,
       jobTitle: validation.data.jobTitle,
       mobileNumber: validation.data.mobileNumber,
+      organisation: organisation.id,
     },
   });
 

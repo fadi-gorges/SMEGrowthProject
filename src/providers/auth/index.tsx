@@ -1,6 +1,6 @@
 "use client";
 import { getUrl } from "@/lib/utils/getUrl";
-import { User } from "@/payload-types";
+import { Organisation, User } from "@/payload-types";
 import { checkRole } from "@/payload/collections/Users/checkRole";
 import { usePathname } from "next/navigation";
 import React, {
@@ -62,7 +62,24 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
         method: "GET",
       }
     );
-    setUser(user);
+
+    console.log(user?.organisation);
+
+    const response = await fetch(
+      `${getUrl()}/api/organisations/${user?.organisation}`
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+
+    const organisation = await response.json();
+
+    setUser({
+      ...user,
+      organisation: organisation!.name,
+    });
 
     // if (!user) return;
 

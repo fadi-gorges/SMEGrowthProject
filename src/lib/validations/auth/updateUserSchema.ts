@@ -1,7 +1,18 @@
 import validator from "validator";
 import * as z from "zod";
 
+export const userTypes = {
+  University: "university",
+  VET: "vet",
+  RTO: "rto",
+  "Non-Profit": "non-profit",
+  "Government Agency": "government",
+  "R&D Institute": "rdi",
+  "Industry Group/Assoc": "industry",
+} as const;
+
 export const updateUserSchema = z.object({
+  id: z.string(),
   firstName: z
     .string()
     .refine(
@@ -27,6 +38,8 @@ export const updateUserSchema = z.object({
   mobileNumber: z
     .string()
     .refine(validator.isMobilePhone, "Please enter a valid phone number"),
+  userType: z.nativeEnum(userTypes),
+  organisation: z.string().trim(),
 });
 
 export type UpdateUserData = z.infer<typeof updateUserSchema>;

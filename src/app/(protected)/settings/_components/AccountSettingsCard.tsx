@@ -22,15 +22,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils/cn";
 import {
   UpdateUserData,
   updateUserSchema,
+  userTypes,
 } from "@/lib/validations/auth/updateUserSchema";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { SelectItem } from "@radix-ui/react-select";
 import { User2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -53,13 +61,18 @@ const AccountSettingsCard = () => {
     resolver: zodResolver(updateUserSchema),
     disabled: isLoading,
     defaultValues: {
+      id: user?.id,
       firstName: user?.firstName,
       lastName: user?.lastName,
       // picture: undefined,
       jobTitle: user?.jobTitle || "",
       mobileNumber: user?.mobileNumber || "",
+      userType: user?.userType || undefined,
+      organisation: (user?.organisation as unknown as string) || "",
     },
   });
+
+  console.log(updateUserForm.getValues());
 
   // const onPictureChange = async (
   //   field: ControllerRenderProps<UpdateUserData, "picture">,
@@ -227,6 +240,24 @@ const AccountSettingsCard = () => {
                           autoCapitalize="on"
                           autoComplete="tel"
                           placeholder={user.mobileNumber || ""}
+                          required
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={updateUserForm.control}
+                  name="organisation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Organisation</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Organisation"
+                          autoComplete="organization"
                           required
                           {...field}
                         />
