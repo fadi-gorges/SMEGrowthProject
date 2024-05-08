@@ -21,16 +21,11 @@ import { AnchorHTMLAttributes, useState } from "react";
 
 export const sidebarLinks = {
   dashboard: { text: "Dashboard", link: "/dashboard", icon: HomeIcon },
-  simpleSearch: { text: "Simple Search", link: "/search", icon: SearchIcon },
-  advancedSearch: {
-    text: "Advanced Search",
-    link: "/advanced-search",
+  search: { text: "Search", link: "/search", icon: SearchIcon },
+  manageProfiles: {
+    text: "Manage Profiles",
+    link: "/profiles",
     icon: TextSearchIcon,
-  },
-  editBusiness: {
-    text: "Edit Business",
-    link: "/business",
-    icon: Building2Icon,
   },
   notifications: {
     text: "Notifications",
@@ -95,9 +90,8 @@ const Sidebar = () => {
     <nav className="hidden lg:flex flex-col lg:col-span-3 2xl:col-span-2 p-4 border-r bg-muted/40 animate-in slide-in-from-left-full">
       <div className="flex-1 flex flex-col gap-1">
         <SidebarLink link={sidebarLinks.dashboard} />
-        <SidebarLink link={sidebarLinks.simpleSearch} />
-        <SidebarLink link={sidebarLinks.advancedSearch} />
-        <SidebarLink link={sidebarLinks.editBusiness} />
+        <SidebarLink link={sidebarLinks.search} />
+        <SidebarLink link={sidebarLinks.manageProfiles} />
         <SidebarLink link={sidebarLinks.notifications} alertCount={6} />
         <SidebarLink link={sidebarLinks.settings} />
         {isAdmin && <SidebarLink link={navLinks.admin} />}
