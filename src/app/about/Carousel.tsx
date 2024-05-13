@@ -26,13 +26,13 @@ export function MeetOurTeamCarousel() {
 
     const teamMembers = [
         { name: "Joseph Kizana", company: "Bachelor of Software Engineering", imgSrc: "/images/Joseph.jpg" },
-        { name: "Siddhika Prasad", company: "Bachelor of Software Engineering", imgSrc: "/images/Siddhika.jpg" },
+        { name: "Siddhika Prasad", company: "Bachelor of Software Engineering, Bachelor of Business", imgSrc: "/images/Siddhika.jpg" },
         { name: "Fadi Gorges", company: "Bachelor of Software Engineering", imgSrc: "/images/Fadi.jpg" },
         { name: "Peter Phuangthong", company: "Bachelor of Software Engineering", imgSrc: "/images/Peter.jpg" },
-        { name: "Sejin (Denni) Um", company: "Bachelor of Software Engineering", imgSrc: "/images/Denni.jpg" },
-        { name: "Gifford Stefano", company: "Bachelor of Software Engineering", imgSrc: "/images/Gifford.jpg" },
+        { name: "Sejin (Denni) Um", company: "Bachelor of Information Technology (Enterprise Systems Development)", imgSrc: "/images/Denni.jpg" },
+        { name: "Gifford Stefano", company: "Bachelor of Information Technology (Enterprise Systems Development)", imgSrc: "/images/Gifford.jpg" },
         { name: "Matthew Ashley", company: "Bachelor of Software Engineering", imgSrc: "/images/Matthew.jpg" },
-        { name: "Wilsen Lowell", company: "Bachelor of Software Engineering", imgSrc: "/images/Wilsen.jpg" }
+        { name: "Wilsen Lowell", company: "Bachelor of Information Technology (Enterprise Systems Development)", imgSrc: "/images/Wilsen.jpg" }
         // Add more team members as needed
     ];
 
