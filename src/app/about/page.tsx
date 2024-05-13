@@ -2,6 +2,8 @@ import Main from "@/components/page/Main";
 import { Metadata } from "next";
 import Image from "next/image";
 
+import { MeetOurTeamCarousel } from "./Carousel";
+
 export const metadata: Metadata = {
   title: "About",
   description: "",
@@ -62,10 +64,10 @@ const AboutPage = () => {
         </div>
       </div>
 
-      <div className="flex justify-center">
-        <div className="flex-grow-0">
+      <div className="flex justify-center ">
+        <div className="flex-grow-0 ">
           <Image
-            src="/images/UTSCouch.jpg"
+            src="/images/UTSCouch.jpg "
             alt="UTS Logo"
             width={1237}
             height={537}
@@ -92,75 +94,21 @@ const AboutPage = () => {
           </p>
         </div>
       </div>
-      <section className="py-12 bg-white">
-        <h2 className="text-center text-4xl font-bold mb-6">Meet our team</h2>
-        <div className="flex flex-wrap justify-center items-start">
-          <div className="text-center p-4 mx-6 bg-gray-100 rounded-lg">
-            <Image
-              src="/images/Team1.jpg"
-              alt="First Name Last Name"
-              width={200}
-              height={200}
-              className="rounded-lg mx-auto"
-            />
-            <h3 className="text-lg font-bold mt-4">First Name Last Name</h3>
-            <p className="text-sm text-gray-600">Position</p>
-            <p className="text-sm text-gray-500">Company</p>
-          </div>
-          <div className="text-center p-4 mx-6 bg-gray-100 rounded-lg">
-            <Image
-              src="/images/Team2.jpg"
-              alt="First Name Last Name"
-              width={200}
-              height={200}
-              className="rounded-lg mx-auto"
-            />
-            <h3 className="text-lg font-bold mt-4">First Name Last Name</h3>
-            <p className="text-sm text-gray-600">Position</p>
-            <p className="text-sm text-gray-500">Company</p>
-          </div>
-          <div className="text-center p-4 mx-6 bg-gray-100 rounded-lg">
-            <Image
-              src="/images/Team3.jpg"
-              alt="First Name Last Name"
-              width={200}
-              height={200}
-              className="rounded-lg mx-auto"
-            />
-            <h3 className="text-lg font-bold mt-4">First Name Last Name</h3>
-            <p className="text-sm text-gray-600">Position</p>
-            <p className="text-sm text-gray-500">Company</p>
-          </div>
-        </div>
+      <section className="py-4 bg-white">
+        <h2 className="text-center text-4xl font-bold mt-16 mb-6">Meet our team</h2>
+        
       </section>
-      <section className="bg-white py-12">
-        <div className="max-w-4xl mx-auto px-4">
-          <Image
-            src="/images/SDS.png"
-            alt="Software Development Studio Group Photo"
-            width={1200}
-            height={500}
-            className="rounded-lg mx-auto"
-          />
-          <p className="text-center text-sm mt-2 font-style: italic">
-            Students from Software Development Studio (Autumn 2024). From left
-            to right, Piradon Phuangthong, Siddhika Prasad, Fadi Gorges, Joseph
-            Kizana, Wilson Lowell, Gifford Stefano, Sejin (Denim) Um, Matthew
-            Ashley.
-          </p>
-        </div>
-        <div className="mt-16 text-center px-64">
-          <h2 className="text-2xl font-bold">With your interest...</h2>
-          <p className="mt-2 text-lg">
-            With your interest and support the continuation of this story
-            hopefully results in the final build of a commercially robust
-            platform that over time will be used by many organisations seeking
-            to engage with high growth potential SMEs. A platform that will
-            generate sufficient revenue to self-fund continuous improvement,
-            user support and maintenance.
-          </p>
-        </div>
-      </section>
+      <MeetOurTeamCarousel />
+      <section className="bg-white mt-0">
+  <div className="text-center px-64">
+    <h2 className="text-2xl font-bold">With your interest...</h2>
+    <p className="mt-2 text-lg">
+      With your interest and support the continuation of this story hopefully results in the final build of a commercially robust
+      platform that over time will be used by many organisations seeking to engage with high growth potential SMEs. A platform that will
+      generate sufficient revenue to self-fund continuous improvement, user support and maintenance.
+    </p>
+  </div>
+</section>
     </Main>
   );
 };
