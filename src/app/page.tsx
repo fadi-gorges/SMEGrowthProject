@@ -46,7 +46,7 @@ const HomePage = async () => {
 
        {/* Statistics Section */}
        
-       <div className="flex flex-col md:flex-row justify-center mt-20 relative">
+       <div className="flex flex-col md:flex-row justify-center mt-20">
   <div className="w-full md:w-1/2 mb-8 md:mb-0">
     <div className="flex flex-col items-center">
       <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ color: '#3563E9', fontFamily: 'Rubik, sans-serif' }}>150,000</h1>
@@ -59,8 +59,8 @@ const HomePage = async () => {
       <h5 className="text-center text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-8 md:mb-40">High Growth Potential SMEs <br/> Identified in New South Wales</h5>
     </div>
   </div>
-  <div className="absolute top-1/4 bottom-1/4 left-1/2 transform -translate-x-1/2 w-px bg-gray-200 hidden md:block"></div>
 </div>
+
 
       {/* What We Offer Section */}
   
