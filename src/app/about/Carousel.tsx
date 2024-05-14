@@ -26,7 +26,7 @@ export function MeetOurTeamCarousel() {
 
     const teamMembers = [
         { name: "Joseph Kizana", company: "Bachelor of Software Engineering", imgSrc: "/images/Joseph.jpg" },
-        { name: "Siddhika Prasad", company: "Bachelor of Software Engineering, Bachelor of Business", imgSrc: "/images/Siddhika.jpg" },
+        { name: "Siddhika Prasad", company: "Bachelor of Software Engineering", imgSrc: "/images/Siddhika.jpg" },
         { name: "Fadi Gorges", company: "Bachelor of Software Engineering", imgSrc: "/images/Fadi.jpg" },
         { name: "Peter Phuangthong", company: "Bachelor of Software Engineering", imgSrc: "/images/Peter.jpg" },
         { name: "Sejin (Denni) Um", company: "Bachelor of Information Technology (Enterprise Systems Development)", imgSrc: "/images/Denni.jpg" },
