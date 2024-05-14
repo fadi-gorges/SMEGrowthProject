@@ -41,101 +41,105 @@ interface Business {
   id: number;
   name: string;
   sector: string;
-  location: string;
   numberOfStaff: number;
   contact: string;
   about: string;
+  growthPotential: number,
 }
+import { useRouter } from "next/navigation";
+import { Enterprises } from "@/payload/collections/Enterprises";
+
 const businesses: Business[] = [
   {
     id: 1,
     name: "TechHelp",
     sector: "Technology",
-    location: "Sydney",
     numberOfStaff: 75,
     contact: "email@companya.com",
     about:"About test for company A",
+    growthPotential: 80,
   },
   {
     id: 2,
     name: "ShopLand",
     sector: "Retail",
-    location: "Brisbane",
     numberOfStaff: 25,
     contact: "contact@companyb.com",
     about:"",
+    growthPotential: 30,
   },
   {
     id: 3,
     name: "HospitalCare",
     sector: "Healthcare",
-    location: "Melbourne",
     numberOfStaff: 150,
     contact: "info@companyc.com",
     about:"",
+    growthPotential: 90,
   },
   {
     id: 4,
     name: "MoneyHelp",
     sector: "Finance",
-    location: "Canberra",
     numberOfStaff: 5,
     contact: "support@companyd.com",
     about:"",
+    growthPotential: 57,
   },
   {
     id: 5,
     name: "BIG NAME",
     sector: "Finance",
-    location: "Hobart",
     numberOfStaff: 8,
     contact: "bigname@company.com",
     about:"",
+    growthPotential: 23,
   },
   {
     id: 6,
     name: "Something",
     sector: "Agriculture",
-    location: "Knowhere",
     numberOfStaff: 800,
     contact: "nowhere@company.com",
     about:"We plant potatoes on the moon",
+    growthPotential: 89,
   },
   {
     id: 7,
     name: "GreenMeadows",
     sector: "Agriculture",
-    location: "Perth",
     numberOfStaff: 50,
     contact: "contact@greenmeadows.com",
     about: "Organic farming and sustainable agriculture practices.",
+    growthPotential: 23,
   },
   {
     id: 8,
     name: "NextGen IT",
     sector: "Technology",
-    location: "Adelaide",
     numberOfStaff: 100,
     contact: "info@nextgenit.com",
     about: "Leading provider of cloud-based IT solutions.",
+    growthPotential: 85,
   },
   {
     id: 9,
     name: "Fashionista",
     sector: "Retail",
-    location: "Gold Coast",
     numberOfStaff: 30,
     contact: "support@fashionista.com",
     about: "Trendy clothing and accessories for the modern fashionista.",
+    growthPotential: 99,
+    
   },
   {
     id: 10,
     name: "HealthFirst",
     sector: "Healthcare",
-    location: "Darwin",
     numberOfStaff: 200,
     contact: "contact@healthfirst.com",
     about: "Innovative healthcare solutions and patient care.",
+    growthPotential: 7,
   },
 ];
 type StaffRangeKey = "1-10" | "10-50" | "50-100" | "100-200" | ">200" |"Any";
@@ -147,21 +151,36 @@ const staffRanges: Record<StaffRangeKey, [number, number]>   = {
   ">200": [200, Infinity],
   "Any":[0,Infinity]
 };
+type GrowthPotentialRangeKey = "0-25" | "25-50" | "50-75" | "75-100" | "Any";
+const growthPotentialRanges: Record<GrowthPotentialRangeKey, [number, number]> = {
+  "0-25": [0, 25],
+  "25-50": [25, 50],
+  "50-75": [50, 75],
+  "75-100": [75, 100],
+  "Any": [0, 100], // Define range for "Any"
+};
 const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture"];
 const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
   const [min, max] = staffRanges[range];
   return count >= min && count <= max;
 };
 
+const isInGrowthPotentialRange = (potential: number, range: GrowthPotentialRangeKey): boolean => {
+    const [min, max] = growthPotentialRanges[range];
+    return potential >= min && potential <= max;
+  };
+
 const SearchCard = () => {
+  const router = useRouter();
   
+
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [openAccordion, setOpenAccordion] = useState("");
   const [searchQuery, setSearchQuery] = useState(""); // State variable for the search query
   const [selectedStaffRange, setSelectedStaffRange] = useState<StaffRangeKey | "">("");
   const [selectedSector, setSelectedSector] = useState<string| "">("");
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>(businesses); // State for filtered business list
-
+  const [selectedGrowthPotentialRange, setSelectedGrowthPotentialRange] = useState<GrowthPotentialRangeKey | "">("");
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -171,11 +190,12 @@ const SearchCard = () => {
       const nameMatch = business.name.toLowerCase().includes(searchQuery.toLowerCase());
       const staffMatch = selectedStaffRange ? isInStaffRange(business.numberOfStaff, selectedStaffRange) : true;
       const sectorMatch = selectedSector === "Any" || selectedSector === "" || business.sector === selectedSector;
+      const growthPotentialMatch = selectedGrowthPotentialRange ? isInGrowthPotentialRange(business.growthPotential, selectedGrowthPotentialRange) : true;
   
-      return nameMatch && staffMatch && sectorMatch;
+      return nameMatch && staffMatch && sectorMatch && growthPotentialMatch;
     });
-
-    setFilteredBusinesses(results); // Update the filtered businesses
+    const sortedResults = results.sort((a, b) => b.growthPotential - a.growthPotential);
+    setFilteredBusinesses(sortedResults); // Update the filtered businesses
     setIsTableVisible(true); // Show the table with the search results
     setOpenAccordion("");
   };
@@ -209,6 +229,24 @@ const SearchCard = () => {
         <AccordionItem value="item-1">
           <AccordionTrigger><p>Advanced Options</p></AccordionTrigger>
           <AccordionContent>
+          <Select
+          value={selectedGrowthPotentialRange}
+          onValueChange={(val) => setSelectedGrowthPotentialRange(val as GrowthPotentialRangeKey)}
+        >
+          <p>Growth Potential (%)</p>
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder="Select Growth Potential" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="Any">Any</SelectItem>
+              <SelectItem value="0-25">0-25%</SelectItem>
+              <SelectItem value="25-50">25-50%</SelectItem>
+              <SelectItem value="50-75">50-75%</SelectItem>
+              <SelectItem value="75-100">75-100%</SelectItem>
+            </SelectGroup>
+          </SelectContent>  
+        </Select>
             <Select
               value={selectedStaffRange}
               onValueChange={(val) => setSelectedStaffRange(val as StaffRangeKey)}
@@ -260,7 +298,7 @@ const SearchCard = () => {
               <TableHead>Name</TableHead>
               <TableHead>Sector</TableHead>
               <TableHead>Number of Staff</TableHead>
-              <TableHead>Contact</TableHead>
+              <TableHead>Growth Potential</TableHead>
               <TableHead>Learn More</TableHead>
               <TableHead>Save SME</TableHead>
             </TableRow>
@@ -271,11 +309,12 @@ const SearchCard = () => {
                 <TableCell>{business.name}</TableCell>
                 <TableCell>{business.sector}</TableCell>
                 <TableCell>{business.numberOfStaff}</TableCell>
-                <TableCell>{business.contact}</TableCell>
+                <TableCell>{business.growthPotential}%</TableCell>
                 <TableCell><Dialog>
                     <DialogTrigger asChild><Button variant="link">About</Button></DialogTrigger>
                     <DialogContent>
                     <DialogHeader><DialogTitle>About {business.name}</DialogTitle></DialogHeader>
+                    <div>Contact: {business.contact}</div>
                     <div>{business.about}</div>
                     </DialogContent>
                   </Dialog>
