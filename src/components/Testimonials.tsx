@@ -2,8 +2,8 @@ import React from 'react';
 
 const testimonials = [
     {
-        name: "Placeholder Name",
-        position: "Position",
+        name: "Annette Dockerty",
+        position: "Program Lead, SME Engagement, UTS",
         quote: "Using this platform I estimate a saving of 6-8 hours a week spent finding and filtering businesses to better target with the opportunities UTS can offer to help SMEs scale and grow."
     },
     {
