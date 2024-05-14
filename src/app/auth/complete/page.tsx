@@ -17,7 +17,7 @@ const CompleteSignupPage = async () => {
   if (user.signupComplete) redirect("/dashboard");
 
   return (
-    <Main className="justify-center items-center">
+    <Main className="justify-center items-center" enableHexBackground>
       <CompleteSignupForm />
     </Main>
   );
