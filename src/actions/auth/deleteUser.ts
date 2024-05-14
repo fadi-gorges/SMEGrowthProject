@@ -16,7 +16,5 @@ export const deleteUser = async (): ActionResponse => {
     id: user.id,
   });
 
-  // TODO: Send user deletion alert email
-
   return { success: true };
 };

@@ -83,10 +83,7 @@ const InitialSignupForm = ({
 
   return (
     <Card
-      className={cn(
-        "flex flex-col justify-center -translate-y-4 w-full max-w-xl",
-        className
-      )}
+      className={cn("flex flex-col justify-center w-full max-w-xl", className)}
       {...props}
     >
       <div className="form-slide-in">
