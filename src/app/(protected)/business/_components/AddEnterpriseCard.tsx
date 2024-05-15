@@ -9,6 +9,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { toast } from "sonner";
 import { enterpriseSchema } from "@/lib/validations/enterprises/enterpriseSchema";
 import Papa from 'papaparse'; // Import Papaparse library
+import { Row } from 'react-day-picker';
 const AddEnterpriseCard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const methods = useForm({
@@ -42,18 +43,23 @@ const AddEnterpriseCard = () => {
     });
   };
   const sendCsvDataToBackend = async (csvData: any) => {
+    
     try {
-      const enterprises = csvData.slice(1).map((row: any) => ({
-        name: row[1], // Adjust index to match the position of the name column
-        abn: row[2], // Adjust index to match the position of the ABN column
-        industrySector: row[3], // Adjust index to match the position of the industrySector column
-        numEmployees: parseInt(row[4]), // Adjust index to match the position of the numEmployees column
-        website: row[5], // Adjust index to match the position of the website column
-        address: row[6],
-        revenue: parseInt(row[7]),
-        valuation: parseInt(row[8]),
-        establishedDate: row[9] ? new Date(row[9]) : null, // Adjust index to match the position of the establishedDate column
-      }));
+      const enterprises = csvData.slice(1).map((row: any) => {
+        console.log(row)
+        return {
+        
+          name: row[1], // Adjust index to match the position of the name column
+          abn: row[2], // Adjust index to match the position of the ABN column
+          industrySector: row[3], // Adjust index to match the position of the industrySector column
+          numEmployees: row[4] ? parseInt(row[4]) : null, // Adjust index to match the position of the numEmployees column
+          website: row[5], // Adjust index to match the position of the website column
+          address: row[6],
+          revenue: row[7] ? parseInt(row[7]) : null,
+          valuation: row[8] ? parseInt(row[8]) : null,
+          establishedDate: row[9] ? new Date(row[9]) : null, // Adjust index to match the position of the establishedDate column
+        }
+      });
   
       for (const enterprise of enterprises) {
         const res = await createEnterprise(enterprise);
