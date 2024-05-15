@@ -66,18 +66,17 @@ export interface Enterprise {
   id: number;
   name: string;
   abn?: string | null;
-  industrySector: string;
-  numEmployees: number;
+  industrySector?: string | null;
+  numEmployees?: number | null;
   website?: string | null;
-  address?: string | null;
+  contact?: string | null;
   revenue?: number | null;
   valuation?: number | null;
   establishedDate?: string | null;
+  about?: string | null;
+  growthPotential?: number | null;
   updatedAt: string;
   createdAt: string;
-  contact:string;
-  about:string;
-  growthPotential:number;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -86,7 +85,7 @@ export interface Enterprise {
 export interface Engagement {
   id: string;
   user: string | User;
-  enterprise: string | Enterprise;
+  enterprise: number | Enterprise;
   contacted?: boolean | null;
   connected?: boolean | null;
   engaged?: boolean | null;

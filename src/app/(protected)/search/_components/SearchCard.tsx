@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RefreshCcwIcon, SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,17 +37,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { link } from "fs";
-interface Business {
-  id: number;
-  name: string;
-  sector: string;
-  numberOfStaff: number;
-  contact: string;
-  about: string;
-  growthPotential: number,
-}
+
 import { useRouter } from "next/navigation";
 import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
+import { Enterprise } from "@/payload-types";
 
 const populateBusinessesFromServer = async () =>{
   try{
@@ -60,11 +53,14 @@ const populateBusinessesFromServer = async () =>{
     const businessesmap = enterprises.map(enterprise => ({
       id: enterprise.id,
       name: enterprise.name,
-      sector: enterprise.industrySector,
-      numberOfStaff: enterprise.numEmployees,
+      industrySector: enterprise.industrySector,
+      numEmployees: enterprise.numEmployees,
       contact: enterprise.contact,
       about: enterprise.about,
-      growthPotential: enterprise.growthPotential
+      growthPotential: enterprise.growthPotential,
+      updatedAt: enterprise.updatedAt,
+      createdAt: enterprise.createdAt
+
     }));
     console.log('Businesses populated:', businesses);
     return businessesmap;
@@ -74,7 +70,7 @@ const populateBusinessesFromServer = async () =>{
     return [];
   }
 };
-var businesses: Business[] = [];
+var businesses: Enterprise[] = [];
 
   
 type StaffRangeKey = "1-10" | "10-50" | "50-100" | "100-200" | ">200" |"Any";
@@ -92,7 +88,7 @@ const growthPotentialRanges: Record<GrowthPotentialRangeKey, [number, number]> =
   "25-50": [25, 50],
   "50-75": [50, 75],
   "75-100": [75, 100],
-  "Any": [0, 100], // Define range for "Any"
+  "Any": [0, 100]
 };
 const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture"];
 const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
@@ -106,33 +102,34 @@ const isInGrowthPotentialRange = (potential: number, range: GrowthPotentialRange
   };
 
 const SearchCard = () => {
-  populateBusinessesFromServer()
-  .then(businessesmap => {
-    const businessesArray: Business[] = businessesmap;
-    businesses = businessesArray;
-  });
+  useEffect(() => {
+    populateBusinessesFromServer()
+    .then(businessesmap => {
+      const businessesArray: Enterprise[] = businessesmap;
+      businesses = businessesArray;
+    });
+  }, [])
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [openAccordion, setOpenAccordion] = useState("");
   const [searchQuery, setSearchQuery] = useState(""); // State variable for the search query
   const [selectedStaffRange, setSelectedStaffRange] = useState<StaffRangeKey | "">("");
   const [selectedSector, setSelectedSector] = useState<string| "">("");
-  const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>(businesses); // State for filtered business list
+  const [filteredBusinesses, setFilteredBusinesses] = useState<Enterprise[]>(businesses); // State for filtered business list
   const [selectedGrowthPotentialRange, setSelectedGrowthPotentialRange] = useState<GrowthPotentialRangeKey | "">("");
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
-
   const performSearch = () => {
     
     const results = businesses.filter((business) => {
       const nameMatch = business.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const staffMatch = selectedStaffRange ? isInStaffRange(business.numberOfStaff, selectedStaffRange) : true;
-      const sectorMatch = selectedSector === "Any" || selectedSector === "" || business.sector === selectedSector;
-      const growthPotentialMatch = selectedGrowthPotentialRange ? isInGrowthPotentialRange(business.growthPotential, selectedGrowthPotentialRange) : true;
+      const staffMatch = selectedStaffRange ? isInStaffRange(business.numEmployees!, selectedStaffRange) : true;
+      const sectorMatch = selectedSector === "Any" || selectedSector === "" || business.industrySector === selectedSector;
+      const growthPotentialMatch = selectedGrowthPotentialRange ? isInGrowthPotentialRange(business.growthPotential!, selectedGrowthPotentialRange) : true;
   
       return nameMatch && staffMatch && sectorMatch && growthPotentialMatch;
     });
-    const sortedResults = results.sort((a, b) => b.growthPotential - a.growthPotential);
+    const sortedResults = results.sort((a, b) => b.growthPotential! - a.growthPotential!);
     setFilteredBusinesses(sortedResults); // Update the filtered businesses
     setIsTableVisible(true); // Show the table with the search results
     setOpenAccordion("");
@@ -246,8 +243,8 @@ const SearchCard = () => {
             {filteredBusinesses.map((business) => (
               <TableRow key={business.id}>
                 <TableCell>{business.name}</TableCell>
-                <TableCell>{business.sector}</TableCell>
-                <TableCell>{business.numberOfStaff}</TableCell>
+                <TableCell>{business.industrySector}</TableCell>
+                <TableCell>{business.numEmployees}</TableCell>
                 <TableCell>{business.growthPotential}%</TableCell>
                 <TableCell><Dialog>
                     <DialogTrigger asChild><Button variant="link">About</Button></DialogTrigger>
