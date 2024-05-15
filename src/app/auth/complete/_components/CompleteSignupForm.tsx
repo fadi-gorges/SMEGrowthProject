@@ -60,7 +60,6 @@ const CompleteSignupForm = ({
       userType: user?.userType || undefined,
       organisation: "",
       jobTitle: user?.jobTitle || "",
-      // picture: undefined,
     },
   });
 
@@ -87,11 +86,6 @@ const CompleteSignupForm = ({
       }
     });
 
-    // if (data.picture) {
-    //   const resizedPicture = await resizeImage(data.picture, 320, 320);
-    //   body.set("picture", resizedPicture);
-    // }
-
     try {
       const res = await completeSignup(body);
       setIsLoading(false);
@@ -110,10 +104,7 @@ const CompleteSignupForm = ({
 
   return (
     <Card
-      className={cn(
-        "flex flex-col justify-center -translate-y-4 w-full max-w-xl",
-        className
-      )}
+      className={cn("flex flex-col justify-center w-full max-w-xl", className)}
       {...props}
     >
       <div className="form-slide-in">
