@@ -15,7 +15,7 @@ const LoginPage = async () => {
   if (user) redirect("/dashboard");
 
   return (
-    <Main className="justify-center items-center">
+    <Main className="justify-center items-center" enableHexBackground>
       <LoginForm />
     </Main>
   );

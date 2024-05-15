@@ -18,14 +18,6 @@ export const completeSignupSchema = z.object({
   userType: z.nativeEnum(userTypes),
   organisation: z.string(),
   jobTitle: z.string(),
-  // picture: z
-  //   .custom<File>((v) => v instanceof File, {
-  //     message: "Picture is required",
-  //   })
-  //   .refine(
-  //     (v) => v.type === "image/jpeg" || v.type === "image/png",
-  //     "Please upload a valid jpeg or png image"
-  //   ),
 });
 
 export type CompleteSignupData = z.infer<typeof completeSignupSchema>;
