@@ -69,10 +69,13 @@ export interface Enterprise {
   industrySector?: string | null;
   numEmployees?: number | null;
   website?: string | null;
-  address?: string | null;
+  contact?: string | null;
   revenue?: number | null;
   valuation?: number | null;
   establishedDate?: string | null;
+  about?: string | null;
+  growthPotential?: number | null;
+  location?: string | null;
   updatedAt: string;
   createdAt: string;
 }

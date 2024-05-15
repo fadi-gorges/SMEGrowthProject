@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const SearchPage = () => {
   return(
-    <Main>
+    <Main padding="small">
       <SearchCard/>
     </Main>
   );
