@@ -16,12 +16,6 @@ export const Enterprises: CollectionConfig = {
   },
   fields: [
     {
-      name: "id",
-      type:"number",
-      unique: true,
-      required: true,
-    },
-    {
       name: "name",
       type: "text",
       unique: true,

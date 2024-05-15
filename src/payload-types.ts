@@ -63,7 +63,7 @@ export interface Organisation {
  * via the `definition` "enterprises".
  */
 export interface Enterprise {
-  id: number;
+  id: string;
   name: string;
   abn?: string | null;
   industrySector?: string | null;
@@ -85,7 +85,7 @@ export interface Enterprise {
 export interface Engagement {
   id: string;
   user: string | User;
-  enterprise: number | Enterprise;
+  enterprise: string | Enterprise;
   contacted?: boolean | null;
   connected?: boolean | null;
   engaged?: boolean | null;
