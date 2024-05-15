@@ -326,9 +326,9 @@ const AccountSettingsCard = () => {
                           required
                         >
                           <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a user type" />
-                            </SelectTrigger>
+                          <SelectTrigger>
+                            <SelectValue placeholder={user?.userType || "Select a user type"} />
+                          </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {Object.entries(userTypes).map(([key, value]) => (
