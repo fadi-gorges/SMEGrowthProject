@@ -1,13 +1,11 @@
 "use server";
 
-import { ActionError } from "@/lib/utils/actionError";
+import { ActionResponse } from "@/lib/utils/actionResponse";
 import { getUrl } from "@/lib/utils/getUrl";
 import { EmailData, emailSchema } from "@/lib/validations/auth/emailSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
-export const forgotPasswordAction = async (
-  data: EmailData
-): Promise<{ success: true } | ActionError> => {
+export const forgotPasswordAction = async (data: EmailData): ActionResponse => {
   const validation = emailSchema.safeParse(data);
 
   if (!validation.success) {

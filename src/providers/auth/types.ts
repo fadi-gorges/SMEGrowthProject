@@ -1,6 +1,4 @@
-import { ProfilePicture, User } from "@/payload-types";
-
-export type FullUser = User & { picture?: ProfilePicture };
+import { User } from "@/payload-types";
 
 export type IsAdmin = boolean;
 
@@ -23,12 +21,10 @@ export type Logout = () => Promise<void>;
 
 export interface AuthContext {
   user?: User | null;
-  userPicture?: ProfilePicture | null;
   isAdmin: IsAdmin;
   fetchMe: FetchMe;
   setUser: (user: User | null) => void;
   logout: Logout;
   login: Login;
-  // googleLogin: GoogleLogin;
   resetPassword: ResetPassword;
 }

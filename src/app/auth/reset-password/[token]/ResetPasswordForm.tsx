@@ -1,6 +1,6 @@
 "use client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -14,7 +14,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -74,9 +73,11 @@ const ResetPasswordForm = ({ className, ...props }: ResetPasswordFormProps) => {
     >
       <div className="form-slide-in">
         <CardHeader>
-          <CardTitle>Reset Password</CardTitle>
+          <CardTitle>
+            <h3>Reset Password</h3>
+          </CardTitle>
           <CardDescription>
-            Enter a new password to reset your account.
+            <p>Enter a new password to reset your account.</p>
           </CardDescription>
         </CardHeader>
         <Form {...form}>
@@ -87,11 +88,10 @@ const ResetPasswordForm = ({ className, ...props }: ResetPasswordFormProps) => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>New Password</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Your new password..."
+                        placeholder="New Password"
                         required
                         minLength={8}
                         {...field}
@@ -106,13 +106,11 @@ const ResetPasswordForm = ({ className, ...props }: ResetPasswordFormProps) => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Your new password..."
+                        placeholder="Confirm Password"
                         required
-                        minLength={8}
                         {...field}
                       />
                     </FormControl>
@@ -121,13 +119,19 @@ const ResetPasswordForm = ({ className, ...props }: ResetPasswordFormProps) => {
                 )}
               />
             </CardContent>
-            <CardFooter className="flex-col gap-1">
+            <CardFooter className="flex-col">
               <Button type="submit" loading={isLoading} className="w-full mb-3">
                 Continue
               </Button>
               {!user && (
-                <Link href="/auth" className="text-sm text-center underline">
-                  Back to Login
+                <Link
+                  href="/auth/login"
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    "text-center underline"
+                  )}
+                >
+                  <small>Back to login</small>
                 </Link>
               )}
             </CardFooter>

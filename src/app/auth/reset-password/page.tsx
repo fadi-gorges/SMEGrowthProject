@@ -32,7 +32,7 @@ const ResetPasswordEmailPage = async () => {
   }
 
   return (
-    <Main className="items-center">
+    <Main className="items-center justify-center" enableHexBackground>
       {user ? (
         success !== undefined && (
           <Alert

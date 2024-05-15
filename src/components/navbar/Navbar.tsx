@@ -1,26 +1,68 @@
 "use client";
 
-import { Icons } from "@/components/Icons";
-import LogoutDialog from "@/components/navbar/LogoutDialog";
-import NavLink from "@/components/navbar/NavLink";
+import { IMGIconProps, Icons } from "@/components/Icons";
+import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
 import NavSheet from "@/components/navbar/NavSheet";
-import { buttonVariants } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
+import { useLinkActive } from "@/lib/utils/useLinkActive";
 import { useAuth } from "@/providers/auth";
-import { HomeIcon, InfoIcon, LockKeyholeIcon, LogInIcon } from "lucide-react";
+import {
+  HomeIcon,
+  InfoIcon,
+  LockKeyholeIcon,
+  LogInIcon,
+  LogOutIcon,
+  LucideIcon,
+  UserPlus2Icon,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
+import { AnchorHTMLAttributes, useState } from "react";
 
 export const navLinks = {
   home: { text: "Home", link: "/", icon: HomeIcon },
   about: { text: "About", link: "/about", icon: InfoIcon },
   admin: { text: "Admin Panel", link: "/admin", icon: LockKeyholeIcon },
+  login: { text: "Log in", link: "/auth/login", icon: LogInIcon },
 };
 
 const hiddenPaths = ["/admin"];
+
+export type NavLinkItem = {
+  text?: string;
+  link: string;
+  icon: LucideIcon | React.ComponentType<IMGIconProps>;
+};
+
+const NavLink = ({
+  link,
+  className,
+  ...props
+}: {
+  link: NavLinkItem;
+} & AnchorHTMLAttributes<HTMLAnchorElement>) => {
+  const isActive = useLinkActive(link.link);
+
+  return (
+    <Link
+      href={link.link}
+      className={cn(
+        buttonVariants({
+          variant: "ghost",
+          className: cn(
+            "hidden lg:inline-flex",
+            isActive ? "font-semibold" : "text-muted-foreground",
+            className
+          ),
+        })
+      )}
+      {...props}
+    >
+      <p>{link.text}</p>
+    </Link>
+  );
+};
 
 const Navbar = () => {
   const router = useRouter();
@@ -28,82 +70,83 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogout = async () => {
+    setIsLogoutLoading(true);
     await logout();
+    setIsLogoutLoading(false);
+
     router.push("/");
     router.refresh();
     setSheetOpen(false);
     setLogoutDialogOpen(false);
   };
 
-  const navSheetAndLogo = (
-    <>
-      <NavSheet
-        sheetOpen={sheetOpen}
-        setSheetOpen={setSheetOpen}
-        setLogoutDialogOpen={setLogoutDialogOpen}
-      />
-      <Link href="/" className="flex items-center w-fit gap-3">
-        <Icons.icon size={30} />
-        <h6 className="font-medium">AusBizGrowth</h6>
-      </Link>
-    </>
-  );
-
-  const loginAndDarkMode = (
-    <>
-      {!user && (
-        <Link
-          href="/auth"
-          className={cn(
-            buttonVariants({
-              variant: "outline",
-            }),
-            "hidden lg:inline-flex"
-          )}
-        >
-          Log In
-          <LogInIcon size={16} />
-        </Link>
-      )}
-      <ModeToggle />
-    </>
+  const logo = (
+    <Link
+      href={user ? "/dashboard" : "/"}
+      className="h-full flex items-center w-fit gap-3"
+    >
+      <Icons.icon size={30} />
+      <h6 className="font-medium">AusBizGrowth</h6>
+    </Link>
   );
 
   if (hiddenPaths.some((path) => pathname?.startsWith(path))) return null;
 
   return (
     <nav className="sticky top-0 shrink-0 w-full h-16 bg-background/75 backdrop-blur-md border-b z-40">
-      {user && (
-        <div className="hidden lg:grid grid-cols-12 h-full">
-          <div className="col-span-3 2xl:col-span-2 x-padding flex items-center bg-muted/40 border-r animate-in slide-in-from-left-full">
-            {navSheetAndLogo}
-          </div>
-          <div className="col-span-9 2xl:col-span-10 x-padding pl-5 flex justify-end items-center gap-3">
-            {loginAndDarkMode}
-          </div>
+      <div className="x-padding h-full flex items-center gap-8">
+        {logo}
+        <div className="flex-1 flex justify-end items-center gap-2 lg:gap-4">
+          {user ? (
+            <Button
+              variant="outline"
+              onClick={() => setLogoutDialogOpen(true)}
+              className="hidden lg:inline-flex"
+            >
+              <LogOutIcon size={16} />
+              Log out
+            </Button>
+          ) : (
+            <>
+              <NavLink link={navLinks.home} />
+              <NavLink link={navLinks.about} />
+
+              <NavLink link={navLinks.login} />
+              <Link
+                href="/auth/signup"
+                className={buttonVariants({ size: "sm" })}
+              >
+                <UserPlus2Icon size={16} />
+                Sign up
+              </Link>
+            </>
+          )}
+          <NavSheet
+            sheetOpen={sheetOpen}
+            setSheetOpen={setSheetOpen}
+            setLogoutDialogOpen={setLogoutDialogOpen}
+          />
         </div>
-      )}
-      <div
-        className={cn(
-          "x-padding h-full flex items-center gap-8",
-          user ? "lg:hidden" : ""
-        )}
-      >
-        <div className="flex items-center gap-3">{navSheetAndLogo}</div>
-        <div className="flex-1 flex items-center gap-1">
-          <NavLink link={navLinks.home} />
-          <NavLink link={navLinks.about} />
-        </div>
-        <div className="flex items-center gap-2">{loginAndDarkMode}</div>
       </div>
-      <LogoutDialog
-        logoutDialogOpen={logoutDialogOpen}
-        setLogoutDialogOpen={setLogoutDialogOpen}
-        handleLogout={handleLogout}
-      />
+      <ResponsiveAlertDialog
+        title="Log Out"
+        description="Are you sure you want to log out?"
+        open={logoutDialogOpen}
+        setOpen={setLogoutDialogOpen}
+      >
+        <Button
+          variant="destructive"
+          loading={isLogoutLoading}
+          onClick={handleLogout}
+        >
+          Log Out
+        </Button>
+      </ResponsiveAlertDialog>
     </nav>
   );
 };

@@ -1,12 +1,11 @@
-import SidebarLayout from "@/app/_components/SidebarLayout";
+import SidebarLayout from "@/app/(protected)/_components/SidebarLayout";
 import { Utils } from "@/app/_components/Utils";
 import Navbar from "@/components/navbar/Navbar";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { inter } from "@/lib/fonts";
 import { cn } from "@/lib/utils/cn";
 import { AuthProvider } from "@/providers/auth";
-import "@/styles/globals.css";
+import "@/styles/globals.scss";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Metadata } from "next";
 
@@ -34,16 +33,14 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           inter.className
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AuthProvider>
-            <Utils>
-              <Navbar />
-              <SidebarLayout>{children}</SidebarLayout>
-              {/* <Footer /> */}
-            </Utils>
-            <Toaster richColors closeButton />
-          </AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <Utils>
+            <Navbar />
+            {children}
+            {/* <Footer /> */}
+          </Utils>
+          <Toaster richColors closeButton />
+        </AuthProvider>
         <SpeedInsights />
       </body>
     </html>

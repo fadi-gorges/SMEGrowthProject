@@ -1,20 +1,14 @@
 "use server";
-import { ActionError } from "@/lib/utils/actionError";
+import { ActionResponse } from "@/lib/utils/actionResponse";
 import { capitalise } from "@/lib/utils/capitalise";
-import { getUrl } from "@/lib/utils/getUrl";
-import { readBuffer } from "@/lib/utils/readBuffer";
-import { signupSchema } from "@/lib/validations/auth/signupSchema";
+import {
+  InitialSignupData,
+  initialSignupSchema,
+} from "@/lib/validations/auth/initialSignupSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
-export const createUser = async (
-  body: FormData
-): Promise<{ success: true } | ActionError> => {
-  const data: {
-    [key: string]: string | File;
-  } = {};
-  body.forEach((value, key) => (data[key] = value));
-
-  const validation = signupSchema.safeParse(data);
+export const createUser = async (data: InitialSignupData): ActionResponse => {
+  const validation = initialSignupSchema.safeParse(data);
 
   if (!validation.success) {
     return { success: false, error: "Bad request." };
@@ -40,17 +34,6 @@ export const createUser = async (
     },
   });
 
-  const picture = await payload.create({
-    collection: "profilePictures",
-    data: {},
-    file: {
-      data: await readBuffer(validation.data.picture),
-      name: validation.data.picture.name,
-      mimetype: validation.data.picture.type,
-      size: validation.data.picture.size,
-    },
-  });
-
   const user = await payload.create({
     collection: "users",
     data: {
@@ -58,26 +41,32 @@ export const createUser = async (
       password: validation.data.password,
       firstName: capitalise(validation.data.firstName),
       lastName: capitalise(validation.data.lastName),
-      mobileNumber: validation.data.mobileNumber,
-      jobTitle: capitalise(validation.data.jobTitle),
-      organisation: capitalise(validation.data.organisation),
-      picture: picture.id,
     },
     showHiddenFields: true,
     disableVerificationEmail: true,
   });
 
+  const verificationToken = Math.floor(
+    100000 + Math.random() * 900000
+  ).toString();
+
+  await payload.update({
+    collection: "users",
+    id: user.id,
+    data: {
+      _verificationToken: verificationToken,
+    },
+  });
+
   await payload.sendEmail({
     from: `${process.env.EMAIL_NAME} <${process.env.EMAIL_USER}>`,
     to: user.email,
-    subject: `Verify your ${process.env.EMAIL_NAME} account`,
+    subject: `${verificationToken} is your AusBizGrowth passcode`,
     html: `
         <h1 style="margin-bottom: 16px;">Verify your email</h1>
-        <p style="margin-bottom: 8px;">Hi ${user.email},</p>
-        <p style="margin-bottom: 16px;">Click the button below to verify your email address:</p>
-        <a href="${getUrl()}/auth/verify/${
-      user._verificationToken
-    }" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Verify your email</a>
+        <p style="margin-bottom: 8px;">Hi ${user.firstName},</p>
+        <p>Please enter this one-time passcode to verify your ${process.env.EMAIL_NAME} account:</p>
+        <h2 style="font-weight: bold;">${verificationToken}</h2>
       `,
   });
 
