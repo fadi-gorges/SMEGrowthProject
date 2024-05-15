@@ -48,11 +48,6 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const organisation = await response.json();
 
-    // setUser({
-    //   ...user,
-    //   organisation: organisation.name,
-    // });
-
     setUser(user);
 
     // if (!user) return;
