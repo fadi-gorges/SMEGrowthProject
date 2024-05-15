@@ -76,7 +76,7 @@ const AboutPage = () => {
         </div>
         <div className="md:w-1/2 text-right md:pl-10">
           <p className="text-gray-600 mb-4 text-sm sm:text-base ">
-          Following a light bulb moment to tap into UTS student resources, a client team was formed with people from UTS, CSIRO, Business NSW and the Industry Growth Program. A project plan was developed and pitched to UTS students who opted in to develop this AI platform prototype, populated. UTS has a very successful program called Industry Studio where groups of students collaborate to solve an industry challenge over 12 weeks. Following a light bulb moment to tap into UTS student resources, forming a client consortium team of people from UTS, CSIRO, Business NSW and the Industry Growth Program and writing up a project brief to pitch to the students, led to the development of this platform prototype, populated with Australian businesses to track and discover when they reach high growth potential.
+          Following a light bulb moment to tap into UTS student resources, a client team was formed with people from UTS, CSIRO, Business NSW and the Industry Growth Program. A project plan was developed and pitched to UTS students who opted in to develop this AI platform prototype, populated with Australian businesses to track and discover when they reach high growth potential.
           </p>
         </div>
       </div>
