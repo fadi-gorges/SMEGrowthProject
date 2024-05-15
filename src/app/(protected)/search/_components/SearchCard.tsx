@@ -47,101 +47,36 @@ interface Business {
   growthPotential: number,
 }
 import { useRouter } from "next/navigation";
-import { Enterprises } from "@/payload/collections/Enterprises";
+import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
 
-const businesses: Business[] = [
-  {
-    id: 1,
-    name: "TechHelp",
-    sector: "Technology",
-    numberOfStaff: 75,
-    contact: "email@companya.com",
-    about:"About test for company A",
-    growthPotential: 80,
-  },
-  {
-    id: 2,
-    name: "ShopLand",
-    sector: "Retail",
-    numberOfStaff: 25,
-    contact: "contact@companyb.com",
-    about:"",
-    growthPotential: 30,
-  },
-  {
-    id: 3,
-    name: "HospitalCare",
-    sector: "Healthcare",
-    numberOfStaff: 150,
-    contact: "info@companyc.com",
-    about:"",
-    growthPotential: 90,
-  },
-  {
-    id: 4,
-    name: "MoneyHelp",
-    sector: "Finance",
-    numberOfStaff: 5,
-    contact: "support@companyd.com",
-    about:"",
-    growthPotential: 57,
-  },
-  {
-    id: 5,
-    name: "BIG NAME",
-    sector: "Finance",
-    numberOfStaff: 8,
-    contact: "bigname@company.com",
-    about:"",
-    growthPotential: 23,
-  },
-  {
-    id: 6,
-    name: "Something",
-    sector: "Agriculture",
-    numberOfStaff: 800,
-    contact: "nowhere@company.com",
-    about:"We plant potatoes on the moon",
-    growthPotential: 89,
-  },
-  {
-    id: 7,
-    name: "GreenMeadows",
-    sector: "Agriculture",
-    numberOfStaff: 50,
-    contact: "contact@greenmeadows.com",
-    about: "Organic farming and sustainable agriculture practices.",
-    growthPotential: 23,
-  },
-  {
-    id: 8,
-    name: "NextGen IT",
-    sector: "Technology",
-    numberOfStaff: 100,
-    contact: "info@nextgenit.com",
-    about: "Leading provider of cloud-based IT solutions.",
-    growthPotential: 85,
-  },
-  {
-    id: 9,
-    name: "Fashionista",
-    sector: "Retail",
-    numberOfStaff: 30,
-    contact: "support@fashionista.com",
-    about: "Trendy clothing and accessories for the modern fashionista.",
-    growthPotential: 99,
-    
-  },
-  {
-    id: 10,
-    name: "HealthFirst",
-    sector: "Healthcare",
-    numberOfStaff: 200,
-    contact: "contact@healthfirst.com",
-    about: "Innovative healthcare solutions and patient care.",
-    growthPotential: 7,
-  },
-];
+const populateBusinessesFromServer = async () =>{
+  try{
+    const response = await readAllEnterprises();
+    if(!response.success){
+      console.error('Error:', response.error);
+      return[];
+    }
+    const enterprises = response.enterprises;
+    const businessesmap = enterprises.map(enterprise => ({
+      id: enterprise.id,
+      name: enterprise.name,
+      sector: enterprise.industrySector,
+      numberOfStaff: enterprise.numEmployees,
+      contact: enterprise.contact,
+      about: enterprise.about,
+      growthPotential: enterprise.growthPotential
+    }));
+    console.log('Businesses populated:', businesses);
+    return businessesmap;
+  }
+  catch(error){
+    console.error('Error:', error);
+    return [];
+  }
+};
+var businesses: Business[] = [];
+
+  
 type StaffRangeKey = "1-10" | "10-50" | "50-100" | "100-200" | ">200" |"Any";
 const staffRanges: Record<StaffRangeKey, [number, number]>   = {
   "1-10": [1, 10],
@@ -171,9 +106,11 @@ const isInGrowthPotentialRange = (potential: number, range: GrowthPotentialRange
   };
 
 const SearchCard = () => {
-  const router = useRouter();
-  
-
+  populateBusinessesFromServer()
+  .then(businessesmap => {
+    const businessesArray: Business[] = businessesmap;
+    businesses = businessesArray;
+  });
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [openAccordion, setOpenAccordion] = useState("");
   const [searchQuery, setSearchQuery] = useState(""); // State variable for the search query
@@ -186,6 +123,7 @@ const SearchCard = () => {
   };
 
   const performSearch = () => {
+    
     const results = businesses.filter((business) => {
       const nameMatch = business.name.toLowerCase().includes(searchQuery.toLowerCase());
       const staffMatch = selectedStaffRange ? isInStaffRange(business.numberOfStaff, selectedStaffRange) : true;
@@ -203,6 +141,7 @@ const SearchCard = () => {
     setSearchQuery("");
     setSelectedStaffRange("");
     setSelectedSector("");
+    setSelectedGrowthPotentialRange("");
     setFilteredBusinesses(businesses);
     setIsTableVisible(false);
   };

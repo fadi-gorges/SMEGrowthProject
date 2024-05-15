@@ -63,11 +63,11 @@ export interface Organisation {
  * via the `definition` "enterprises".
  */
 export interface Enterprise {
-  id: string;
+  id: number;
   name: string;
   abn?: string | null;
-  industrySector?: string | null;
-  numEmployees?: number | null;
+  industrySector: string;
+  numEmployees: number;
   website?: string | null;
   address?: string | null;
   revenue?: number | null;
@@ -75,6 +75,9 @@ export interface Enterprise {
   establishedDate?: string | null;
   updatedAt: string;
   createdAt: string;
+  contact:string;
+  about:string;
+  growthPotential:number;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
