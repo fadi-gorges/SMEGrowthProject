@@ -12,6 +12,7 @@ import React, {
 } from "react";
 import { rest } from "./rest";
 import { AuthContext, Login, Logout, ResetPassword } from "./types";
+import { setDefaultResultOrder } from "dns";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -47,10 +48,12 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const organisation = await response.json();
 
-    setUser({
-      ...user,
-      organisation: organisation.name,
-    });
+    // setUser({
+    //   ...user,
+    //   organisation: organisation.name,
+    // });
+
+    setUser(user);
 
     // if (!user) return;
 
