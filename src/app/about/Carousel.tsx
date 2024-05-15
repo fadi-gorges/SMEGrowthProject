@@ -88,6 +88,12 @@ export function MeetOurTeamCarousel() {
                     }} 
                 />
             </Carousel>
+            <div className="flex justify-center mt-4">
+                <p className="italic text-sm sm:text-base text-gray-600">
+                    Students from Software Development Studio at UTS, Autumn 2024.
+                </p>
+            </div>
         </div>
+       
     );
 }
