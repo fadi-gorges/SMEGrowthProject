@@ -143,8 +143,8 @@ const SearchCard = () => {
     setIsTableVisible(false);
   };
   return (  
-    <main className="flex-1 flex flex-col gap-5 px-20 pt-10">
-      <div className="border border-gray-100">
+    <div className="h-full">
+      <div>
       <h1>Search SME</h1>
       <div className = "search">
         <div className="flex items-center gap-2">
@@ -228,7 +228,7 @@ const SearchCard = () => {
       </div>
       <p>Search Results</p>
       {isTableVisible && (
-        <Table>
+        <Table className="h-full">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -262,7 +262,7 @@ const SearchCard = () => {
         </Table>
       )}
       </div>
-    </main>
+    </div>
   );
 };
 
