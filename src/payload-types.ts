@@ -66,13 +66,14 @@ export interface Enterprise {
   id: string;
   name: string;
   abn?: string | null;
-  industrySector?: string | null;
   numEmployees?: number | null;
   website?: string | null;
-  address?: string | null;
-  revenue?: number | null;
-  valuation?: number | null;
-  establishedDate?: string | null;
+  suburb?: string | null;
+  postCode?: number | null;
+  sme?: boolean | null;
+  manufacturer?: boolean | null;
+  growthPotential?: number | null;
+  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }

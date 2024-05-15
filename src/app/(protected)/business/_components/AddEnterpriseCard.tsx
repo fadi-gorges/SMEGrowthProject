@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useState , useRef } from 'react';
 import { createEnterprise } from '@/actions/enterprises/createEnterprise'; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { toast } from "sonner";
 import { enterpriseSchema } from "@/lib/validations/enterprises/enterpriseSchema";
 import Papa from 'papaparse'; // Import Papaparse library
+
 import { Row } from 'react-day-picker';
 const AddEnterpriseCard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,18 +18,26 @@ const AddEnterpriseCard = () => {
     defaultValues: {
       name: '',
       abn: '',
-      industrySector: '',
       numEmployees: '', // Change default value to empty string
       website: '',
-      address: '',
-      revenue: '', // Change default value to empty string
-      valuation: '', // Change default value to empty string
-      establishedDate: '', // Change default value to empty string
+      suburb: '',
+      postCode: '', // Change default value to empty string
+      sme: '', // Change default value to empty string
+      manufacturer: '', // Change default value to empty string
+      growthPotential: '',
+      description:'',
     }
   });
-  
+  //get random number for numemployee and growth
+  const getRandomNumberInRange = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+
   const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  //processing data for csv
   const processDataFromCsv = (csvData:any) => {
     Papa.parse(csvData, {
       complete: (result:any) => {
@@ -43,22 +52,41 @@ const AddEnterpriseCard = () => {
     });
   };
   const sendCsvDataToBackend = async (csvData: any) => {
-    
+    const convertToBoolean = (value: any) => {
+      if (typeof value === 'string') {
+        if (value.toLowerCase() === 'yes') {
+          return true;
+        } else if (value.toLowerCase() === 'no') {
+          return false;
+        }
+      }
+      return null; // In case the value is neither 'yes' nor 'no' or not a string
+    };
+    const getRandomNumberInRange = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
     try {
-      const enterprises = csvData.slice(1).map((row: any) => {
-        console.log(row)
+      const enterprises = csvData.map((row: any) => {
+        console.log(row);
+        const sme = convertToBoolean(row[2]);
+        const manufacturer = convertToBoolean(row[3])
+        const abn = row[1] ? row[1].replace(/\s+/g, '') : undefined;
+        console.log(row[2])
         return {
         
-          name: row[1], // Adjust index to match the position of the name column
-          abn: row[2], // Adjust index to match the position of the ABN column
-          industrySector: row[3], // Adjust index to match the position of the industrySector column
-          numEmployees: row[4] ? parseInt(row[4]) : null, // Adjust index to match the position of the numEmployees column
-          website: row[5], // Adjust index to match the position of the website column
-          address: row[6],
-          revenue: row[7] ? parseInt(row[7]) : null,
-          valuation: row[8] ? parseInt(row[8]) : null,
-          establishedDate: row[9] ? new Date(row[9]) : null, // Adjust index to match the position of the establishedDate column
-        }
+          name: row[0], 
+          abn: abn,
+
+          
+          sme:sme, 
+          manufacturer: manufacturer,
+          website: row[4], 
+          suburb: row[5],
+          postCode: row[6] ? parseInt(row[6]) : null,
+          description: row[7],
+          numEmployees: sme ? getRandomNumberInRange(1, 250) : null,
+          growthPotential: getRandomNumberInRange(1, 100)
+        };
       });
   
       for (const enterprise of enterprises) {
@@ -119,12 +147,11 @@ const AddEnterpriseCard = () => {
     setIsLoading(true);
   
     try {
-      data.numEmployees = parseInt(data.numEmployees);
-  data.revenue = parseInt(data.revenue);
-  data.valuation = parseInt(data.valuation);
-      // Convert establishedDate to a Date object
-      data.establishedDate = new Date(data.establishedDate);
-  
+      data.postCode = data.postCode ? parseInt(data.postCode, 10) : null;
+      data.numEmployees = data.sme ? getRandomNumberInRange(1, 250) : null;
+      data.growthPotential= getRandomNumberInRange(1, 100);
+      data.manufacturer = data.manufacturer !== "" ? data.manufacturer : false;
+      data.sme = data.sme !== "" ? data.sme : false;
       const res = await createEnterprise(data);
       console.log("API Response:", res);
       setIsLoading(false);
@@ -135,6 +162,9 @@ const AddEnterpriseCard = () => {
       }
   
       toast.success("Enterprise created successfully");
+      if (formRef.current) {
+        formRef.current.reset!();
+      }
     } catch (error) {
       console.error("Error occurred during form submission:", error);
       setIsLoading(false);
@@ -150,7 +180,7 @@ const AddEnterpriseCard = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleFormSubmit} className="mt-8">
+      <form ref={formRef} onSubmit={handleFormSubmit} className="mt-8">
         <div className='flex'>
 
         <h2 className="text-xl font-bold mb-4">Add New Enterprise</h2>
@@ -168,33 +198,30 @@ const AddEnterpriseCard = () => {
             <Input type="text" {...methods.register('abn')} required />
           </FormItem>
           <FormItem>
-            <FormLabel>Industry Sector:</FormLabel>
-            <Input type="text" {...methods.register('industrySector')} />
+            <FormLabel>Is SME:</FormLabel>
+            <Input type="checkbox" {...methods.register('sme')} />
           </FormItem>
           <FormItem>
-            <FormLabel>Number of Employees:</FormLabel>
-            <Input type="number" {...methods.register('numEmployees')} />
+            <FormLabel>Manufacturer:</FormLabel>
+            <Input type="checkbox" {...methods.register('manufacturer')} />
           </FormItem>
           <FormItem>
             <FormLabel>Website:</FormLabel>
             <Input type="text" {...methods.register('website')} />
           </FormItem>
           <FormItem>
-            <FormLabel>Address:</FormLabel>
-            <Input type="text" {...methods.register('address')} />
+            <FormLabel>Suburb:</FormLabel>
+            <Input type="text" {...methods.register('suburb')} />
           </FormItem>
           <FormItem>
-            <FormLabel>Revenue:</FormLabel>
-            <Input type="number" {...methods.register('revenue')} />
+            <FormLabel>postCode:</FormLabel>
+            <Input type="number" {...methods.register('postCode')} />
           </FormItem>
           <FormItem>
-            <FormLabel>Valuation:</FormLabel>
-            <Input type="number" {...methods.register('valuation')} />
+            <FormLabel>Description:</FormLabel>
+            <Input type="text" {...methods.register('description')} />
           </FormItem>
-          <FormItem>
-            <FormLabel>Established Date:</FormLabel>
-            <Input type="date" {...methods.register('establishedDate')} />
-          </FormItem>
+          
           <Button className="mt-10 w-1/3"type="submit" loading={isLoading}>Add Enterprise</Button>
         </div>
       </form>

@@ -29,10 +29,6 @@ export const Enterprises: CollectionConfig = {
       unique: true,
     },
     {
-      name: "industrySector",
-      type: "text",
-    },
-    {
       name: "numEmployees",
       type: "number",
     },
@@ -41,20 +37,28 @@ export const Enterprises: CollectionConfig = {
       type: "text",
     },
     {
-      name: "address",
+      name: "suburb",
+      type: "text",
+    },
+    {
+      name: "postCode",
+      type: "number",
+    },
+    {
+      name: "sme",
+      type: "checkbox",
+    },
+    {
+      name: "manufacturer",
+      type: "checkbox",
+    },
+    {
+      name: "growthPotential",
+      type: "number",
+    },
+    {
+      name: "description",
       type: "textarea",
-    },
-    {
-      name: "revenue",
-      type: "number",
-    },
-    {
-      name: "valuation",
-      type: "number",
-    },
-    {
-      name: "establishedDate",
-      type: "date",
     },
   ],
 };

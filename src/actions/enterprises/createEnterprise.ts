@@ -29,13 +29,15 @@ export const createEnterprise = async (
       data: {
         name: validationResult.data.name! || "", 
         abn: validationResult.data.abn,
-        industrySector: validationResult.data.industrySector,
-        numEmployees: validationResult.data.numEmployees,
+        numEmployees: validationResult.data.numEmployees,//math random
         website: validationResult.data.website,
-        address: validationResult.data.address,
-        revenue: validationResult.data.revenue,
-        valuation: validationResult.data.valuation,
-        establishedDate: validationResult.data.establishedDate ? validationResult.data.establishedDate.toISOString() : undefined,
+        suburb: validationResult.data.suburb,
+        postCode: validationResult.data.postCode,
+        sme: validationResult.data.sme,
+        manufacturer: validationResult.data.manufacturer,
+        growthPotential: validationResult.data.growthPotential,
+        description: validationResult.data.description,
+        
       },
     });
 
