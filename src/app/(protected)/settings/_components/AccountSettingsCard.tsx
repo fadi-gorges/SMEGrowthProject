@@ -89,7 +89,13 @@ const AccountSettingsCard = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { organisation } = await getOrganisation();
+        const res = await getOrganisation();
+
+        if (!res.success) {
+          return
+        }
+
+        const { organisation } = res;
         setUserOrganisation({
           name: organisation?.name,
           members: organisation?.members,
