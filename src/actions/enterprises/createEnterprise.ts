@@ -27,7 +27,7 @@ export const createEnterprise = async (
     const enterprise = await payload.create({
       collection: "enterprises",
       data: {
-        name: validationResult.data.name,
+        name: validationResult.data.name! || "", 
         abn: validationResult.data.abn,
         industrySector: validationResult.data.industrySector,
         numEmployees: validationResult.data.numEmployees,
