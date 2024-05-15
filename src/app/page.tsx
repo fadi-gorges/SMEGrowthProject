@@ -7,6 +7,7 @@ import Testimonials from '@/components/Testimonials';
 import Image from "next/image";
 import React from 'react';
 
+import backgroundImage from 'public/images/hc3.gif';
 export const metadata: Metadata = {
   title: "AusBizGrowth",
   description: "",
@@ -18,55 +19,46 @@ const HomePage = async () => {
   if (user) redirect("/dashboard");
 
   return (
+    
     <Main>
+   
       
         <title>Home | SME Growth Platform</title>
         <meta name="description" content="Discover high-growth potential Australian businesses." />
-      
-
-
-      {/* Hero Section 
-        <div className="hero-gradient text-center py-48 px-4">
-        
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Find Australian businesses with high growth potential.</h1>
-        <p className="text-xl mb-6">Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?</p>
-        <button className="bg-blue-600 text-white font-bold py-2 px-8 rounded hover:bg-blue-700 transition-colors">Get Started </button>
-      </div>
-    */}
-
-      
-      <div className="text-center py-48 px-4">
-        <span className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-teal-500 text-pretty">Find Australian businesses with high growth potential.</span>
-        <p className="text-pretty text-xl my-8">Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?</p>
-        <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">Get Started</button>
+        <div className="relative bg-cover bg-center bg-no-repeat rounded-lg " style={{ backgroundImage: `url(${backgroundImage.src})` }}>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
+        <div className="relative text-center py-48 px-4">
+          <span className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 bg-clip-text text-gray-900 text-pretty">
+            Find Australian businesses with high growth potential.
+          </span>
+          <p className="text-pretty text-xl my-8 text-gray-600">
+            Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?
+          </p>
+          <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">
+            Get Started &#8594;
+          </button>
+        </div>
       </div>
       
-       {/* Hero Section 
-      <div className="hero-gradient text-center py-48 px-4">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900">Find Australian businesses with high growth potential.</h1>
-        <p className="mt-4 text-lg md:text-xl text-gray-700">Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?</p>
-        <button className="mt-8 bg-blue-600 text-white font-bold py-2 px-8 rounded hover:bg-blue-700 transition-colors">Get Started</button>
-      </div>
-     Dark Text */}
+    
+   
 
 
        {/* Statistics Section */}
        
-      <div className="flex justify-center mt-20">
-  <div className="w-1/2">
+       <div className="flex flex-col md:flex-row justify-center mt-20">
+  <div className="w-full md:w-1/2 mb-8 md:mb-0">
     <div className="flex flex-col items-center">
-      <h1 style={{ color: '#3563E9', fontFamily: 'Rubik, sans-serif'}} className="font-bold text-8xl">150,000</h1>
-      <h5 className="text-center text-gray-500">Tracking High Growth Potential<br/> SME’s in New South Wales</h5>
+      <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ color: '#3563E9', fontFamily: 'Rubik, sans-serif' }}>150,000</h1>
+      <h5 className="text-center text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">Tracking High Growth Potential<br/> SME’s in New South Wales</h5>
     </div>
   </div>
-  <div className="absolute left-0 h-40 bg-gray-200" style={{ width: '2px', left: '50%', transform: 'translateX(-50%)' }}></div>
-  <div className="w-1/2">
+  <div className="w-full md:w-1/2 mb-8 md:mb-0">
     <div className="flex flex-col items-center">
-      <h1 style={{ color: '#3563E9', fontFamily: 'Rubik, sans-serif'}} className="font-bold text-8xl ">2,356</h1>
-      <h5 className="text-center text-gray-500 mb-40">High Growth Potential SMEs <br/> Identified in New South Wales</h5>
+      <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ color: '#3563E9', fontFamily: 'Rubik, sans-serif' }}>2,356</h1>
+      <h5 className="text-center text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-8 md:mb-40">High Growth Potential SMEs <br/> Identified in New South Wales</h5>
     </div>
   </div>
-  
 </div>
 
 
@@ -99,3 +91,19 @@ const HomePage = async () => {
 };
 
 export default HomePage;
+
+ 
+/* <div className="text-center py-48 px-4">
+        <span className="text-pretty text-4xl md:text-5xl lg:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-teal-500 ">Find Australian businesses with high growth potential.</span>
+        <p className="text-pretty text-xl my-8">Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?</p>
+        <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">Get Started   &#8594;</button>
+      </div>
+      
+       
+        <div className="hero-gradient text-center py-48 px-4">
+        
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Find Australian businesses with high growth potential.</h1>
+        <p className="text-xl mb-6">Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?</p>
+        <button className="bg-blue-600 text-white font-bold py-2 px-8 rounded hover:bg-blue-700 transition-colors">Get Started </button>
+      </div> */
+      
