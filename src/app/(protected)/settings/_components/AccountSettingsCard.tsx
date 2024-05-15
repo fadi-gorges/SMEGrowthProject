@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
   SelectContent,
+  SelectItem,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
@@ -41,7 +42,6 @@ import {
 import { Organisation } from "@/payload-types";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SelectItem } from "@radix-ui/react-select";
 import { User2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -83,6 +83,8 @@ const AccountSettingsCard = () => {
       userType: user?.userType || undefined,
     },
   });
+
+  console.log(updateUserForm.getValues("userType"));
 
   useEffect(() => {
     (async () => {
@@ -307,30 +309,33 @@ const AccountSettingsCard = () => {
                 <FormField
                   control={updateUserForm.control}
                   name="userType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>User Type</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={"industry"}
-                        required
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {Object.entries(userTypes).map(([key, value]) => (
-                            <SelectItem key={key} value={value}>
-                              {key}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    console.log(field.value);
+                    return (
+                      <FormItem>
+                        <FormLabel>User Type</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          required
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a user type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {Object.entries(userTypes).map(([key, value]) => (
+                              <SelectItem key={key} value={value}>
+                                {key}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
               </div>
             </div>
@@ -394,7 +399,8 @@ const AccountSettingsCard = () => {
               <div className="flex flex-col gap-2">
                 <h3 className="text-lg font-medium leading-6">Unsubscribe</h3>
                 <small className="text-muted-foreground">
-                  To unsubscribe, please click the &quot;unsubscribe&quot; button.
+                  To unsubscribe, please click the &quot;unsubscribe&quot;
+                  button.
                 </small>
               </div>
               <Button

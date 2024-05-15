@@ -35,6 +35,7 @@ export const updateUser = async (body: FormData): ActionResponse => {
       lastName: validation.data.lastName,
       jobTitle: validation.data.jobTitle,
       mobileNumber: validation.data.mobileNumber,
+      userType: validation.data.userType,
     },
   });
 

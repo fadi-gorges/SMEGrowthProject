@@ -39,7 +39,6 @@ export const updateUserSchema = z.object({
     .string()
     .refine(validator.isMobilePhone, "Please enter a valid phone number"),
   userType: z.nativeEnum(userTypes),
-  organisation: z.string().trim(),
 });
 
 export type UpdateUserData = z.infer<typeof updateUserSchema>;
