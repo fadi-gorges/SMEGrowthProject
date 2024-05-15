@@ -1,15 +1,15 @@
 import * as z from 'zod';
 
 export const enterpriseSchema = z.object({
-  name: z.string().min(1).max(255).optional(),
-  abn: z.string().length(11).optional(),
-  industrySector: z.string().min(1).max(255).optional(),
-  numEmployees: z.number().int().positive().optional(),
-  website: z.string().url().optional(),
-  address: z.string().min(1).max(255).optional(),
-  revenue: z.number().int().positive().optional(),
-  valuation: z.number().int().positive().optional(),
-  establishedDate: z.date().optional(),
+  name: z.string().nullable(),
+  abn: z.string().length(11).nullable(),
+  industrySector: z.string().nullable(),
+  numEmployees: z.number().int().positive().nullable(),
+  website: z.string().url().nullable(),
+  address: z.string().nullable(),
+  revenue: z.number().int().positive().nullable(),
+  valuation: z.number().int().positive().nullable(),
+  establishedDate: z.date().nullable(),
 });
 
 export type EnterpriseData = z.infer<typeof enterpriseSchema>;
