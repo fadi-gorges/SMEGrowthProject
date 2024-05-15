@@ -8,6 +8,7 @@ import Image from "next/image";
 import React from 'react';
 
 import backgroundImage from 'public/images/hc3.gif';
+
 export const metadata: Metadata = {
   title: "AusBizGrowth",
   description: "",
