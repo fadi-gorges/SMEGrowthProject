@@ -33,13 +33,8 @@ const Users: CollectionConfig = {
   },
   auth: {
     verify: {
-      generateEmailHTML: ({ token, user }) => {
-        return `
-          <h1 style="margin-bottom: 16px;">Verify your email</h1>
-          <p style="margin-bottom: 8px;">Hi ${user.email},</p>
-          <p style="margin-bottom: 16px;">Click the button below to verify your email address:</p>
-          <a href="${getUrl()}/auth/verify/${token}" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Verify your email</a>
-        `;
+      generateEmailHTML: () => {
+        return "There was an error in your signup process. Please try again.";
       },
     },
     forgotPassword: {
@@ -62,6 +57,7 @@ const Users: CollectionConfig = {
       },
     },
   },
+  timestamps: true,
   fields: [
     {
       name: "roles",
@@ -98,28 +94,86 @@ const Users: CollectionConfig = {
       required: true,
     },
     {
-      name: "picture",
-      type: "upload",
-      relationTo: "profilePictures",
-      required: true,
+      name: "mobileNumber",
+      type: "text",
     },
     {
       name: "jobTitle",
       type: "text",
-      required: true,
     },
     {
       name: "organisation",
-      type: "text",
-      required: true,
+      type: "relationship",
+      relationTo: "organisations",
     },
     {
-      name: "mobileNumber",
-      type: "text",
-      required: true,
+      name: "userType",
+      type: "select",
+      options: [
+        {
+          label: "University",
+          value: "university",
+        },
+        {
+          label: "VET",
+          value: "vet",
+        },
+        {
+          label: "RTO",
+          value: "rto",
+        },
+        {
+          label: "Non-Profit",
+          value: "non-profit",
+        },
+        {
+          label: "Government Agency",
+          value: "government",
+        },
+        {
+          label: "R&D Institute",
+          value: "rdi",
+        },
+        {
+          label: "Industry Group/Assoc",
+          value: "industry",
+        },
+      ],
+    },
+    {
+      name: "notificationFrequency",
+      type: "select",
+      options: [
+        {
+          label: "Off",
+          value: "off",
+        },
+        {
+          label: "Daily",
+          value: "daily",
+        },
+        {
+          label: "Weekly",
+          value: "weekly",
+        },
+      ],
+      defaultValue: "off",
+    },
+    {
+      name: "signupComplete",
+      type: "checkbox",
+      admin: {
+        hidden: true,
+      },
+    },
+    {
+      name: "paymentSuccessful",
+      type: "checkbox",
+      admin: {
+        hidden: true,
+      },
     },
   ],
-  timestamps: true,
 };
 
 export default Users;

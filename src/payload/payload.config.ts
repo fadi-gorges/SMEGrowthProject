@@ -1,7 +1,6 @@
 import { webpackBundler } from "@payloadcms/bundler-webpack";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { cloudStorage } from "@payloadcms/plugin-cloud-storage";
-import { s3Adapter } from "@payloadcms/plugin-cloud-storage/s3";
 import { slateEditor } from "@payloadcms/richtext-slate";
 import dotenv from "dotenv";
 import path from "path";
@@ -10,7 +9,10 @@ import { Icons } from "../components/Icons";
 import ReturnToSite from "../components/admin/ReturnToSite";
 import { getUrl } from "../lib/utils/getUrl";
 import Users from "../payload/collections/Users";
-import { ProfilePictures } from "./collections/ProfilePictures";
+import { Engagements } from "./collections/Engagements";
+import { Enterprises } from "./collections/Enterprises";
+import { Organisations } from "./collections/Organisations";
+import { SearchProfiles } from "./collections/SearchProfiles";
 
 const mockModulePath = path.resolve(__dirname, "./emptyModuleMock.js");
 
@@ -18,7 +20,6 @@ dotenv.config({
   path: path.resolve(__dirname, "../../.env"),
 });
 
-// TODO: CUSTOMISE PAYLOAD MORE!
 export default buildConfig({
   serverURL: getUrl(),
   db: mongooseAdapter({
@@ -54,7 +55,7 @@ export default buildConfig({
       };
     },
   },
-  collections: [Users, ProfilePictures],
+  collections: [Users, Organisations, Enterprises, Engagements, SearchProfiles],
   globals: [
     // Your globals here
   ],
@@ -68,25 +69,7 @@ export default buildConfig({
   graphQL: {
     disable: true,
   },
-  plugins: [
-    cloudStorage({
-      collections: {
-        profilePictures: {
-          // Create the S3 adapter
-          adapter: s3Adapter({
-            config: {
-              region: process.env.S3_REGION,
-              credentials: {
-                accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-              },
-            },
-            bucket: process.env.NEXT_PUBLIC_S3_BUCKET!,
-          }),
-        },
-      },
-    }),
-  ],
+  plugins: [],
   cors: [getUrl()].filter(Boolean),
   csrf: [getUrl()].filter(Boolean),
 });

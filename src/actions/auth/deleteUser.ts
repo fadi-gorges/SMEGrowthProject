@@ -1,11 +1,9 @@
 "use server";
-import { ActionError } from "@/lib/utils/actionError";
+import { ActionResponse } from "@/lib/utils/actionResponse";
 import { getServerUser } from "@/lib/utils/getServerUser";
 import getPayloadClient from "@/payload/payloadClient";
 
-export const deleteUser = async (): Promise<
-  { success: true } | ActionError
-> => {
+export const deleteUser = async (): ActionResponse => {
   const user = await getServerUser();
   if (!user) {
     return { success: false, error: "Unauthorized" };
@@ -17,8 +15,6 @@ export const deleteUser = async (): Promise<
     collection: "users",
     id: user.id,
   });
-
-  // TODO: Send user deletion alert email
 
   return { success: true };
 };

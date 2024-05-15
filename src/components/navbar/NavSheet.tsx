@@ -1,4 +1,4 @@
-import type { NavLinkItem } from "@/components/navbar/NavLink";
+import type { NavLinkItem } from "@/components/navbar/Navbar";
 import { navLinks } from "@/components/navbar/Navbar";
 import { sidebarLinks } from "@/components/sidebar/Sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +14,7 @@ import {
 import { cn } from "@/lib/utils/cn";
 import { useLinkActive } from "@/lib/utils/useLinkActive";
 import { useAuth } from "@/providers/auth";
-import { LogInIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import { LogOutIcon, MenuIcon, UserPlus2Icon } from "lucide-react";
 import Link from "next/link";
 import { AnchorHTMLAttributes } from "react";
 
@@ -35,9 +35,7 @@ export const SheetLink = ({
         href={link.link}
         className={cn(
           "flex justify-start items-center gap-4",
-          isActive
-            ? "text-primary dark:text-foreground font-bold"
-            : "text-muted-foreground",
+          isActive ? "font-bold" : "text-muted-foreground",
           className
         )}
         {...props}
@@ -86,9 +84,8 @@ const NavSheet = ({
           {user ? (
             <>
               <SheetLink link={sidebarLinks.dashboard} />
-              <SheetLink link={sidebarLinks.simpleSearch} />
-              <SheetLink link={sidebarLinks.advancedSearch} />
-              <SheetLink link={sidebarLinks.editBusiness} />
+              <SheetLink link={sidebarLinks.search} />
+              <SheetLink link={sidebarLinks.manageProfiles} />
               <SheetLink link={sidebarLinks.notifications} alertCount={6} />
               <SheetLink link={sidebarLinks.settings} />
               {isAdmin && <SheetLink link={navLinks.admin} />}
@@ -97,17 +94,18 @@ const NavSheet = ({
             <>
               <SheetLink link={navLinks.home} />
               <SheetLink link={navLinks.about} />
+              <SheetLink link={navLinks.login} />
             </>
           )}
         </div>
         {!user ? (
           <SheetClose asChild>
             <Link
-              href="/auth"
+              href="/auth/signup"
               className={cn(buttonVariants({ variant: "default" }), "w-full")}
             >
-              <LogInIcon size={20} />
-              <h6>Log in</h6>
+              <UserPlus2Icon size={20} />
+              <h6>Sign up</h6>
             </Link>
           </SheetClose>
         ) : (
