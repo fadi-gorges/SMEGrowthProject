@@ -75,6 +75,7 @@ export interface Enterprise {
   establishedDate?: string | null;
   about?: string | null;
   growthPotential?: number | null;
+  location?: string | null;
   updatedAt: string;
   createdAt: string;
 }

@@ -37,7 +37,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { link } from "fs";
-
 import { useRouter } from "next/navigation";
 import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
 import { Enterprise } from "@/payload-types";
@@ -59,7 +58,9 @@ const populateBusinessesFromServer = async () =>{
       about: enterprise.about,
       growthPotential: enterprise.growthPotential,
       updatedAt: enterprise.updatedAt,
-      createdAt: enterprise.createdAt
+      createdAt: enterprise.createdAt,
+      website: enterprise.website,
+      location: enterprise.location
 
     }));
     console.log('Businesses populated:', businesses);
@@ -73,13 +74,14 @@ const populateBusinessesFromServer = async () =>{
 var businesses: Enterprise[] = [];
 
   
-type StaffRangeKey = "1-10" | "10-50" | "50-100" | "100-200" | ">200" |"Any";
+type StaffRangeKey = "1-10" | "10-50" | "50-100" | "100-200" | ">250" |"<250" |"Any";
 const staffRanges: Record<StaffRangeKey, [number, number]>   = {
   "1-10": [1, 10],
   "10-50": [10, 50],
   "50-100": [50, 100],
-  "100-200": [100, 200],
-  ">200": [200, Infinity],
+  "100-200": [100, 200],  
+  ">250": [250, Infinity],
+  "<250": [0,250],
   "Any":[0,Infinity]
 };
 type GrowthPotentialRangeKey = "0-25" | "25-50" | "50-75" | "75-100" | "Any";
@@ -90,7 +92,7 @@ const growthPotentialRanges: Record<GrowthPotentialRangeKey, [number, number]> =
   "75-100": [75, 100],
   "Any": [0, 100]
 };
-const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture"];
+const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture", "Manufacturing","Construction"];
 const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
   const [min, max] = staffRanges[range];
   return count >= min && count <= max;
@@ -197,8 +199,9 @@ const SearchCard = () => {
                   <SelectItem value="1-10">1-10</SelectItem>
                   <SelectItem value="10-50">10-50</SelectItem>
                   <SelectItem value="50-100">50-100</SelectItem>
-                  <SelectItem value="100-200">100-200</SelectItem>
-                  <SelectItem value=">200">Over 200</SelectItem>
+                  <SelectItem value="100-250">100-200</SelectItem>
+                  <SelectItem value="<250">Less than 250</SelectItem>
+                  <SelectItem value=">250">Over 250</SelectItem>
                 </SelectGroup>
               </SelectContent>  
             </Select>
@@ -221,7 +224,7 @@ const SearchCard = () => {
             <Button onClick={resetSearch}>
           Reset<RefreshCcwIcon />
             </Button>
-            <Button type ="button" className="Save Search mt-8 ">Save Search Settings</Button>
+            <Button type ="button" className="Save Search mt-8 ">Save Search Profile</Button>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
@@ -251,6 +254,7 @@ const SearchCard = () => {
                     <DialogContent>
                     <DialogHeader><DialogTitle>About {business.name}</DialogTitle></DialogHeader>
                     <div>Contact: {business.contact}</div>
+                    <div>Website: {business.website}</div>
                     <div>{business.about}</div>
                     </DialogContent>
                   </Dialog>

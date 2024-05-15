@@ -63,6 +63,10 @@ export const Enterprises: CollectionConfig = {
     {
       name: "growthPotential",
       type: "number"
+    },
+    {
+      name: "location",
+      type: "textarea"
     }
   ],
 };
