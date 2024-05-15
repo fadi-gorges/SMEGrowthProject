@@ -87,14 +87,14 @@ const AboutPage = () => {
 
 </section>
 
-      <section className="bg-white py-8 px-4">
-        <div className="text-center mx-auto max-w-4xl">
-          <h2 className="text-2xl font-bold mb-4">With your interest...</h2>
-          <p className="text-sm sm:text-base">
-            With your interest and support the continuation of this story hopefully results in the final build of a commercially robust platform that over time will be used by many organisations seeking to engage with high growth potential SMEs. A platform that will generate sufficient revenue to self-fund continuous improvement, user support and maintenance.
-          </p>
-        </div>
-      </section>
+<section className="py-4 bg-white mt-0">
+  <div className="text-center px-4">
+    <h2 className="text-2xl font-bold">With your interest...</h2>
+    <p className="mt-2 text-sm sm:text-base text-gray-600">
+      With your interest and support, the continuation of this story hopefully results in the final build of a commercially robust platform that over time will be used by many organisations seeking to engage with high growth potential SMEs. A platform that will generate sufficient revenue to self-fund continuous improvement, user support and maintenance.
+    </p>
+  </div>
+</section>
     </Main>
   );
 };

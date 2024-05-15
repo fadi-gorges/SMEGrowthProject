@@ -41,7 +41,7 @@ export function MeetOurTeamCarousel() {
     ];
 
     return (
-        <div style={{ position: 'relative', marginBottom: '120px' }} ref={carouselRef}>
+        <div style={{ position: 'relative', marginBottom: '40px' }} ref={carouselRef}> {/* Reduced margin-bottom */}
             <Carousel opts={{ align: "start" }} className="w-full">
                 <CarouselContent>
                     {teamMembers.map((member, index) => (
@@ -94,6 +94,5 @@ export function MeetOurTeamCarousel() {
                 </p>
             </div>
         </div>
-       
     );
 }
