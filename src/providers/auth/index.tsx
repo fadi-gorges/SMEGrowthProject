@@ -63,7 +63,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
 
-    console.log(user?.organisation);
+    // console.log(user?.organisation);
 
     const response = await fetch(
       `${getUrl()}/api/organisations/${user?.organisation}`
@@ -78,7 +78,7 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     setUser({
       ...user,
-      organisation: organisation!.name,
+      organisation: organisation.name,
     });
 
     // if (!user) return;

@@ -1,6 +1,8 @@
 "use client";
 import { deleteUser } from "@/actions/auth/deleteUser";
 import { updateUser } from "@/actions/auth/updateUser";
+import { getOrganisation } from "@/actions/organisations/readOrganisation";
+import { updateOrganisation } from "@/actions/organisations/updateOrganisation";
 import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -36,12 +38,13 @@ import {
   updateUserSchema,
   userTypes,
 } from "@/lib/validations/auth/updateUserSchema";
+import { Organisation } from "@/payload-types";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SelectItem } from "@radix-ui/react-select";
 import { User2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -57,6 +60,16 @@ const AccountSettingsCard = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const [unsubscribeDialogOpen, setUnsubscribeDialogOpen] = useState(false);
+  const [isUnsubscribing, setIsUnsubscribing] = useState(false);
+
+  const [userOrganisation, setUserOrganisation] = useState<
+    Omit<Organisation, "id" | "createdAt" | "updatedAt">
+  >({
+    name: "",
+    members: [],
+  });
+
   const updateUserForm = useForm<UpdateUserData>({
     resolver: zodResolver(updateUserSchema),
     disabled: isLoading,
@@ -68,11 +81,22 @@ const AccountSettingsCard = () => {
       jobTitle: user?.jobTitle || "",
       mobileNumber: user?.mobileNumber || "",
       userType: user?.userType || undefined,
-      organisation: (user?.organisation as unknown as string) || "",
     },
   });
 
-  console.log(updateUserForm.getValues());
+  useEffect(() => {
+    (async () => {
+      try {
+        const { organisation } = await getOrganisation();
+        setUserOrganisation({
+          name: organisation?.name,
+          members: organisation?.members,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    })().then();
+  }, []);
 
   // const onPictureChange = async (
   //   field: ControllerRenderProps<UpdateUserData, "picture">,
@@ -109,6 +133,12 @@ const AccountSettingsCard = () => {
 
     try {
       const res = await updateUser(body);
+
+      await updateOrganisation({
+        name: userOrganisation?.name,
+        members: userOrganisation?.members,
+      });
+
       setIsLoading(false);
 
       if (!res.success) {
@@ -147,6 +177,10 @@ const AccountSettingsCard = () => {
       setIsDeleting(false);
       toast.error("An error occurred. Please try again.");
     }
+  };
+
+  const handleUnsubscribe = async () => {
+    // Logic to handle unsubscribe
   };
 
   if (!user) return null;
@@ -249,17 +283,21 @@ const AccountSettingsCard = () => {
                   )}
                 />
                 <FormField
-                  control={updateUserForm.control}
                   name="organisation"
-                  render={({ field }) => (
+                  render={() => (
                     <FormItem>
-                      <FormLabel>Organisation</FormLabel>
+                      <FormLabel>Organisation Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Organisation"
-                          autoComplete="organization"
-                          required
-                          {...field}
+                          type="text"
+                          placeholder={"Input user organisation"}
+                          value={userOrganisation?.name}
+                          onChange={(e) => {
+                            setUserOrganisation((prevState) => ({
+                              name: e.target.value,
+                              members: prevState?.members,
+                            }));
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -268,18 +306,28 @@ const AccountSettingsCard = () => {
                 />
                 <FormField
                   control={updateUserForm.control}
-                  name="jobTitle"
+                  name="userType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Job Title</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder={user.jobTitle || ""}
-                          required
-                          {...field}
-                        />
-                      </FormControl>
+                      <FormLabel>User Type</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={"industry"}
+                        required
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {Object.entries(userTypes).map(([key, value]) => (
+                            <SelectItem key={key} value={value}>
+                              {key}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -327,7 +375,7 @@ const AccountSettingsCard = () => {
                 Delete Account
               </Button>
               <ResponsiveAlertDialog
-                title="Are you sure?"
+                title="Delete Account"
                 description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
                 open={deleteDialogOpen}
                 setOpen={setDeleteDialogOpen}
@@ -338,6 +386,36 @@ const AccountSettingsCard = () => {
                   onClick={handleDeleteUser}
                 >
                   Delete Account
+                </Button>
+              </ResponsiveAlertDialog>
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between gap-6">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-lg font-medium leading-6">Unsubscribe</h3>
+                <small className="text-muted-foreground">
+                  To unsubscribe, please click the &quot;unsubscribe&quot; button.
+                </small>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setUnsubscribeDialogOpen(true)}
+              >
+                Unsubscribe
+              </Button>
+              <ResponsiveAlertDialog
+                title="Unsubscribe"
+                description="This action cannot be undone. This will remove your subscription."
+                open={unsubscribeDialogOpen}
+                setOpen={setUnsubscribeDialogOpen}
+              >
+                <Button
+                  variant="destructive"
+                  loading={isUnsubscribing}
+                  onClick={handleUnsubscribe}
+                >
+                  Unsubscribe
                 </Button>
               </ResponsiveAlertDialog>
             </div>

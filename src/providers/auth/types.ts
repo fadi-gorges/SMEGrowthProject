@@ -1,6 +1,6 @@
-import { User } from "@/payload-types";
+import { Organisation, User } from "@/payload-types";
 
-// export type FullUser = User & { picture?: ProfilePicture };
+export type FullUser = User & { organisation: string };
 
 export type IsAdmin = boolean;
 
@@ -26,7 +26,7 @@ export interface AuthContext {
   // userPicture?: ProfilePicture | null;
   isAdmin: IsAdmin;
   fetchMe: FetchMe;
-  setUser: (user: User | null) => void;
+  setUser: (user: FullUser | null) => void;
   logout: Logout;
   login: Login;
   // googleLogin: GoogleLogin;
