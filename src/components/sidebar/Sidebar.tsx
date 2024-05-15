@@ -27,6 +27,11 @@ export const sidebarLinks = {
     link: "/profiles",
     icon: TextSearchIcon,
   },
+  addBusiness: {
+    text: "Add Business",
+    link: "/business",
+    icon: Building2Icon,
+  },
   notifications: {
     text: "Notifications",
     link: "/notifications",
@@ -87,11 +92,12 @@ const Sidebar = () => {
   };
 
   return (
-    <nav className="hidden lg:flex flex-col lg:col-span-3 2xl:col-span-2 p-4 border-r bg-muted/40 animate-in slide-in-from-left-full">
+    <nav className="sticky top-16 hidden max-h-[calc(100vh-64px)] lg:flex flex-col lg:col-span-3 2xl:col-span-2 p-4 border-r bg-muted/40 animate-in slide-in-from-left-full">
       <div className="flex-1 flex flex-col gap-1">
         <SidebarLink link={sidebarLinks.dashboard} />
         <SidebarLink link={sidebarLinks.search} />
         <SidebarLink link={sidebarLinks.manageProfiles} />
+        <SidebarLink link={sidebarLinks.addBusiness} />
         <SidebarLink link={sidebarLinks.notifications} alertCount={6} />
         <SidebarLink link={sidebarLinks.settings} />
         {isAdmin && <SidebarLink link={navLinks.admin} />}

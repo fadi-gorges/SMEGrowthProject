@@ -69,7 +69,7 @@ const ResetPasswordForm = ({ className, ...props }: ResetPasswordFormProps) => {
   const passwordFormEl = (
     <Card
       className={cn(
-        "w-full max-w-xl flex flex-col justify-center -translate-y-6",
+        "w-full max-w-xl flex flex-col justify-center -translate-y-4",
         className
       )}
       {...props}

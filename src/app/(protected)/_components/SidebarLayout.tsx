@@ -8,7 +8,7 @@ const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
       <Sidebar />
       <div
         id="page-div"
-        className="col-span-12 lg:col-span-9 2xl:col-span-10 flex flex-col max-h-[calc(100vh-64px)] overflow-auto"
+        className="col-span-12 lg:col-span-9 2xl:col-span-10 flex flex-col"
       >
         {children}
       </div>
