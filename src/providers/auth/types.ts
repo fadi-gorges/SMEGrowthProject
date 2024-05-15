@@ -23,12 +23,10 @@ export type Logout = () => Promise<void>;
 
 export interface AuthContext {
   user?: User | null;
-  // userPicture?: ProfilePicture | null;
   isAdmin: IsAdmin;
   fetchMe: FetchMe;
   setUser: (user: FullUser | null) => void;
   logout: Logout;
   login: Login;
-  // googleLogin: GoogleLogin;
   resetPassword: ResetPassword;
 }

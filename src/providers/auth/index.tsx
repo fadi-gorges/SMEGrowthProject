@@ -17,42 +17,13 @@ import { AuthContext, Login, Logout, ResetPassword } from "./types";
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  return (
-    // <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}>
-    <_AuthProvider>{children}</_AuthProvider>
-    // </GoogleOAuthProvider>
-  );
+  return <_AuthProvider>{children}</_AuthProvider>;
 };
 
 // AuthProvider component
 export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>();
-  // const [userPicture, setUserPicture] = useState<ProfilePicture | null>();
-
-  // useGoogleOneTapLogin({
-  //   onSuccess: ({ credential }) => googleLoginSuccess({ credential }),
-  //   disabled: user !== null,
-  // });
-
-  // const googleLoginSuccess = async ({
-  //   access_token,
-  //   credential,
-  // }: {
-  //   access_token?: string;
-  //   credential?: string;
-  // }) => {
-  //   const res = await googleLoginAction({ access_token, credential });
-
-  //   if (!res.success) return;
-
-  //   setUser(res.user);
-  //   toast.success("You have logged in successfully.");
-  // };
-
-  // const googleLogin: GoogleLogin = useGoogleLogin({
-  //   onSuccess: ({ access_token }) => googleLoginSuccess({ access_token }),
-  // });
 
   const fetchMe = async () => {
     const user = await rest(
@@ -119,12 +90,10 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
     <Context.Provider
       value={{
         user,
-        // userPicture,
         isAdmin,
         fetchMe,
         setUser,
         login,
-        // googleLogin,
         logout,
         resetPassword,
       }}
