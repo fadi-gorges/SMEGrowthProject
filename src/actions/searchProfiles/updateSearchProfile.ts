@@ -36,7 +36,7 @@ export const updateSearchProfile = async (
     },
     data: {
       searchQuery: validation.data.searchQuery,
-      industrySector: validation.data.industrySector,
+      manufacturer: validation.data.manufacturer,
       employeesRange: validation.data.employeesRange,
       postcode: validation.data.postcode,
       growthPotentialRange: validation.data.growthPotentialRange
