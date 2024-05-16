@@ -65,8 +65,8 @@ export const Enterprises: CollectionConfig = {
       type: "number"
     },
     {
-      name: "location",
-      type: "textarea"
+      name: "postcode",
+      type: "number"
     }
   ],
 };

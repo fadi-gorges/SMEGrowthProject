@@ -60,7 +60,7 @@ const populateBusinessesFromServer = async () =>{
       updatedAt: enterprise.updatedAt,
       createdAt: enterprise.createdAt,
       website: enterprise.website,
-      location: enterprise.location
+      postcode: enterprise.postcode
 
     }));
     console.log('Businesses populated:', businesses);
@@ -113,7 +113,8 @@ const SearchCard = () => {
   }, [])
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [openAccordion, setOpenAccordion] = useState("");
-  const [searchQuery, setSearchQuery] = useState(""); // State variable for the search query
+  const [searchQuery, setSearchQuery] = useState("");
+  const [postcodeQuery, setpostcodeQuery] = useState("");
   const [selectedStaffRange, setSelectedStaffRange] = useState<StaffRangeKey | "">("");
   const [selectedSector, setSelectedSector] = useState<string| "">("");
   const [filteredBusinesses, setFilteredBusinesses] = useState<Enterprise[]>(businesses); // State for filtered business list
@@ -121,15 +122,19 @@ const SearchCard = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+  const handlepostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setpostcodeQuery(e.target.value);
+  };
   const performSearch = () => {
     
     const results = businesses.filter((business) => {
       const nameMatch = business.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const postcodeMatch = !postcodeQuery || business.postcode?.toString().includes(postcodeQuery);
       const staffMatch = selectedStaffRange ? isInStaffRange(business.numEmployees!, selectedStaffRange) : true;
       const sectorMatch = selectedSector === "Any" || selectedSector === "" || business.industrySector === selectedSector;
       const growthPotentialMatch = selectedGrowthPotentialRange ? isInGrowthPotentialRange(business.growthPotential!, selectedGrowthPotentialRange) : true;
   
-      return nameMatch && staffMatch && sectorMatch && growthPotentialMatch;
+      return nameMatch && staffMatch && sectorMatch && growthPotentialMatch && postcodeMatch;
     });
     const sortedResults = results.sort((a, b) => b.growthPotential! - a.growthPotential!);
     setFilteredBusinesses(sortedResults); // Update the filtered businesses
@@ -141,6 +146,7 @@ const SearchCard = () => {
     setSelectedStaffRange("");
     setSelectedSector("");
     setSelectedGrowthPotentialRange("");
+    setpostcodeQuery("");
     setFilteredBusinesses(businesses);
     setIsTableVisible(false);
   };
@@ -221,6 +227,14 @@ const SearchCard = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
+            <p>Postcode</p>
+            <Input
+            type="text"
+            placeholder="Search by postcode..."
+            className="w-[180px]"
+            value={postcodeQuery} // Bind the search query state to the input
+            onChange={handlepostcodeChange} // Handle input changes
+          />
             <Button onClick={resetSearch}>
           Reset<RefreshCcwIcon />
             </Button>
@@ -255,6 +269,7 @@ const SearchCard = () => {
                     <DialogHeader><DialogTitle>About {business.name}</DialogTitle></DialogHeader>
                     <div>Contact: {business.contact}</div>
                     <div>Website: {business.website}</div>
+                    <div>Postcode: {business.postcode} </div>
                     <div>{business.about}</div>
                     </DialogContent>
                   </Dialog>
