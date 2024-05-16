@@ -1,6 +1,6 @@
 "use client";
 import { getUrl } from "@/lib/utils/getUrl";
-import { User } from "@/payload-types";
+import { Organisation, User } from "@/payload-types";
 import { checkRole } from "@/payload/collections/Users/checkRole";
 import { usePathname } from "next/navigation";
 import React, {
@@ -12,6 +12,7 @@ import React, {
 } from "react";
 import { rest } from "./rest";
 import { AuthContext, Login, Logout, ResetPassword } from "./types";
+import { setDefaultResultOrder } from "dns";
 
 // Creates auth context with default value as {}
 const Context = createContext({} as AuthContext);
@@ -33,7 +34,28 @@ export const _AuthProvider = ({ children }: { children: React.ReactNode }) => {
         method: "GET",
       }
     );
+
+    // console.log(user?.organisation);
+
+    const response = await fetch(
+      `${getUrl()}/api/organisations/${user?.organisation}`
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(JSON.stringify(error));
+    }
+
+    const organisation = await response.json();
+
     setUser(user);
+
+    // if (!user) return;
+
+    // const res = await fetch(`${getUrl()}/api2/users/me/picture`);
+    // const { picture } = await res.json();
+
+    // setUserPicture(picture);
   };
 
   const isAdmin = useMemo(

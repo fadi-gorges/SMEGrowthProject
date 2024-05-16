@@ -24,7 +24,7 @@ export const navLinks = {
   home: { text: "Home", link: "/", icon: HomeIcon },
   about: { text: "About", link: "/about", icon: InfoIcon },
   admin: { text: "Admin Panel", link: "/admin", icon: LockKeyholeIcon },
-  login: { text: "Log in", link: "/auth/login", icon: LogInIcon },
+  login: { text: "Sign in", link: "/auth/login", icon: LogInIcon },
 };
 
 const hiddenPaths = ["/admin"];
