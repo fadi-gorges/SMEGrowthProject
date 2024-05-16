@@ -42,6 +42,7 @@ import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
 import { Enterprise } from "@/payload-types";
 import { createSearchProfile } from "@/actions/searchProfiles/createSearchProfile";
 import { date } from "zod";
+import { Description } from "@radix-ui/react-toast";
 
 const populateBusinessesFromServer = async () =>{
   try{
@@ -54,15 +55,15 @@ const populateBusinessesFromServer = async () =>{
     const businessesmap = enterprises.map(enterprise => ({
       id: enterprise.id,
       name: enterprise.name,
-      industrySector: enterprise.industrySector,
+      manufacturer: enterprise.manufacturer,
       numEmployees: enterprise.numEmployees,
-      contact: enterprise.contact,
-      about: enterprise.about,
+      suburb: enterprise.suburb,
+      description: enterprise.description,
       growthPotential: enterprise.growthPotential,
       updatedAt: enterprise.updatedAt,
       createdAt: enterprise.createdAt,
       website: enterprise.website,
-      postcode: enterprise.postcode
+      postCode: enterprise.postCode
 
     }));
     console.log('Businesses populated:', businesses);
@@ -94,7 +95,7 @@ const growthPotentialRanges: Record<GrowthPotentialRangeKey, [number, number]> =
   "75-100": [75, 100],
   "Any": [0, 100]
 };
-const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture", "Manufacturing","Construction"];
+const sectors = ["Any","Yes","No"];
 const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
   const [min, max] = staffRanges[range];
   return count >= min && count <= max;
@@ -119,7 +120,7 @@ const SearchCard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [postcodeQuery, setpostcodeQuery] = useState("");
   const [selectedStaffRange, setSelectedStaffRange] = useState<StaffRangeKey | "">("");
-  const [selectedSector, setSelectedSector] = useState<string| "">("");
+  const [selectedSector, setSelectedSector] = useState<string | "">("");
   const [filteredBusinesses, setFilteredBusinesses] = useState<Enterprise[]>(businesses); // State for filtered business list
   const [selectedGrowthPotentialRange, setSelectedGrowthPotentialRange] = useState<GrowthPotentialRangeKey | "">("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -136,9 +137,10 @@ const SearchCard = () => {
     
     const results = businesses.filter((business) => {
       const nameMatch = business.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const postcodeMatch = !postcodeQuery || business.postcode?.toString().includes(postcodeQuery);
+      const postcodeMatch = !postcodeQuery || business.postCode?.toString().includes(postcodeQuery);
       const staffMatch = selectedStaffRange ? isInStaffRange(business.numEmployees!, selectedStaffRange) : true;
-      const sectorMatch = selectedSector === "Any" || selectedSector === "" || business.industrySector === selectedSector;
+      const sectorMatch =
+  selectedSector === "" || selectedSector === undefined || selectedSector === "Any" || business.manufacturer?.toString() === selectedSector;
       const growthPotentialMatch = selectedGrowthPotentialRange ? isInGrowthPotentialRange(business.growthPotential!, selectedGrowthPotentialRange) : true;
   
       return nameMatch && staffMatch && sectorMatch && growthPotentialMatch && postcodeMatch;
@@ -164,11 +166,10 @@ const SearchCard = () => {
     else{
       var postcodeQ: number = +postcodeQuery;
     }
-    
     const data = {
       name: searchProfileName,
       searchQuery: searchQuery,
-      industrySector: selectedSector,
+      manufacturer: selectedSector === "Yes",
       employeesRange: selectedStaffRange,
       growthPotentialRange: selectedGrowthPotentialRange,
       postcode: postcodeQ|| undefined,
@@ -245,10 +246,16 @@ const SearchCard = () => {
               </SelectContent>  
             </Select>
             <Select value={selectedSector}
-              onValueChange={(val) => setSelectedSector(val)}>
-            <p>Industry Sector</p>
+              onValueChange={(val) => {
+                if (val === "Yes" || val === "No") {
+                  setSelectedSector(val);
+                } else {
+                  setSelectedSector("");
+                }
+              }}>
+            <p>Manufacturer</p>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select Sector" />
+                <SelectValue placeholder="Is Manufacturer" />
               </SelectTrigger>
               <SelectContent>
               <SelectGroup>
@@ -278,7 +285,7 @@ const SearchCard = () => {
               <div>Add a name: <Input onChange={handleSearchProfileNameChange}></Input></div>
               <div>Growth Potential: {selectedGrowthPotentialRange}</div>
               <div>Number of Staff: {selectedStaffRange}</div>
-              <div>Industry Sector: {selectedSector}</div>
+              <div>Is Manufacturer: {selectedSector}</div>
               <div>Postcode: {postcodeQuery}</div>
               <div>Search Query: {searchQuery}</div>
               <Button onClick = {makeSearchProfile}>Save</Button>
@@ -294,7 +301,7 @@ const SearchCard = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Sector</TableHead>
+              <TableHead>Is Manufacturer</TableHead>
               <TableHead>Number of Staff</TableHead>
               <TableHead>Growth Potential</TableHead>
               <TableHead>Learn More</TableHead>
@@ -305,17 +312,17 @@ const SearchCard = () => {
             {filteredBusinesses.map((business) => (
               <TableRow key={business.id}>
                 <TableCell>{business.name}</TableCell>
-                <TableCell>{business.industrySector}</TableCell>
+                <TableCell>{business.manufacturer ? "Yes" : "No"}</TableCell>
                 <TableCell>{business.numEmployees}</TableCell>
                 <TableCell>{business.growthPotential}%</TableCell>
                 <TableCell><Dialog>
                     <DialogTrigger asChild><Button variant="link">About</Button></DialogTrigger>
                     <DialogContent>
                     <DialogHeader><DialogTitle>About {business.name}</DialogTitle></DialogHeader>
-                    <div>Contact: {business.contact}</div>
+                    <div>Suburb: {business.suburb}</div>
                     <div>Website: {business.website}</div>
-                    <div>Postcode: {business.postcode} </div>
-                    <div>{business.about}</div>
+                    <div>Postcode: {business.postCode} </div>
+                    <div>{business.description}</div>
                     </DialogContent>
                   </Dialog>
                 </TableCell>

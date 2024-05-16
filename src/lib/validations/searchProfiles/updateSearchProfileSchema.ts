@@ -8,7 +8,7 @@ export const updateSearchProfileSchema = baseSearchProfileSchema
   .refine(
     (data) =>
       data.searchQuery ||
-      data.industrySector?.length ||
+      data.manufacturer ||
       data.employeesRange ||
       data.postcode ||
       data.growthPotentialRange,

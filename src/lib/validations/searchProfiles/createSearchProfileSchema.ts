@@ -3,7 +3,7 @@ import * as z from "zod";
 export const baseSearchProfileSchema = z.object({
   name: z.string(),
   searchQuery: z.string().optional(),
-  industrySector: z.string().optional(),
+  manufacturer: z.boolean().nullable(),
   employeesRange: z.string().optional(),
   postcode: z.number().positive().optional(),
   growthPotentialRange: z.string().optional(),
@@ -13,7 +13,7 @@ export const createSearchProfileSchema = baseSearchProfileSchema
   .refine(
     (data) =>
       data.searchQuery ||
-      data.industrySector ||
+      data.manufacturer ||
       data.employeesRange ||
       data.postcode ||
       data.growthPotentialRange,

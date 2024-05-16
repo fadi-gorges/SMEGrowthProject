@@ -66,16 +66,14 @@ export interface Enterprise {
   id: string;
   name: string;
   abn?: string | null;
-  industrySector?: string | null;
   numEmployees?: number | null;
   website?: string | null;
-  contact?: string | null;
-  revenue?: number | null;
-  valuation?: number | null;
-  establishedDate?: string | null;
-  about?: string | null;
+  suburb?: number | null;
+  description?: string | null;
   growthPotential?: number | null;
-  postcode?: number | null;
+  postCode?: number | null;
+  manufacturer?: boolean | null;
+  sme?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -102,7 +100,7 @@ export interface SearchProfile {
   name: string;
   user: string | User;
   searchQuery?: string | null;
-  industrySector?: string | null;
+  manufacturer?: boolean | null;
   employeesRange?: string | null;
   growthPotentialRange?: string | null;
   postcode?: number | null;

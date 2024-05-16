@@ -31,8 +31,8 @@ export const SearchProfiles: CollectionConfig = {
       type: "text",
     },
     {
-      name: "industrySector",
-      type: "text",
+      name: "manufacturer",
+      type: "checkbox",
     },
     {
       name: "employeesRange",
