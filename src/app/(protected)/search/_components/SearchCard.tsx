@@ -122,6 +122,7 @@ const SearchCard = () => {
   const [selectedSector, setSelectedSector] = useState<string| "">("");
   const [filteredBusinesses, setFilteredBusinesses] = useState<Enterprise[]>(businesses); // State for filtered business list
   const [selectedGrowthPotentialRange, setSelectedGrowthPotentialRange] = useState<GrowthPotentialRangeKey | "">("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -157,20 +158,27 @@ const SearchCard = () => {
     setIsTableVisible(false);
   };
   const makeSearchProfile = async () => {
-    var postcodeQ: number = +postcodeQuery;
+    if(postcodeQuery == ""){
+      var postcodeQ = 0;
+    }
+    else{
+      var postcodeQ: number = +postcodeQuery;
+    }
+    
     const data = {
       name: searchProfileName,
       searchQuery: searchQuery,
       industrySector: selectedSector,
       employeesRange: selectedStaffRange,
       growthPotentialRange: selectedGrowthPotentialRange,
-      postcode: postcodeQ,
+      postcode: postcodeQ|| undefined,
     };
 
     const response = await createSearchProfile(data);
 
     if (response.success) {
       alert('Search profile created successfully');
+      setIsDialogOpen(false);
     } else {
       alert('Error creating search profile: ' + response.error);
     }
@@ -263,7 +271,7 @@ const SearchCard = () => {
             <Button onClick={resetSearch}>
           Reset<RefreshCcwIcon />
             </Button>
-            <Dialog>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild><Button type ="button" className="Save Search mt-8 ">Save Search Profile</Button></DialogTrigger>
             <DialogContent>
               <DialogHeader><DialogTitle>Create Search Profile</DialogTitle></DialogHeader>

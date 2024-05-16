@@ -13,7 +13,7 @@ export const createSearchProfileSchema = baseSearchProfileSchema
   .refine(
     (data) =>
       data.searchQuery ||
-      data.industrySector?.length ||
+      data.industrySector ||
       data.employeesRange ||
       data.postcode ||
       data.growthPotentialRange,
