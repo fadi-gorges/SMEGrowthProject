@@ -75,7 +75,7 @@ const AboutPage = () => {
           <h1 className="text-2xl font-bold mb-8">Now</h1>
         </div>
         <div className="md:w-1/2 text-right md:pl-10">
-          <p className="text-gray-600 mb-4 text-sm sm:text-base ">
+          <p className="text-gray-600 mb-4 text-sm sm:text-base text-pretty ">
           Following a light bulb moment to tap into UTS student resources, a client team was formed with people from UTS, CSIRO, Business NSW and the Industry Growth Program. A project plan was developed and pitched to UTS students who opted in to develop this AI platform prototype, populated with Australian businesses to track and discover when they reach high growth potential.
           </p>
         </div>
