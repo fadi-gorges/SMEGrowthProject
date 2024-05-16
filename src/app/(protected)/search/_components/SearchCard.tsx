@@ -40,6 +40,8 @@ import { link } from "fs";
 import { useRouter } from "next/navigation";
 import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
 import { Enterprise } from "@/payload-types";
+import { createSearchProfile } from "@/actions/searchProfiles/createSearchProfile";
+import { date } from "zod";
 
 const populateBusinessesFromServer = async () =>{
   try{
@@ -111,6 +113,7 @@ const SearchCard = () => {
       businesses = businessesArray;
     });
   }, [])
+  const [searchProfileName, setSearchProfileName] = useState("");
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [openAccordion, setOpenAccordion] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -124,6 +127,9 @@ const SearchCard = () => {
   };
   const handlepostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setpostcodeQuery(e.target.value);
+  };
+  const handleSearchProfileNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchProfileName(e.target.value);
   };
   const performSearch = () => {
     
@@ -149,6 +155,25 @@ const SearchCard = () => {
     setpostcodeQuery("");
     setFilteredBusinesses(businesses);
     setIsTableVisible(false);
+  };
+  const makeSearchProfile = async () => {
+    var postcodeQ: number = +postcodeQuery;
+    const data = {
+      name: searchProfileName,
+      searchQuery: searchQuery,
+      industrySector: selectedSector,
+      employeesRange: selectedStaffRange,
+      growthPotentialRange: selectedGrowthPotentialRange,
+      postcode: postcodeQ,
+    };
+
+    const response = await createSearchProfile(data);
+
+    if (response.success) {
+      alert('Search profile created successfully');
+    } else {
+      alert('Error creating search profile: ' + response.error);
+    }
   };
   return (  
     <div className="h-full">
@@ -238,7 +263,19 @@ const SearchCard = () => {
             <Button onClick={resetSearch}>
           Reset<RefreshCcwIcon />
             </Button>
-            <Button type ="button" className="Save Search mt-8 ">Save Search Profile</Button>
+            <Dialog>
+            <DialogTrigger asChild><Button type ="button" className="Save Search mt-8 ">Save Search Profile</Button></DialogTrigger>
+            <DialogContent>
+              <DialogHeader><DialogTitle>Create Search Profile</DialogTitle></DialogHeader>
+              <div>Add a name: <Input onChange={handleSearchProfileNameChange}></Input></div>
+              <div>Growth Potential: {selectedGrowthPotentialRange}</div>
+              <div>Number of Staff: {selectedStaffRange}</div>
+              <div>Industry Sector: {selectedSector}</div>
+              <div>Postcode: {postcodeQuery}</div>
+              <div>Search Query: {searchQuery}</div>
+              <Button onClick = {makeSearchProfile}>Save</Button>
+            </DialogContent>
+            </Dialog>
           </AccordionContent>
         </AccordionItem>
       </Accordion>

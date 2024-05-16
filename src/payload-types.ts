@@ -102,13 +102,10 @@ export interface SearchProfile {
   name: string;
   user: string | User;
   searchQuery?: string | null;
-  industrySector?: string[] | null;
-  minEmployees?: number | null;
-  maxEmployees?: number | null;
-  minRevenue?: number | null;
-  maxRevenue?: number | null;
-  minValuation?: number | null;
-  maxValuation?: number | null;
+  industrySector?: string | null;
+  employeesRange?: string | null;
+  growthPotentialRange?: string | null;
+  postcode?: number | null;
   updatedAt: string;
   createdAt: string;
 }
