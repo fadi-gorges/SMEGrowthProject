@@ -78,12 +78,12 @@ export interface Enterprise {
   abn?: string | null;
   numEmployees?: number | null;
   website?: string | null;
-  suburb?: string | null;
-  postCode?: number | null;
-  sme?: boolean | null;
-  manufacturer?: boolean | null;
-  growthPotential?: number | null;
+  suburb?: number | null;
   description?: string | null;
+  growthPotential?: number | null;
+  postCode?: number | null;
+  manufacturer?: boolean | null;
+  sme?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -110,13 +110,10 @@ export interface SearchProfile {
   name: string;
   user: string | User;
   searchQuery?: string | null;
-  industrySector?: string[] | null;
-  minEmployees?: number | null;
-  maxEmployees?: number | null;
-  minRevenue?: number | null;
-  maxRevenue?: number | null;
-  minValuation?: number | null;
-  maxValuation?: number | null;
+  manufacturer?: boolean | null;
+  employeesRange?: string | null;
+  growthPotentialRange?: string | null;
+  postcode?: number | null;
   updatedAt: string;
   createdAt: string;
 }

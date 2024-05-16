@@ -30,13 +30,10 @@ export const createSearchProfile = async (
       user: user.id,
       name: validation.data.name,
       searchQuery: validation.data.searchQuery,
-      industrySector: validation.data.industrySector,
-      minEmployees: validation.data.minEmployees,
-      maxEmployees: validation.data.maxEmployees,
-      minRevenue: validation.data.minRevenue,
-      maxRevenue: validation.data.maxRevenue,
-      minValuation: validation.data.minValuation,
-      maxValuation: validation.data.maxValuation,
+      manufacturer: validation.data.manufacturer,
+      employeesRange: validation.data.employeesRange,
+      postcode: validation.data.postcode,
+      growthPotentialRange: validation.data.growthPotentialRange
     },
   });
 

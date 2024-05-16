@@ -40,6 +40,9 @@ import { link } from "fs";
 import { useRouter } from "next/navigation";
 import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
 import { Enterprise } from "@/payload-types";
+import { createSearchProfile } from "@/actions/searchProfiles/createSearchProfile";
+import { date } from "zod";
+import { Description } from "@radix-ui/react-toast";
 
 const populateBusinessesFromServer = async () =>{
   try{
@@ -52,15 +55,15 @@ const populateBusinessesFromServer = async () =>{
     const businessesmap = enterprises.map(enterprise => ({
       id: enterprise.id,
       name: enterprise.name,
-      industrySector: enterprise.industrySector,
+      manufacturer: enterprise.manufacturer,
       numEmployees: enterprise.numEmployees,
-      contact: enterprise.contact,
-      about: enterprise.about,
+      suburb: enterprise.suburb,
+      description: enterprise.description,
       growthPotential: enterprise.growthPotential,
       updatedAt: enterprise.updatedAt,
       createdAt: enterprise.createdAt,
       website: enterprise.website,
-      location: enterprise.location
+      postCode: enterprise.postCode
 
     }));
     console.log('Businesses populated:', businesses);
@@ -92,7 +95,7 @@ const growthPotentialRanges: Record<GrowthPotentialRangeKey, [number, number]> =
   "75-100": [75, 100],
   "Any": [0, 100]
 };
-const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture", "Manufacturing","Construction"];
+const sectors = ["Any","Yes","No"];
 const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
   const [min, max] = staffRanges[range];
   return count >= min && count <= max;
@@ -111,25 +114,36 @@ const SearchCard = () => {
       businesses = businessesArray;
     });
   }, [])
+  const [searchProfileName, setSearchProfileName] = useState("");
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [openAccordion, setOpenAccordion] = useState("");
-  const [searchQuery, setSearchQuery] = useState(""); // State variable for the search query
+  const [searchQuery, setSearchQuery] = useState("");
+  const [postcodeQuery, setpostcodeQuery] = useState("");
   const [selectedStaffRange, setSelectedStaffRange] = useState<StaffRangeKey | "">("");
-  const [selectedSector, setSelectedSector] = useState<string| "">("");
+  const [selectedSector, setSelectedSector] = useState<string | "">("");
   const [filteredBusinesses, setFilteredBusinesses] = useState<Enterprise[]>(businesses); // State for filtered business list
   const [selectedGrowthPotentialRange, setSelectedGrowthPotentialRange] = useState<GrowthPotentialRangeKey | "">("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+  };
+  const handlepostcodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setpostcodeQuery(e.target.value);
+  };
+  const handleSearchProfileNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchProfileName(e.target.value);
   };
   const performSearch = () => {
     
     const results = businesses.filter((business) => {
       const nameMatch = business.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const postcodeMatch = !postcodeQuery || business.postCode?.toString().includes(postcodeQuery);
       const staffMatch = selectedStaffRange ? isInStaffRange(business.numEmployees!, selectedStaffRange) : true;
-      const sectorMatch = selectedSector === "Any" || selectedSector === "" || business.industrySector === selectedSector;
+      const sectorMatch =
+  selectedSector === "" || selectedSector === undefined || selectedSector === "Any" || business.manufacturer?.toString() === selectedSector;
       const growthPotentialMatch = selectedGrowthPotentialRange ? isInGrowthPotentialRange(business.growthPotential!, selectedGrowthPotentialRange) : true;
   
-      return nameMatch && staffMatch && sectorMatch && growthPotentialMatch;
+      return nameMatch && staffMatch && sectorMatch && growthPotentialMatch && postcodeMatch;
     });
     const sortedResults = results.sort((a, b) => b.growthPotential! - a.growthPotential!);
     setFilteredBusinesses(sortedResults); // Update the filtered businesses
@@ -141,8 +155,34 @@ const SearchCard = () => {
     setSelectedStaffRange("");
     setSelectedSector("");
     setSelectedGrowthPotentialRange("");
+    setpostcodeQuery("");
     setFilteredBusinesses(businesses);
     setIsTableVisible(false);
+  };
+  const makeSearchProfile = async () => {
+    if(postcodeQuery == ""){
+      var postcodeQ = 0;
+    }
+    else{
+      var postcodeQ: number = +postcodeQuery;
+    }
+    const data = {
+      name: searchProfileName,
+      searchQuery: searchQuery,
+      manufacturer: selectedSector === "Yes",
+      employeesRange: selectedStaffRange,
+      growthPotentialRange: selectedGrowthPotentialRange,
+      postcode: postcodeQ|| undefined,
+    };
+
+    const response = await createSearchProfile(data);
+
+    if (response.success) {
+      alert('Search profile created successfully');
+      setIsDialogOpen(false);
+    } else {
+      alert('Error creating search profile: ' + response.error);
+    }
   };
   return (  
     <div className="h-full">
@@ -206,10 +246,16 @@ const SearchCard = () => {
               </SelectContent>  
             </Select>
             <Select value={selectedSector}
-              onValueChange={(val) => setSelectedSector(val)}>
-            <p>Industry Sector</p>
+              onValueChange={(val) => {
+                if (val === "Yes" || val === "No") {
+                  setSelectedSector(val);
+                } else {
+                  setSelectedSector("");
+                }
+              }}>
+            <p>Manufacturer</p>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select Sector" />
+                <SelectValue placeholder="Is Manufacturer" />
               </SelectTrigger>
               <SelectContent>
               <SelectGroup>
@@ -221,10 +267,30 @@ const SearchCard = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
+            <p>Postcode</p>
+            <Input
+            type="text"
+            placeholder="Search by postcode..."
+            className="w-[180px]"
+            value={postcodeQuery} // Bind the search query state to the input
+            onChange={handlepostcodeChange} // Handle input changes
+          />
             <Button onClick={resetSearch}>
           Reset<RefreshCcwIcon />
             </Button>
-            <Button type ="button" className="Save Search mt-8 ">Save Search Profile</Button>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild><Button type ="button" className="Save Search mt-8 ">Save Search Profile</Button></DialogTrigger>
+            <DialogContent>
+              <DialogHeader><DialogTitle>Create Search Profile</DialogTitle></DialogHeader>
+              <div>Add a name: <Input onChange={handleSearchProfileNameChange}></Input></div>
+              <div>Growth Potential: {selectedGrowthPotentialRange}</div>
+              <div>Number of Staff: {selectedStaffRange}</div>
+              <div>Is Manufacturer: {selectedSector}</div>
+              <div>Postcode: {postcodeQuery}</div>
+              <div>Search Query: {searchQuery}</div>
+              <Button onClick = {makeSearchProfile}>Save</Button>
+            </DialogContent>
+            </Dialog>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
@@ -235,7 +301,7 @@ const SearchCard = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Sector</TableHead>
+              <TableHead>Is Manufacturer</TableHead>
               <TableHead>Number of Staff</TableHead>
               <TableHead>Growth Potential</TableHead>
               <TableHead>Learn More</TableHead>
@@ -246,16 +312,17 @@ const SearchCard = () => {
             {filteredBusinesses.map((business) => (
               <TableRow key={business.id}>
                 <TableCell>{business.name}</TableCell>
-                <TableCell>{business.industrySector}</TableCell>
+                <TableCell>{business.manufacturer ? "Yes" : "No"}</TableCell>
                 <TableCell>{business.numEmployees}</TableCell>
                 <TableCell>{business.growthPotential}%</TableCell>
                 <TableCell><Dialog>
                     <DialogTrigger asChild><Button variant="link">About</Button></DialogTrigger>
                     <DialogContent>
                     <DialogHeader><DialogTitle>About {business.name}</DialogTitle></DialogHeader>
-                    <div>Contact: {business.contact}</div>
+                    <div>Suburb: {business.suburb}</div>
                     <div>Website: {business.website}</div>
-                    <div>{business.about}</div>
+                    <div>Postcode: {business.postCode} </div>
+                    <div>{business.description}</div>
                     </DialogContent>
                   </Dialog>
                 </TableCell>
