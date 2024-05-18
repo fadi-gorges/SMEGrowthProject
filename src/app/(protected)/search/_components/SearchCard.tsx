@@ -158,6 +158,9 @@ const SearchCard = () => {
       const postcodeMatch = !postcodeQuery || business.postCode?.toString().includes(postcodeQuery);
       const staffMatch = selectedStaffRange ? isInStaffRange(business.numEmployees!, selectedStaffRange) : true;
       const sectorMatch =
+      selectedSector === "" ||
+      (selectedSector === "Yes" && business.manufacturer === true) ||
+      (selectedSector === "No" && business.manufacturer === false);
   selectedSector === "" || selectedSector === undefined || selectedSector === "Any" || business.manufacturer?.toString() === selectedSector;
       const growthPotentialMatch = selectedGrowthPotentialRange ? isInGrowthPotentialRange(business.growthPotential!, selectedGrowthPotentialRange) : true;
   
