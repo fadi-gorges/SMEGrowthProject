@@ -68,7 +68,7 @@ export interface Enterprise {
   abn?: string | null;
   numEmployees?: number | null;
   website?: string | null;
-  suburb?: number | null;
+  suburb?: string | null;
   description?: string | null;
   growthPotential?: number | null;
   postCode?: number | null;

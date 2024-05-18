@@ -95,6 +95,7 @@ const growthPotentialRanges: Record<GrowthPotentialRangeKey, [number, number]> =
   "75-100": [75, 100],
   "Any": [0, 100]
 };
+const statesAndTerritories = ["Any", "New South Wales", "Victoria", "Queensland", "South Australia", "Western Australia", "Tasmania", "Northern Territory", "Australian Capital Territory"];
 const sectors = ["Any","Yes","No"];
 const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
   const [min, max] = staffRanges[range];
@@ -123,6 +124,7 @@ const SearchCard = () => {
   const [selectedSector, setSelectedSector] = useState<string | "">("");
   const [filteredBusinesses, setFilteredBusinesses] = useState<Enterprise[]>(businesses); // State for filtered business list
   const [selectedGrowthPotentialRange, setSelectedGrowthPotentialRange] = useState<GrowthPotentialRangeKey | "">("");
+  const [selectedState, setSelectedState] = useState<string | "">("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -267,6 +269,21 @@ const SearchCard = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
+            <Select value={selectedState} onValueChange={(val) => setSelectedState(val)}>
+              <p>State/Territory</p>
+              <SelectTrigger className="w-[220px]">
+                <SelectValue placeholder="Select State/Territory" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {statesAndTerritories.map((state) => (
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             <p>Postcode</p>
             <Input
             type="text"
@@ -286,6 +303,7 @@ const SearchCard = () => {
               <div>Growth Potential: {selectedGrowthPotentialRange}</div>
               <div>Number of Staff: {selectedStaffRange}</div>
               <div>Is Manufacturer: {selectedSector}</div>
+              <div>State/Territory: {selectedState}</div>
               <div>Postcode: {postcodeQuery}</div>
               <div>Search Query: {searchQuery}</div>
               <Button onClick = {makeSearchProfile}>Save</Button>

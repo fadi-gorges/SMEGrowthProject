@@ -38,7 +38,7 @@ export const Enterprises: CollectionConfig = {
     },
     {
       name: "suburb",
-      type: "number",
+      type: "textarea",
     },
     {
       name: "description",
