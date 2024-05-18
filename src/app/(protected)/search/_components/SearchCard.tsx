@@ -205,7 +205,7 @@ const SearchCard = () => {
   return (  
     <div className="h-full">
       <div>
-      <h1>Search SME</h1>
+      <h1>Search</h1>
       <div className = "search">
         <div className="flex items-center gap-2">
         <Input
