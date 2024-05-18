@@ -41,8 +41,7 @@ import { useRouter } from "next/navigation";
 import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
 import { Enterprise } from "@/payload-types";
 import { createSearchProfile } from "@/actions/searchProfiles/createSearchProfile";
-import { date } from "zod";
-import { Description } from "@radix-ui/react-toast";
+import { setEngagement } from "@/actions/engagements/setEngagement";
 
 const populateBusinessesFromServer = async () =>{
   try{
@@ -126,6 +125,23 @@ const SearchCard = () => {
   const [selectedGrowthPotentialRange, setSelectedGrowthPotentialRange] = useState<GrowthPotentialRangeKey | "">("");
   const [selectedState, setSelectedState] = useState<string | "">("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [savedBusinesses, setSavedBusinesses] = useState<string[]>([]);
+  const saveBusiness = (businessId: string) => {
+    const data = {
+      enterprise: businessId,
+      contacted: false,
+      connected: false,
+      engaged: false,
+    };
+    setEngagement(data);
+    setSavedBusinesses(prevState => {
+      if (prevState.includes(businessId)) {
+        return prevState.filter(id => id !== businessId);
+      } else {
+        return [...prevState, businessId];
+      }
+    });
+  };
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -344,7 +360,9 @@ const SearchCard = () => {
                     </DialogContent>
                   </Dialog>
                 </TableCell>
-                <TableCell><Button type ="button">Save</Button></TableCell>
+                <TableCell><Button type ="button" onClick={() => saveBusiness(business.id)}>
+                      {savedBusinesses.includes(business.id) ? "Saved" : "Save"}
+                    </Button></TableCell>
               </TableRow>
             ))}
           </TableBody>
