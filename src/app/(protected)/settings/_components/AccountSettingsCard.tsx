@@ -1,5 +1,6 @@
 "use client";
 import { deleteUser } from "@/actions/auth/deleteUser";
+import { updateSubscription } from "@/actions/auth/updateSubscription";
 import { updateUser } from "@/actions/auth/updateUser";
 import { getOrganisation } from "@/actions/organisations/readOrganisation";
 import { updateOrganisation } from "@/actions/organisations/updateOrganisation";
@@ -43,7 +44,7 @@ import { Organisation } from "@/payload-types";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User2Icon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -84,15 +85,13 @@ const AccountSettingsCard = () => {
     },
   });
 
-  console.log(updateUserForm.getValues("userType"));
-
   useEffect(() => {
     (async () => {
       try {
         const res = await getOrganisation();
 
         if (!res.success) {
-          return
+          return;
         }
 
         const { organisation } = res;
@@ -188,7 +187,19 @@ const AccountSettingsCard = () => {
   };
 
   const handleUnsubscribe = async () => {
-    // Logic to handle unsubscribe
+    setIsUnsubscribing(true);
+    try {
+      const res = await updateSubscription(false);
+      setIsUnsubscribing(false);
+      toast.success(
+        "Your account has successfully unsubscribe the subscription"
+      );
+      router.replace("/auth/payment");
+    } catch (e) {
+      setIsUnsubscribing(false);
+      toast.error("An error occured, please try again");
+      console.log(e);
+    }
   };
 
   if (!user) return null;
@@ -326,9 +337,13 @@ const AccountSettingsCard = () => {
                           required
                         >
                           <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={user?.userType || "Select a user type"} />
-                          </SelectTrigger>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={
+                                  user?.userType || "Select a user type"
+                                }
+                              />
+                            </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {Object.entries(userTypes).map(([key, value]) => (
@@ -412,9 +427,13 @@ const AccountSettingsCard = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setUnsubscribeDialogOpen(true)}
+                onClick={() => {
+                  if (user?.paymentSuccessful) {
+                    setUnsubscribeDialogOpen(true);
+                  }
+                }}
               >
-                Unsubscribe
+                {user?.paymentSuccessful ? "Unsubscribe" : "Subscribe"}
               </Button>
               <ResponsiveAlertDialog
                 title="Unsubscribe"
