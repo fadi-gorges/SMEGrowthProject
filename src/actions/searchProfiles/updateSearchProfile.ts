@@ -5,12 +5,13 @@ import {
   CreateSearchProfileData,
   createSearchProfileSchema,
 } from "@/lib/validations/searchProfiles/createSearchProfileSchema";
+import { updateSearchProfileSchema } from "@/lib/validations/searchProfiles/updateSearchProfileSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
 export const updateSearchProfile = async (
   data: CreateSearchProfileData
 ): ActionResponse => {
-  const validation = createSearchProfileSchema.safeParse(data);
+  const validation = updateSearchProfileSchema.safeParse(data);
 
   if (!validation.success) {
     return { success: false, error: "Bad request." };
@@ -30,11 +31,12 @@ export const updateSearchProfile = async (
       user: {
         equals: user.id,
       },
-      name: {
-        equals: validation.data.name,
+      id: {
+        equals: validation.data.id,
       },
     },
     data: {
+      name: validation.data.name,
       searchQuery: validation.data.searchQuery,
       manufacturer: validation.data.manufacturer,
       employeesRange: validation.data.employeesRange,
