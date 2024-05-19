@@ -25,18 +25,9 @@ export const updateSearchProfile = async (
   await payload.update({
     collection: "searchProfiles",
     where: {
-      and: [
-        {
-          user: {
-            equals: user.id,
-          },
-        },
-        {
-          id: {
-            equals: validation.data.id,
-          },
-        },
-      ],
+      id: {
+        equals: validation.data.id,
+      },
     },
     data: {
       name: validation.data.name,
