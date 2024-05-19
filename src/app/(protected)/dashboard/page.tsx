@@ -43,7 +43,7 @@ const DashboardPage = async () => {
           <tbody>
             {rows.map((row) => (
               <tr className="bg-white border-b" key={row.id}>
-                <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">{row.name}</th>
+                <th scope="row" className="py-4 px-6 font-medium text-black-600 whitespace-nowrap">{row.name}</th>
                 <td className="py-4 px-6"><span className={`inline-flex rounded-full ${row.contacted ? 'bg-green-500' : 'bg-red-500'} w-3 h-3`}></span></td>
                 <td className="py-4 px-6"><span className={`inline-flex rounded-full ${row.connected ? 'bg-green-500' : 'bg-red-500'} w-3 h-3`}></span></td>
                 <td className="py-4 px-6"><span className={`inline-flex rounded-full ${row.engaged ? 'bg-green-500' : 'bg-red-500'} w-3 h-3`}></span></td>

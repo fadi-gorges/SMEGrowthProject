@@ -302,6 +302,24 @@ const AccountSettingsCard = () => {
                   )}
                 />
                 <FormField
+                  control={updateUserForm.control}
+                  name="jobTitle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Job Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder={user.jobTitle || ""}
+                          required
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
                   name="organisation"
                   render={() => (
                     <FormItem>
