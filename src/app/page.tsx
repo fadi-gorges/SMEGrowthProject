@@ -18,47 +18,54 @@ const HomePage = async () => {
   const user = await getServerUser();
 
   if (user) redirect("/dashboard");
+
   return (
+    
     <Main>
-      <title>Home | SME Growth Platform</title>
-      <meta name="description" content="Discover high-growth potential Australian businesses." />
-      <div className="relative bg-cover bg-center bg-no-repeat rounded-lg" style={{ backgroundImage: `url(${backgroundImage.src})`, minHeight: '100vh' }}>
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-700/30 to-white rounded-lg"></div> {/* Added rounded-lg */}
-        <div className="relative text-center py-60 px-4"> {/* Adjusted padding to move content lower */}
-          <span className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-white drop-shadow-md">
-            Find Australian businesses with high growth&nbsp;potential.
+   
+      
+        <title>Home | SME Growth Platform</title>
+        <meta name="description" content="Discover high-growth potential Australian businesses." />
+        <div className="relative bg-cover bg-center bg-no-repeat rounded-lg " style={{ backgroundImage: `url(${backgroundImage.src})` }}>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
+        <div className="relative text-center py-48 px-4">
+          <span className="hover:drop-shadow-xl text-5xl md:text-6xl lg:text-7xl font-bold mb-8 bg-clip-text text-gray-900 text-pretty drop-shadow-2xl">
+            Find&nbsp;Australian&nbsp;businesses&nbsp;with 
+            <span className="block">high&nbsp;growth&nbsp;potential.</span>
           </span>
-          <p className="text-pretty text-xl my-8 text-white drop-shadow-md">
-            Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful collaboration delivering positive impact?
+          <p className="text-pretty text-xl my-8 text-gray-600">
+            Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful&nbsp;collaboration&nbsp;delivering&nbsp;positive&nbsp;impact?
           </p>
-          <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors drop-shadow-md mt-8">
+          <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">
             Get Started &#8594;
           </button>
-
-          {/* Statistics Section */}
-          <div className="flex flex-col md:flex-row justify-center mt-16"> {/* Adjusted margin-top to move stats lower */}
-            <div className="w-full md:w-1/2 mb-8 md:mb-0">
-              <div className="flex flex-col items-center">
-                <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white drop-shadow-md" style={{ fontFamily: 'Rubik, sans-serif' }}>150,000</h1>
-                <h5 className="text-center text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl drop-shadow-md">Tracking High Growth Potential<br/> SME’s in New South Wales</h5>
-              </div>
-            </div>
-            <div className="w-full md:w-1/2 mb-8 md:mb-0">
-              <div className="flex flex-col items-center">
-                <h1 className="font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white drop-shadow-md" style={{ fontFamily: 'Rubik, sans-serif' }}>2,356</h1>
-                <h5 className="text-center text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-8 md:mb-40 drop-shadow-md">High Growth Potential SMEs <br/> Identified in New South Wales</h5>
-              </div>
-            </div>
-          </div>
+             {/* Statistics Section */}
+          <div className="flex flex-col md:flex-row justify-center">
+  <div className="w-full md:w-1/2 mt-28 mb-8 md:mb-0 drop-shadow-lg">
+    <div className="flex flex-col items-center">
+      <h1 className="hover:drop-shadow-xl font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ color: '#3563E9', fontFamily: 'Rubik, sans-serif' }}>150,000</h1>
+      <h5 className="text-center text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">Tracking High Growth Potential<br/> SME’s in New South Wales</h5>
+    </div>
+  </div>
+  <div className="w-full md:w-1/2 mt-28 mb-8 md:mb-0 drop-shadow-lg">
+    <div className="flex flex-col items-center">
+      <h1 className="hover:drop-shadow-xl font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl" style={{ color: '#3563E9', fontFamily: 'Rubik, sans-serif' }}>2,356</h1>
+      <h5 className="text-center text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-8 md:mb-40">High Growth Potential SMEs <br/> Identified in New South Wales</h5>
+    </div>
+  </div>
+</div>
         </div>
+        
       </div>
-
-
+      
     
+   
+
+
 
       {/* What We Offer Section */}
   
-  <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-10">
+  <div className="mt-20 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-10">
     <div>
       <h1 className="text-2xl font-bold">What we offer...</h1>
       <p className="mt-4">There are many organizations across Australia that are focused on providing services that support the growth of Australian industry, 98% of which are classified as small to medium enterprises (SMEs).</p>
