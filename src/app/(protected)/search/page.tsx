@@ -6,15 +6,12 @@ export const metadata: Metadata = {
   description: "",
 };
 
-
 const SearchPage = () => {
-  return(
-    <Main padding="small">
-      <SearchCard/>
+  return (
+    <Main>
+      <SearchCard />
     </Main>
   );
-  
 };
 
 export default SearchPage;
-
