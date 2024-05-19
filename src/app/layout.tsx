@@ -1,4 +1,3 @@
-import SidebarLayout from "@/app/(protected)/_components/SidebarLayout";
 import { Utils } from "@/app/_components/Utils";
 import Navbar from "@/components/navbar/Navbar";
 import { Toaster } from "@/components/ui/sonner";
@@ -11,7 +10,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s • AusBizGrowth",
+    template: "%s | AusBizGrowth",
     default: "AusBizGrowth",
   },
   description: "",
