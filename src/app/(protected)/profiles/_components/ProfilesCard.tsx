@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React, { useEffect, useState } from "react";
 import { readAllSearchProfiles } from "@/actions/searchProfiles/readAllSearchProfiles";
 import { deleteSearchProfile } from "@/actions/searchProfiles/deleteSearchProfile";
@@ -82,7 +82,7 @@ const ProfilesCard = () => {
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
           </DialogHeader>
-          <div>Are you sure you want to delete the profile "{profileToDelete?.name}"?</div>
+          <div>Are you sure you want to delete the profile {profileToDelete?.name}?</div>
           <DialogFooter>
             <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
             <Button onClick={() => handleDelete(profileToDelete!.id)} variant="destructive">
