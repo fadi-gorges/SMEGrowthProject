@@ -31,15 +31,16 @@ const HomePage = async () => {
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
         <div className="relative text-center py-48 px-4">
-          <span className="hover:drop-shadow-xl text-5xl md:text-6xl lg:text-7xl font-bold mb-8 bg-clip-text text-gray-900 text-pretty drop-shadow-2xl">
-            Find&nbsp;Australian&nbsp;businesses&nbsp;with
-            <span className="block">high&nbsp;growth&nbsp;potential.</span>
-          </span>
-          <p className="text-pretty text-xl my-8 text-gray-600">
-            Are you looking for ways to more efficiently identify SMEs to engage
-            with, where there is a greater chance of
-            successful&nbsp;collaboration&nbsp;delivering&nbsp;positive&nbsp;impact?
-          </p>
+          <div className="flex flex-col items-center">
+            <h1 className="max-w-6xl hover:drop-shadow-xl text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-gray-900 drop-shadow-2xl">
+              Find Australian businesses with high growth potential.
+            </h1>
+            <p className="text-xl my-8 text-gray-600">
+              Are you looking for ways to more efficiently identify SMEs to
+              engage with, where there is a greater chance of successful
+              collaboration delivering positive impact?
+            </p>
+          </div>
           <Link
             href="/auth/signup"
             className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors"
