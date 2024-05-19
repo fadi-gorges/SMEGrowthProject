@@ -199,19 +199,19 @@ const ProfilesCard = () => {
                   </SelectContent>
                 </Select></p>
               <p >Employees Range: {" "}
-  <Select
-    value={profileToEdit?.employeesRange!}
-    onValueChange={(value) =>
-      setProfileToEdit({
-        ...profileToEdit!,
-        employeesRange: value.toString(),
-      })
-    }
-  >
-    <SelectTrigger className="w-[180px]">
-      <SelectValue placeholder="Select Employees Range" />
-    </SelectTrigger>
-    <SelectContent>
+            <Select
+              value={profileToEdit?.employeesRange!}
+              onValueChange={(value) =>
+              setProfileToEdit({
+              ...profileToEdit!,
+              employeesRange: value.toString(),
+              })
+              }
+            >
+            <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select Employees Range" />
+            </SelectTrigger>
+            <SelectContent>
       <SelectGroup>
         {StaffRanges.map((range) => (
           <SelectItem key={range} value={range}>
@@ -246,6 +246,20 @@ const ProfilesCard = () => {
     </SelectContent>
   </Select>
 </p>
+                <p >Postcode: <Input
+                  type="text"
+                  value={profileToEdit?.postcode!}
+                  onChange={(e) =>{
+                    const input = e.target.value;
+                    const regex = /^[0-9]*$/;  // Only allow digits (0-9)
+                    if (regex.test(input)) {
+                        setProfileToEdit({
+                          ...profileToEdit!,
+                          postcode: Number(input),
+                        });
+                      }
+                  }}
+                /></p>
             </div>
             <DialogFooter>
               <Button onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
