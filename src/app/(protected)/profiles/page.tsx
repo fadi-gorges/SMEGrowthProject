@@ -1,6 +1,6 @@
+import ProfilesCard from "@/app/(protected)/profiles/_components/ProfilesCard";
 import Main from "@/components/page/Main";
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
   title: "Manage Profiles",
   description: "",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const ManageProfilesPage = () => {
   return (
     <Main>
-      <h1>Manage Profiles</h1>
+      <ProfilesCard />
     </Main>
   );
 };

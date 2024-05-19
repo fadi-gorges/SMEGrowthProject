@@ -1,6 +1,6 @@
-import Main from "@/components/page/Main";
 import { Metadata } from "next";
-
+import SearchCard from "@/app/(protected)/search/_components/SearchCard";
+import Main from "@/components/page/Main";
 export const metadata: Metadata = {
   title: "Search",
   description: "",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const SearchPage = () => {
   return (
     <Main>
-      <h1>Search</h1>
+      <SearchCard />
     </Main>
   );
 };
