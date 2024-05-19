@@ -93,8 +93,8 @@ const InitialSignupForm = ({
           </CardTitle>
           <CardDescription>
             <p>
-              Sign up to get started with our Australian Business Growth
-              Recommender Platform.
+              Sign up to start tracking Australian businesses with high growth
+              potential
             </p>
           </CardDescription>
         </CardHeader>
