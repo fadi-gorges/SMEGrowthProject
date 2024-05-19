@@ -3,6 +3,7 @@ import { getServerUser } from "@/lib/utils/getServerUser";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Inter } from "next/font/google";
+import Link from "next/link"; 
 import Testimonials from '@/components/Testimonials';
 import Image from "next/image";
 import React from 'react';
@@ -36,9 +37,11 @@ const HomePage = async () => {
           <p className="text-pretty text-xl my-8 text-gray-600">
             Are you looking for ways to more efficiently identify SMEs to engage with, where there is a greater chance of successful&nbsp;collaboration&nbsp;delivering&nbsp;positive&nbsp;impact?
           </p>
-          <button className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">
-            Get Started &#8594;
-          </button>
+          <Link href="/sign-up">  {/* Wrap the button with Link component */}
+            <a className="bg-blue-600 text-white font-bold py-3 px-8 rounded hover:bg-blue-700 transition-colors">
+              Get Started &#8594;
+            </a>
+          </Link>
              {/* Statistics Section */}
           <div className="flex flex-col md:flex-row justify-center">
   <div className="w-full md:w-1/2 mt-28 mb-8 md:mb-0 drop-shadow-lg">
