@@ -72,16 +72,16 @@ type StaffRangeKey =
   | "10-50"
   | "50-100"
   | "100-200"
-  | ">250"
-  | "<250"
+  | ">200"
+  | "<200"
   | "Any";
 const staffRanges: Record<StaffRangeKey, [number, number]> = {
   "1-10": [1, 10],
   "10-50": [10, 50],
   "50-100": [50, 100],
   "100-200": [100, 200],
-  ">250": [250, Infinity],
-  "<250": [0, 250],
+  ">200": [200, Infinity],
+  "<200": [0, 200],
   Any: [0, Infinity],
 };
 type GrowthPotentialRangeKey = "0-25" | "25-50" | "50-75" | "75-100" | "Any";
@@ -311,9 +311,9 @@ const SearchCard = () => {
                           <SelectItem value="1-10">1-10</SelectItem>
                           <SelectItem value="10-50">10-50</SelectItem>
                           <SelectItem value="50-100">50-100</SelectItem>
-                          <SelectItem value="100-250">100-200</SelectItem>
-                          <SelectItem value="<250">Less than 250</SelectItem>
-                          <SelectItem value=">250">Over 250</SelectItem>
+                          <SelectItem value="100-200">100-200</SelectItem>
+                          <SelectItem value="<200">Less than 200</SelectItem>
+                          <SelectItem value=">200">Over 200</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
