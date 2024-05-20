@@ -13,8 +13,8 @@ export interface Config {
     enterprises: Enterprise;
     engagements: Engagement;
     searchProfiles: SearchProfile;
-    "payload-preferences": PayloadPreference;
-    "payload-migrations": PayloadMigration;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
   };
   globals: {};
 }
@@ -24,24 +24,14 @@ export interface Config {
  */
 export interface User {
   id: string;
-  roles?: ("admin" | "user")[] | null;
+  roles?: ('admin' | 'user')[] | null;
   firstName: string;
   lastName: string;
   mobileNumber?: string | null;
   jobTitle?: string | null;
   organisation?: (string | null) | Organisation;
-  userType?:
-    | (
-        | "university"
-        | "vet"
-        | "rto"
-        | "non-profit"
-        | "government"
-        | "rdi"
-        | "industry"
-      )
-    | null;
-  notificationFrequency?: ("off" | "daily" | "weekly") | null;
+  userType?: ('university' | 'vet' | 'rto' | 'non-profit' | 'government' | 'rdi' | 'industry') | null;
+  notificationFrequency?: ('off' | 'daily' | 'weekly') | null;
   signupComplete?: boolean | null;
   paymentSuccessful?: boolean | null;
   updatedAt: string;
@@ -124,7 +114,7 @@ export interface SearchProfile {
 export interface PayloadPreference {
   id: string;
   user: {
-    relationTo: "users";
+    relationTo: 'users';
     value: string | User;
   };
   key?: string | null;
@@ -152,6 +142,7 @@ export interface PayloadMigration {
   createdAt: string;
 }
 
-declare module "payload" {
+
+declare module 'payload' {
   export interface GeneratedTypes extends Config {}
 }

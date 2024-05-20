@@ -26,7 +26,6 @@ export const Enterprises: CollectionConfig = {
       type: "text",
       minLength: 11,
       maxLength: 11,
-      unique: true,
     },
     {
       name: "numEmployees",
