@@ -72,7 +72,19 @@ const PaymentForm = ({
         return;
       }
 
-      toast.success("You have signed up successfully!");
+      toast.success("Payment successful!", {
+        description:
+          "A tax invoice has been sent to your account email address.",
+        action: {
+          label: "Resend Invoice",
+          onClick: () => toast.success("Invoice sent to your email."),
+        },
+        actionButtonStyle: {
+          backgroundColor: "var(--bg)",
+          color: "var(--success)",
+          border: "1px solid",
+        },
+      });
       router.replace("/dashboard");
     } catch (e: any) {
       setError("An error occurred. Please try again.");
@@ -82,10 +94,7 @@ const PaymentForm = ({
 
   return (
     <Card
-      className={cn(
-        "flex flex-col justify-center -translate-y-4 w-full max-w-xl",
-        className
-      )}
+      className={cn("flex flex-col justify-center w-full max-w-xl", className)}
       {...props}
     >
       <div className="form-slide-in">

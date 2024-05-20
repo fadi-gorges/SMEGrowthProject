@@ -17,7 +17,7 @@ const PaymentDetailsPage = async () => {
   if (!user.signupComplete || user.paymentSuccessful) redirect("/dashboard");
 
   return (
-    <Main className="justify-center items-center">
+    <Main className="justify-center items-center" enableHexBackground>
       <PaymentForm />
     </Main>
   );

@@ -24,7 +24,8 @@ export const navLinks = {
   home: { text: "Home", link: "/", icon: HomeIcon },
   about: { text: "About", link: "/about", icon: InfoIcon },
   admin: { text: "Admin Panel", link: "/admin", icon: LockKeyholeIcon },
-  login: { text: "Log in", link: "/auth/login", icon: LogInIcon },
+  signin: { text: "Sign in", link: "/auth/login", icon: LogInIcon },
+  signup: { text: "Sign up", link: "/auth/signup", icon: UserPlus2Icon },
 };
 
 const hiddenPaths = ["/admin"];
@@ -101,7 +102,7 @@ const Navbar = () => {
     <nav className="sticky top-0 shrink-0 w-full h-16 bg-background/75 backdrop-blur-md border-b z-40">
       <div className="x-padding h-full flex items-center gap-8">
         {logo}
-        <div className="flex-1 flex justify-end items-center gap-4">
+        <div className="flex-1 flex justify-end items-center gap-2 lg:gap-4">
           {user ? (
             <Button
               variant="outline"
@@ -116,13 +117,19 @@ const Navbar = () => {
               <NavLink link={navLinks.home} />
               <NavLink link={navLinks.about} />
 
-              <NavLink link={navLinks.login} />
               <Link
-                href="/auth/signup"
-                className={cn(buttonVariants(), "hidden lg:inline-flex")}
+                href={navLinks.signin.link}
+                className={cn(
+                  buttonVariants({ variant: "secondary" }),
+                  "hidden lg:inline-flex"
+                )}
               >
-                <UserPlus2Icon size={16} />
-                Sign up
+                <navLinks.signin.icon size={16} />
+                {navLinks.signin.text}
+              </Link>
+              <Link href={navLinks.signup.link} className={buttonVariants()}>
+                <navLinks.signup.icon size={16} />
+                {navLinks.signup.text}
               </Link>
             </>
           )}

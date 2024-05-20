@@ -31,33 +31,20 @@ export const SearchProfiles: CollectionConfig = {
       type: "text",
     },
     {
-      name: "industrySector",
+      name: "manufacturer",
+      type: "checkbox",
+    },
+    {
+      name: "employeesRange",
       type: "text",
-      hasMany: true,
     },
     {
-      name: "minEmployees",
-      type: "number",
+      name: "growthPotentialRange",
+      type:"text",
     },
     {
-      name: "maxEmployees",
-      type: "number",
-    },
-    {
-      name: "minRevenue",
-      type: "number",
-    },
-    {
-      name: "maxRevenue",
-      type: "number",
-    },
-    {
-      name: "minValuation",
-      type: "number",
-    },
-    {
-      name: "maxValuation",
-      type: "number",
-    },
+      name:"postcode",
+      type:"number",
+    }
   ],
 };

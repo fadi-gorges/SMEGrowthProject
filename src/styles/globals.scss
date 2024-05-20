@@ -10,10 +10,10 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 220 100% 61%;
+    --primary: 224 76% 48%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 90%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 213 94% 68%;
+    --secondary-foreground: 0 0% 98%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 240 4.8% 95.9%;
@@ -67,7 +67,11 @@
     @apply text-xs md:text-sm;
   }
 }
-
+.hero-gradient {
+  background: radial-gradient( #408EFC 40%, #90BEFE 60%, #ffffff 100%);
+  color: white;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
 @layer components {
   .x-padding {
     @apply px-2 lg:px-5;
@@ -85,6 +89,7 @@
     @apply animate-in fade-in-25 slide-in-from-top-1 duration-300;
   }
 }
+
 
 @layer utilities {
 }

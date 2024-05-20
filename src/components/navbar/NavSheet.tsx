@@ -95,7 +95,7 @@ const NavSheet = ({
             <>
               <SheetLink link={navLinks.home} />
               <SheetLink link={navLinks.about} />
-              <SheetLink link={navLinks.login} />
+              <SheetLink link={navLinks.signin} />
             </>
           )}
         </div>

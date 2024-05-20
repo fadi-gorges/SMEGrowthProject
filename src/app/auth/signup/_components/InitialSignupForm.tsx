@@ -83,10 +83,7 @@ const InitialSignupForm = ({
 
   return (
     <Card
-      className={cn(
-        "flex flex-col justify-center -translate-y-4 w-full max-w-xl",
-        className
-      )}
+      className={cn("flex flex-col justify-center w-full max-w-xl", className)}
       {...props}
     >
       <div className="form-slide-in">
@@ -96,8 +93,8 @@ const InitialSignupForm = ({
           </CardTitle>
           <CardDescription>
             <p>
-              Sign up to get started with our Australian Business Growth
-              Recommender Platform.
+              Sign up to start tracking Australian businesses with high growth
+              potential
             </p>
           </CardDescription>
         </CardHeader>

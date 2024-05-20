@@ -25,17 +25,6 @@ export const completeSignup = async (body: FormData): ActionResponse => {
 
   const payload = await getPayloadClient();
 
-  // const picture = await payload.create({
-  //   collection: "profilePictures",
-  //   data: {},
-  //   file: {
-  //     data: await readBuffer(validation.data.picture),
-  //     name: uuidv4(),
-  //     mimetype: validation.data.picture.type,
-  //     size: validation.data.picture.size,
-  //   },
-  // });
-
   const organisation = await payload.create({
     collection: "organisations",
     data: {
@@ -52,7 +41,6 @@ export const completeSignup = async (body: FormData): ActionResponse => {
       userType: validation.data.userType,
       organisation: organisation.id,
       jobTitle: validation.data.jobTitle,
-      // picture: picture.id,
       signupComplete: true,
     },
   });
