@@ -83,7 +83,7 @@ const NotificationsPage = () => {
         </div>
         {applyToAllNo ? (
           <div style={{ backgroundColor: "white", paddingLeft: "10px", paddingRight: "10px", marginTop: "10px" }}>
-            {["profile 1", "profile 2", "profile 3"].map((profile) => (
+            {["Search profile 1", "Search profile 2", "Search profile 3"].map((profile) => (
             <div key={profile} style={{ display: "flex", alignItems: "center" }}>
               <input
                 type="checkbox"
