@@ -1,7 +1,6 @@
 "use server";
 import { ActionResponse } from "@/lib/utils/actionResponse";
 import { getServerUser } from "@/lib/utils/getServerUser";
-import { updateUserSchema } from "@/lib/validations/auth/updateUserSchema";
 import getPayloadClient from "@/payload/payloadClient";
 
 export const updateSubscription = async (

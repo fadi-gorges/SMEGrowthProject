@@ -24,27 +24,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils/cn";
+import { userTypes } from "@/lib/validations/auth/completeSignupSchema";
 import {
   UpdateUserData,
   updateUserSchema,
-  userTypes,
 } from "@/lib/validations/auth/updateUserSchema";
 import { Organisation } from "@/payload-types";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User2Icon } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -52,9 +50,6 @@ import { toast } from "sonner";
 const AccountSettingsCard = () => {
   const router = useRouter();
   const { user, fetchMe } = useAuth();
-
-  // const [pictureInputKey, setPictureInputKey] = useState(0);
-  // const [pictureUrl, setPictureUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -75,10 +70,8 @@ const AccountSettingsCard = () => {
     resolver: zodResolver(updateUserSchema),
     disabled: isLoading,
     defaultValues: {
-      id: user?.id,
       firstName: user?.firstName,
       lastName: user?.lastName,
-      // picture: undefined,
       jobTitle: user?.jobTitle || "",
       mobileNumber: user?.mobileNumber || "",
       userType: user?.userType || undefined,
@@ -99,47 +92,25 @@ const AccountSettingsCard = () => {
           name: organisation?.name,
           members: organisation?.members,
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     })().then();
   }, []);
 
-  // const onPictureChange = async (
-  //   field: ControllerRenderProps<UpdateUserData, "picture">,
-  //   e: ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const file = e.target.files?.[0];
-
-  //   if (!file) {
-  //     setPictureUrl("");
-  //     field.onChange(undefined);
-  //     return;
-  //   }
-
-  //   const url = await readDataURL(file);
-  //   setPictureUrl(url);
-
-  //   field.onChange(file);
-  // };
+  useEffect(() => {
+    updateUserForm.reset({
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      jobTitle: user?.jobTitle || "",
+      mobileNumber: user?.mobileNumber || "",
+      userType: user?.userType || undefined,
+    });
+  }, [user]);
 
   const onSubmit = async (data: UpdateUserData) => {
     setIsLoading(true);
 
-    const body = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      if (value) {
-        body.append(key, value);
-      }
-    });
-
-    // if (data.picture) {
-    //   const resizedPicture = await resizeImage(data.picture, 320, 320);
-    //   body.set("picture", resizedPicture);
-    // }
-
     try {
-      const res = await updateUser(body);
+      const res = await updateUser(data);
 
       await updateOrganisation({
         name: userOrganisation?.name,
@@ -156,8 +127,6 @@ const AccountSettingsCard = () => {
       toast.success("Your account has been updated.");
 
       fetchMe();
-      // setPictureUrl("");
-      // setPictureInputKey((k) => k + 1);
 
       document.getElementById("page-div")?.scrollTo(0, 0);
     } catch (e) {
@@ -191,14 +160,11 @@ const AccountSettingsCard = () => {
     try {
       const res = await updateSubscription(false);
       setIsUnsubscribing(false);
-      toast.success(
-        "Your account has successfully unsubscribe the subscription"
-      );
+      toast.success("You have successfully unsubscribed.");
       router.replace("/auth/payment");
     } catch (e) {
       setIsUnsubscribing(false);
       toast.error("An error occured, please try again");
-      console.log(e);
     }
   };
 
@@ -345,7 +311,6 @@ const AccountSettingsCard = () => {
                   control={updateUserForm.control}
                   name="userType"
                   render={({ field }) => {
-                    console.log(field.value);
                     return (
                       <FormItem>
                         <FormLabel>User Type</FormLabel>
@@ -379,61 +344,6 @@ const AccountSettingsCard = () => {
               </div>
             </div>
             <Separator />
-            <div className="flex flex-col gap-2">
-              <h6 className="font-medium">Security Settings</h6>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="two-factor">Two-factor authentication</Label>
-                <Switch id="two-factor" />
-              </div>
-              <small className="text-muted-foreground">
-                Enabling two-factor authentication makes your account more
-                secure.
-              </small>
-            </div>
-            <Separator />
-            <div className="flex flex-col gap-2">
-              <h6 className="font-medium">Notification Preferences</h6>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="email-newsletter">Email newsletter</Label>
-                <Switch id="email-newsletter" />
-              </div>
-              <small className="text-muted-foreground">
-                Receive the latest updates and news in your inbox.
-              </small>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between gap-6">
-              <div className="flex flex-col gap-2">
-                <h3 className="text-lg font-medium leading-6">
-                  Account Deletion
-                </h3>
-                <small className="text-muted-foreground">
-                  Once you delete your account, there is no way to recover it.
-                </small>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setDeleteDialogOpen(true)}
-              >
-                Delete Account
-              </Button>
-              <ResponsiveAlertDialog
-                title="Delete Account"
-                description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
-                open={deleteDialogOpen}
-                setOpen={setDeleteDialogOpen}
-              >
-                <Button
-                  variant="destructive"
-                  loading={isDeleting}
-                  onClick={handleDeleteUser}
-                >
-                  Delete Account
-                </Button>
-              </ResponsiveAlertDialog>
-            </div>
-            <Separator />
             <div className="flex items-center justify-between gap-6">
               <div className="flex flex-col gap-2">
                 <h3 className="text-lg font-medium leading-6">Unsubscribe</h3>
@@ -465,6 +375,37 @@ const AccountSettingsCard = () => {
                   onClick={handleUnsubscribe}
                 >
                   Unsubscribe
+                </Button>
+              </ResponsiveAlertDialog>
+            </div>
+            <div className="flex items-center justify-between gap-6">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-lg font-medium leading-6">
+                  Account Deletion
+                </h3>
+                <small className="text-muted-foreground">
+                  Once you delete your account, there is no way to recover it.
+                </small>
+              </div>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                Delete Account
+              </Button>
+              <ResponsiveAlertDialog
+                title="Delete Account"
+                description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
+                open={deleteDialogOpen}
+                setOpen={setDeleteDialogOpen}
+              >
+                <Button
+                  variant="destructive"
+                  loading={isDeleting}
+                  onClick={handleDeleteUser}
+                >
+                  Delete Account
                 </Button>
               </ResponsiveAlertDialog>
             </div>

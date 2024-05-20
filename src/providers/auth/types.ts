@@ -1,6 +1,4 @@
-import { Organisation, User } from "@/payload-types";
-
-export type FullUser = User & { organisation: string };
+import { User } from "@/payload-types";
 
 export type IsAdmin = boolean;
 
@@ -25,7 +23,7 @@ export interface AuthContext {
   user?: User | null;
   isAdmin: IsAdmin;
   fetchMe: FetchMe;
-  setUser: (user: FullUser | null) => void;
+  setUser: (user: User | null) => void;
   logout: Logout;
   login: Login;
   resetPassword: ResetPassword;
