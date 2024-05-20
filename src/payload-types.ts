@@ -9,7 +9,6 @@
 export interface Config {
   collections: {
     users: User;
-    profilePictures: ProfilePicture;
     organisations: Organisation;
     enterprises: Enterprise;
     engagements: Engagement;
@@ -32,7 +31,9 @@ export interface User {
   jobTitle?: string | null;
   organisation?: (string | null) | Organisation;
   userType?: ('university' | 'vet' | 'rto' | 'non-profit' | 'government' | 'rdi' | 'industry') | null;
-  picture?: string | ProfilePicture | null;
+  notificationFrequency?: ('off' | 'daily' | 'weekly') | null;
+  signupComplete?: boolean | null;
+  paymentSuccessful?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -59,34 +60,20 @@ export interface Organisation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "profilePictures".
- */
-export interface ProfilePicture {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "enterprises".
  */
 export interface Enterprise {
   id: string;
   name: string;
   abn?: string | null;
-  industrySector?: string | null;
   numEmployees?: number | null;
   website?: string | null;
-  address?: string | null;
-  revenue?: number | null;
-  valuation?: number | null;
-  establishedDate?: string | null;
+  suburb?: string | null;
+  description?: string | null;
+  growthPotential?: number | null;
+  postCode?: number | null;
+  manufacturer?: boolean | null;
+  sme?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -113,13 +100,10 @@ export interface SearchProfile {
   name: string;
   user: string | User;
   searchQuery?: string | null;
-  industrySector?: string[] | null;
-  minEmployees?: number | null;
-  maxEmployees?: number | null;
-  minRevenue?: number | null;
-  maxRevenue?: number | null;
-  minValuation?: number | null;
-  maxValuation?: number | null;
+  manufacturer?: boolean | null;
+  employeesRange?: string | null;
+  growthPotentialRange?: string | null;
+  postcode?: number | null;
   updatedAt: string;
   createdAt: string;
 }

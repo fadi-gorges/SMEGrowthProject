@@ -7,6 +7,10 @@ const ProtectedLayout = async ({ children }: { children: React.ReactNode }) => {
 
   if (!user) redirect("/");
 
+  if (!user.signupComplete) redirect("/auth/complete");
+
+  if (!user.paymentSuccessful) redirect("/auth/payment");
+
   return <SidebarLayout>{children}</SidebarLayout>;
 };
 

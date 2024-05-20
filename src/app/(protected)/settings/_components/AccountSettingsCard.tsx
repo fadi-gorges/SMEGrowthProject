@@ -1,8 +1,11 @@
 "use client";
 import { deleteUser } from "@/actions/auth/deleteUser";
+import { updateSubscription } from "@/actions/auth/updateSubscription";
 import { updateUser } from "@/actions/auth/updateUser";
+import { getOrganisation } from "@/actions/organisations/readOrganisation";
+import { updateOrganisation } from "@/actions/organisations/updateOrganisation";
 import ResponsiveAlertDialog from "@/components/ResponsiveAlertDialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -21,35 +24,47 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils/cn";
-import { readDataURL } from "@/lib/utils/readDataUrl";
-import { resizeImage } from "@/lib/utils/resizeImage";
+import { userTypes } from "@/lib/validations/auth/completeSignupSchema";
 import {
   UpdateUserData,
   updateUserSchema,
 } from "@/lib/validations/auth/updateUserSchema";
+import { Organisation } from "@/payload-types";
 import { useAuth } from "@/providers/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User2Icon, XCircleIcon } from "lucide-react";
+import { User2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
-import { ControllerRenderProps, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const AccountSettingsCard = () => {
   const router = useRouter();
-  const { user, userPicture, fetchMe } = useAuth();
-
-  const [pictureInputKey, setPictureInputKey] = useState(0);
-  const [pictureUrl, setPictureUrl] = useState("");
+  const { user, fetchMe } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const [unsubscribeDialogOpen, setUnsubscribeDialogOpen] = useState(false);
+  const [isUnsubscribing, setIsUnsubscribing] = useState(false);
+
+  const [userOrganisation, setUserOrganisation] = useState<
+    Omit<Organisation, "id" | "createdAt" | "updatedAt">
+  >({
+    name: "",
+    members: [],
+  });
 
   const updateUserForm = useForm<UpdateUserData>({
     resolver: zodResolver(updateUserSchema),
@@ -57,47 +72,51 @@ const AccountSettingsCard = () => {
     defaultValues: {
       firstName: user?.firstName,
       lastName: user?.lastName,
-      picture: undefined,
       jobTitle: user?.jobTitle || "",
       mobileNumber: user?.mobileNumber || "",
+      userType: user?.userType || undefined,
     },
   });
 
-  const onPictureChange = async (
-    field: ControllerRenderProps<UpdateUserData, "picture">,
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = e.target.files?.[0];
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getOrganisation();
 
-    if (!file) {
-      setPictureUrl("");
-      field.onChange(undefined);
-      return;
-    }
+        if (!res.success) {
+          return;
+        }
 
-    const url = await readDataURL(file);
-    setPictureUrl(url);
+        const { organisation } = res;
+        setUserOrganisation({
+          name: organisation?.name,
+          members: organisation?.members,
+        });
+      } catch (error) {}
+    })().then();
+  }, []);
 
-    field.onChange(file);
-  };
+  useEffect(() => {
+    updateUserForm.reset({
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      jobTitle: user?.jobTitle || "",
+      mobileNumber: user?.mobileNumber || "",
+      userType: user?.userType || undefined,
+    });
+  }, [user]);
 
   const onSubmit = async (data: UpdateUserData) => {
     setIsLoading(true);
 
-    const body = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      if (value) {
-        body.append(key, value);
-      }
-    });
-
-    if (data.picture) {
-      const resizedPicture = await resizeImage(data.picture, 320, 320);
-      body.set("picture", resizedPicture);
-    }
-
     try {
-      const res = await updateUser(body);
+      const res = await updateUser(data);
+
+      await updateOrganisation({
+        name: userOrganisation?.name,
+        members: userOrganisation?.members,
+      });
+
       setIsLoading(false);
 
       if (!res.success) {
@@ -108,8 +127,6 @@ const AccountSettingsCard = () => {
       toast.success("Your account has been updated.");
 
       fetchMe();
-      setPictureUrl("");
-      setPictureInputKey((k) => k + 1);
 
       document.getElementById("page-div")?.scrollTo(0, 0);
     } catch (e) {
@@ -138,6 +155,19 @@ const AccountSettingsCard = () => {
     }
   };
 
+  const handleUnsubscribe = async () => {
+    setIsUnsubscribing(true);
+    try {
+      const res = await updateSubscription(false);
+      setIsUnsubscribing(false);
+      toast.success("You have successfully unsubscribed.");
+      router.replace("/auth/payment");
+    } catch (e) {
+      setIsUnsubscribing(false);
+      toast.error("An error occured, please try again");
+    }
+  };
+
   if (!user) return null;
 
   return (
@@ -158,59 +188,22 @@ const AccountSettingsCard = () => {
               <div className="grid gap-2">
                 <div className="flex items-center space-x-4">
                   <Avatar className="w-16 h-16">
-                    <AvatarImage
-                      alt="Profile Picture"
-                      src={pictureUrl || (userPicture?.url as string)}
-                      className="object-cover"
-                    />
                     <AvatarFallback>
                       <User2Icon />
                     </AvatarFallback>
                   </Avatar>
-                  <FormField
-                    control={updateUserForm.control}
-                    name="picture"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex items-center gap-2">
-                          <FormLabel
-                            className={cn(
-                              buttonVariants({ variant: "outline" }),
-                              "cursor-pointer"
-                            )}
-                          >
-                            Change Profile Picture
-                          </FormLabel>
-                          {pictureUrl && (
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => {
-                                field.onChange(undefined);
-                                setPictureUrl("");
-                                setPictureInputKey((k) => k + 1);
-                              }}
-                            >
-                              <XCircleIcon />
-                            </Button>
-                          )}
-                        </div>
-
-                        <FormControl>
-                          <Input
-                            key={pictureInputKey}
-                            type="file"
-                            accept="image/jpeg,image/png"
-                            {...field}
-                            value={undefined}
-                            onChange={(e) => onPictureChange(field, e)}
-                            className="hidden"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <FormItem>
+                    <div className="flex items-center gap-2">
+                      <FormLabel
+                        className={cn(
+                          buttonVariants({ variant: "outline" }),
+                          "cursor-pointer"
+                        )}
+                      >
+                        Change Profile Picture
+                      </FormLabel>
+                    </div>
+                  </FormItem>
                 </div>
                 <div className="flex gap-4">
                   <FormField
@@ -292,32 +285,99 @@ const AccountSettingsCard = () => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  name="organisation"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>Organisation Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder={"Input user organisation"}
+                          value={userOrganisation?.name}
+                          onChange={(e) => {
+                            setUserOrganisation((prevState) => ({
+                              name: e.target.value,
+                              members: prevState?.members,
+                            }));
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={updateUserForm.control}
+                  name="userType"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>User Type</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          required
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={
+                                  user?.userType || "Select a user type"
+                                }
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {Object.entries(userTypes).map(([key, value]) => (
+                              <SelectItem key={key} value={value}>
+                                {key}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
               </div>
             </div>
             <Separator />
-            <div className="flex flex-col gap-2">
-              <h6 className="font-medium">Security Settings</h6>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="two-factor">Two-factor authentication</Label>
-                <Switch id="two-factor" />
+            <div className="flex items-center justify-between gap-6">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-lg font-medium leading-6">Unsubscribe</h3>
+                <small className="text-muted-foreground">
+                  To unsubscribe, please click the &quot;unsubscribe&quot;
+                  button.
+                </small>
               </div>
-              <small className="text-muted-foreground">
-                Enabling two-factor authentication makes your account more
-                secure.
-              </small>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  if (user?.paymentSuccessful) {
+                    setUnsubscribeDialogOpen(true);
+                  }
+                }}
+              >
+                {user?.paymentSuccessful ? "Unsubscribe" : "Subscribe"}
+              </Button>
+              <ResponsiveAlertDialog
+                title="Unsubscribe"
+                description="This action cannot be undone. This will remove your subscription."
+                open={unsubscribeDialogOpen}
+                setOpen={setUnsubscribeDialogOpen}
+              >
+                <Button
+                  variant="destructive"
+                  loading={isUnsubscribing}
+                  onClick={handleUnsubscribe}
+                >
+                  Unsubscribe
+                </Button>
+              </ResponsiveAlertDialog>
             </div>
-            <Separator />
-            <div className="flex flex-col gap-2">
-              <h6 className="font-medium">Notification Preferences</h6>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="email-newsletter">Email newsletter</Label>
-                <Switch id="email-newsletter" />
-              </div>
-              <small className="text-muted-foreground">
-                Receive the latest updates and news in your inbox.
-              </small>
-            </div>
-            <Separator />
             <div className="flex items-center justify-between gap-6">
               <div className="flex flex-col gap-2">
                 <h3 className="text-lg font-medium leading-6">
@@ -329,13 +389,13 @@ const AccountSettingsCard = () => {
               </div>
               <Button
                 type="button"
-                variant="outline"
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
               >
                 Delete Account
               </Button>
               <ResponsiveAlertDialog
-                title="Are you sure?"
+                title="Delete Account"
                 description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
                 open={deleteDialogOpen}
                 setOpen={setDeleteDialogOpen}

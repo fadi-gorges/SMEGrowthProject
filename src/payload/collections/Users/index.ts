@@ -33,13 +33,8 @@ const Users: CollectionConfig = {
   },
   auth: {
     verify: {
-      generateEmailHTML: ({ token, user }) => {
-        return `
-          <h1 style="margin-bottom: 16px;">Verify your email</h1>
-          <p style="margin-bottom: 8px;">Hi ${user.email},</p>
-          <p style="margin-bottom: 16px;">Click the button below to verify your email address:</p>
-          <a href="${getUrl()}/auth/verify/${token}" style="display: inline-block; padding: 12px 24px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Verify your email</a>
-        `;
+      generateEmailHTML: () => {
+        return "There was an error in your signup process. Please try again.";
       },
     },
     forgotPassword: {
@@ -62,6 +57,7 @@ const Users: CollectionConfig = {
       },
     },
   },
+  timestamps: true,
   fields: [
     {
       name: "roles",
@@ -164,12 +160,20 @@ const Users: CollectionConfig = {
       defaultValue: "off",
     },
     {
-      name: "picture",
-      type: "upload",
-      relationTo: "profilePictures",
+      name: "signupComplete",
+      type: "checkbox",
+      admin: {
+        hidden: true,
+      },
+    },
+    {
+      name: "paymentSuccessful",
+      type: "checkbox",
+      admin: {
+        hidden: true,
+      },
     },
   ],
-  timestamps: true,
 };
 
 export default Users;

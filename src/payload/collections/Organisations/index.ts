@@ -18,7 +18,6 @@ export const Organisations: CollectionConfig = {
     {
       name: "name",
       type: "text",
-      unique: true,
       required: true,
     },
     {

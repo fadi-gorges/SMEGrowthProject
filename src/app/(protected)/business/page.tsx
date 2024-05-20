@@ -1,3 +1,4 @@
+import AddEnterpriseCard from "@/app/(protected)/business/_components/AddEnterpriseCard";
 import Main from "@/components/page/Main";
 import { Metadata } from "next";
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 const EditBusinessPage = () => {
   return (
     <Main>
-      <h1>Edit Business</h1>
+      <AddEnterpriseCard />
     </Main>
   );
 };
