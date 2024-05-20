@@ -5,7 +5,7 @@ export const Enterprises: CollectionConfig = {
   slug: "enterprises",
   admin: {
     useAsTitle: "name",
-    defaultColumns: ["id","name", "abn", "sector", "numEmployees",],
+    defaultColumns: ["id", "name", "abn", "sector", "numEmployees"],
     listSearchableFields: ["name", "abn"],
   },
   access: {
@@ -26,7 +26,6 @@ export const Enterprises: CollectionConfig = {
       type: "text",
       minLength: 11,
       maxLength: 11,
-      unique: true,
     },
     {
       name: "numEmployees",
@@ -38,27 +37,27 @@ export const Enterprises: CollectionConfig = {
     },
     {
       name: "suburb",
-      type: "textarea",
+      type: "text",
     },
     {
       name: "description",
-      type: "textarea"
+      type: "textarea",
     },
     {
       name: "growthPotential",
-      type: "number"
+      type: "number",
     },
     {
       name: "postCode",
-      type: "number"
+      type: "number",
     },
     {
       name: "manufacturer",
-      type: "checkbox"
+      type: "checkbox",
     },
     {
       name: "sme",
-      type: "checkbox"
-    }
+      type: "checkbox",
+    },
   ],
 };

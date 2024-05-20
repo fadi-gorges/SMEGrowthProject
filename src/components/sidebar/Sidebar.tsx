@@ -27,6 +27,11 @@ export const sidebarLinks = {
     link: "/profiles",
     icon: TextSearchIcon,
   },
+  addBusiness: {
+    text: "Add Business",
+    link: "/business",
+    icon: Building2Icon,
+  },
   notifications: {
     text: "Notifications",
     link: "/notifications",
@@ -92,6 +97,7 @@ const Sidebar = () => {
         <SidebarLink link={sidebarLinks.dashboard} />
         <SidebarLink link={sidebarLinks.search} />
         <SidebarLink link={sidebarLinks.manageProfiles} />
+        <SidebarLink link={sidebarLinks.addBusiness} />
         <SidebarLink link={sidebarLinks.notifications} alertCount={6} />
         <SidebarLink link={sidebarLinks.settings} />
         {isAdmin && <SidebarLink link={navLinks.admin} />}
