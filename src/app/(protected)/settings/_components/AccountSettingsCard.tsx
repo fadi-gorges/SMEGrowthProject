@@ -1,5 +1,6 @@
 "use client";
 import { deleteUser } from "@/actions/auth/deleteUser";
+import { updateSubscription } from "@/actions/auth/updateSubscription";
 import { updateUser } from "@/actions/auth/updateUser";
 import { getOrganisation } from "@/actions/organisations/readOrganisation";
 import { updateOrganisation } from "@/actions/organisations/updateOrganisation";
@@ -23,21 +24,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils/cn";
+import { userTypes } from "@/lib/validations/auth/completeSignupSchema";
 import {
   UpdateUserData,
   updateUserSchema,
-  userTypes,
 } from "@/lib/validations/auth/updateUserSchema";
 import { Organisation } from "@/payload-types";
 import { useAuth } from "@/providers/auth";
@@ -51,9 +50,6 @@ import { toast } from "sonner";
 const AccountSettingsCard = () => {
   const router = useRouter();
   const { user, fetchMe } = useAuth();
-
-  // const [pictureInputKey, setPictureInputKey] = useState(0);
-  // const [pictureUrl, setPictureUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -74,17 +70,13 @@ const AccountSettingsCard = () => {
     resolver: zodResolver(updateUserSchema),
     disabled: isLoading,
     defaultValues: {
-      id: user?.id,
       firstName: user?.firstName,
       lastName: user?.lastName,
-      // picture: undefined,
       jobTitle: user?.jobTitle || "",
       mobileNumber: user?.mobileNumber || "",
       userType: user?.userType || undefined,
     },
   });
-
-  console.log(updateUserForm.getValues("userType"));
 
   useEffect(() => {
     (async () => {
@@ -92,7 +84,7 @@ const AccountSettingsCard = () => {
         const res = await getOrganisation();
 
         if (!res.success) {
-          return
+          return;
         }
 
         const { organisation } = res;
@@ -100,47 +92,25 @@ const AccountSettingsCard = () => {
           name: organisation?.name,
           members: organisation?.members,
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     })().then();
   }, []);
 
-  // const onPictureChange = async (
-  //   field: ControllerRenderProps<UpdateUserData, "picture">,
-  //   e: ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const file = e.target.files?.[0];
-
-  //   if (!file) {
-  //     setPictureUrl("");
-  //     field.onChange(undefined);
-  //     return;
-  //   }
-
-  //   const url = await readDataURL(file);
-  //   setPictureUrl(url);
-
-  //   field.onChange(file);
-  // };
+  useEffect(() => {
+    updateUserForm.reset({
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      jobTitle: user?.jobTitle || "",
+      mobileNumber: user?.mobileNumber || "",
+      userType: user?.userType || undefined,
+    });
+  }, [user]);
 
   const onSubmit = async (data: UpdateUserData) => {
     setIsLoading(true);
 
-    const body = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      if (value) {
-        body.append(key, value);
-      }
-    });
-
-    // if (data.picture) {
-    //   const resizedPicture = await resizeImage(data.picture, 320, 320);
-    //   body.set("picture", resizedPicture);
-    // }
-
     try {
-      const res = await updateUser(body);
+      const res = await updateUser(data);
 
       await updateOrganisation({
         name: userOrganisation?.name,
@@ -157,8 +127,6 @@ const AccountSettingsCard = () => {
       toast.success("Your account has been updated.");
 
       fetchMe();
-      // setPictureUrl("");
-      // setPictureInputKey((k) => k + 1);
 
       document.getElementById("page-div")?.scrollTo(0, 0);
     } catch (e) {
@@ -188,7 +156,16 @@ const AccountSettingsCard = () => {
   };
 
   const handleUnsubscribe = async () => {
-    // Logic to handle unsubscribe
+    setIsUnsubscribing(true);
+    try {
+      const res = await updateSubscription(false);
+      setIsUnsubscribing(false);
+      toast.success("You have successfully unsubscribed.");
+      router.replace("/auth/payment");
+    } catch (e) {
+      setIsUnsubscribing(false);
+      toast.error("An error occured, please try again");
+    }
   };
 
   if (!user) return null;
@@ -291,6 +268,24 @@ const AccountSettingsCard = () => {
                   )}
                 />
                 <FormField
+                  control={updateUserForm.control}
+                  name="jobTitle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Job Title</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder={user.jobTitle || ""}
+                          required
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
                   name="organisation"
                   render={() => (
                     <FormItem>
@@ -316,7 +311,6 @@ const AccountSettingsCard = () => {
                   control={updateUserForm.control}
                   name="userType"
                   render={({ field }) => {
-                    console.log(field.value);
                     return (
                       <FormItem>
                         <FormLabel>User Type</FormLabel>
@@ -326,9 +320,13 @@ const AccountSettingsCard = () => {
                           required
                         >
                           <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={user?.userType || "Select a user type"} />
-                          </SelectTrigger>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder={
+                                  user?.userType || "Select a user type"
+                                }
+                              />
+                            </SelectTrigger>
                           </FormControl>
                           <SelectContent>
                             {Object.entries(userTypes).map(([key, value]) => (
@@ -346,29 +344,40 @@ const AccountSettingsCard = () => {
               </div>
             </div>
             <Separator />
-            <div className="flex flex-col gap-2">
-              <h6 className="font-medium">Security Settings</h6>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="two-factor">Two-factor authentication</Label>
-                <Switch id="two-factor" />
+            <div className="flex items-center justify-between gap-6">
+              <div className="flex flex-col gap-2">
+                <h3 className="text-lg font-medium leading-6">Unsubscribe</h3>
+                <small className="text-muted-foreground">
+                  To unsubscribe, please click the &quot;unsubscribe&quot;
+                  button.
+                </small>
               </div>
-              <small className="text-muted-foreground">
-                Enabling two-factor authentication makes your account more
-                secure.
-              </small>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  if (user?.paymentSuccessful) {
+                    setUnsubscribeDialogOpen(true);
+                  }
+                }}
+              >
+                {user?.paymentSuccessful ? "Unsubscribe" : "Subscribe"}
+              </Button>
+              <ResponsiveAlertDialog
+                title="Unsubscribe"
+                description="This action cannot be undone. This will remove your subscription."
+                open={unsubscribeDialogOpen}
+                setOpen={setUnsubscribeDialogOpen}
+              >
+                <Button
+                  variant="destructive"
+                  loading={isUnsubscribing}
+                  onClick={handleUnsubscribe}
+                >
+                  Unsubscribe
+                </Button>
+              </ResponsiveAlertDialog>
             </div>
-            <Separator />
-            <div className="flex flex-col gap-2">
-              <h6 className="font-medium">Notification Preferences</h6>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="email-newsletter">Email newsletter</Label>
-                <Switch id="email-newsletter" />
-              </div>
-              <small className="text-muted-foreground">
-                Receive the latest updates and news in your inbox.
-              </small>
-            </div>
-            <Separator />
             <div className="flex items-center justify-between gap-6">
               <div className="flex flex-col gap-2">
                 <h3 className="text-lg font-medium leading-6">
@@ -380,7 +389,7 @@ const AccountSettingsCard = () => {
               </div>
               <Button
                 type="button"
-                variant="outline"
+                variant="destructive"
                 onClick={() => setDeleteDialogOpen(true)}
               >
                 Delete Account
@@ -397,37 +406,6 @@ const AccountSettingsCard = () => {
                   onClick={handleDeleteUser}
                 >
                   Delete Account
-                </Button>
-              </ResponsiveAlertDialog>
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between gap-6">
-              <div className="flex flex-col gap-2">
-                <h3 className="text-lg font-medium leading-6">Unsubscribe</h3>
-                <small className="text-muted-foreground">
-                  To unsubscribe, please click the &quot;unsubscribe&quot;
-                  button.
-                </small>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setUnsubscribeDialogOpen(true)}
-              >
-                Unsubscribe
-              </Button>
-              <ResponsiveAlertDialog
-                title="Unsubscribe"
-                description="This action cannot be undone. This will remove your subscription."
-                open={unsubscribeDialogOpen}
-                setOpen={setUnsubscribeDialogOpen}
-              >
-                <Button
-                  variant="destructive"
-                  loading={isUnsubscribing}
-                  onClick={handleUnsubscribe}
-                >
-                  Unsubscribe
                 </Button>
               </ResponsiveAlertDialog>
             </div>

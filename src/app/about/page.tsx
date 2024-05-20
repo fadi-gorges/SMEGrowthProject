@@ -1,6 +1,7 @@
 import Main from "@/components/page/Main";
 import { Metadata } from "next";
 import Image from "next/image";
+
 import { MeetOurTeamCarousel } from "./Carousel";
 
 export const metadata: Metadata = {
@@ -42,17 +43,22 @@ const AboutPage = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center p-6 bg-white shadow-lg rounded-lg">
         <div className="md:w-1/2 mb-8 md:mb-0">
           <h1 className="text-2xl font-bold mb-8">In the beginning...</h1>
         </div>
-        <div className="md:w-1/2 text-right md:pl-10">
+        <div className="md:w-1/2 md:text-right md:pl-10">
           <p className="text-gray-600 mb-4 text-sm sm:text-base">
-            It all started at the launch of the UTS Vault on the 16 of October 2023. While walking down the stairs to the UTS Chancellery, David Harding, Executive Director at Business NSW shared a thought &quot;what if there was a smart way using data and AI to identify high growth potential SMEs?&quot;
+            It all started at the launch of the UTS Vault on the 16 of October
+            2023. While walking down the stairs to the UTS Chancellery, David
+            Harding, Executive Director at Business NSW shared a thought
+            &quot;what if there was a smart way using
+            data&nbsp;and&nbsp;AI&nbsp;to&nbsp;identify&nbsp;high&nbsp;growth&nbsp;potential&nbsp;SMEs?&quot;
           </p>
           <blockquote className="italic text-blue-800 mt-4">
-            Sometimes all you need is an idea seed and the motivation to water it, nurture it and see it grow.
+            Sometimes all you need is an idea seed and the motivation to water
+            it, nurture&nbsp;it&nbsp;and&nbsp;see&nbsp;it&nbsp;grow.
           </blockquote>
         </div>
       </div>
@@ -69,32 +75,45 @@ const AboutPage = () => {
           />
         </div>
       </div>
-      
+
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center p-6 bg-white shadow-lg rounded-lg">
         <div className="md:w-1/2 mb-8 md:mb-0">
           <h1 className="text-2xl font-bold mb-8">Now</h1>
         </div>
-        <div className="md:w-1/2 text-right md:pl-10">
-          <p className="text-gray-600 mb-4 text-sm sm:text-base ">
-          Following a light bulb moment to tap into UTS student resources, a client team was formed with people from UTS, CSIRO, Business NSW and the Industry Growth Program. A project plan was developed and pitched to UTS students who opted in to develop this AI platform prototype, populated. UTS has a very successful program called Industry Studio where groups of students collaborate to solve an industry challenge over 12 weeks. Following a light bulb moment to tap into UTS student resources, forming a client consortium team of people from UTS, CSIRO, Business NSW and the Industry Growth Program and writing up a project brief to pitch to the students, led to the development of this platform prototype, populated with Australian businesses to track and discover when they reach high growth potential.
+        <div className="md:w-1/2 md:text-right md:pl-10">
+          <p className="text-gray-600 mb-4 text-sm sm:text-base text-pretty ">
+            Following a light bulb moment to tap into UTS student resources, a
+            client team was formed with people from UTS, CSIRO, Business NSW and
+            the Industry Growth Program. A project plan was developed and
+            pitched to senior level IT students who opted in to develop this
+            platform, populated with Australian businesses to track and
+            discover&nbsp;when&nbsp;they&nbsp;reach&nbsp;high&nbsp;growth&nbsp;potential.
           </p>
         </div>
       </div>
 
       <section className="py-4 bg-white">
-  <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold mt-16 mb-6">Meet our team</h2>
-  <MeetOurTeamCarousel />
+        <h2 className="text-center text-2xl sm:text-3xl md:text-4xl font-bold mt-16 mb-6">
+          Meet our team
+        </h2>
+        <MeetOurTeamCarousel />
+      </section>
 
-</section>
-
-<section className="py-4 bg-white mt-0">
-  <div className="text-center px-4">
-    <h2 className="text-2xl font-bold">With your interest...</h2>
-    <p className="mt-2 text-sm sm:text-base text-gray-600">
-      With your interest and support, the continuation of this story hopefully results in the final build of a commercially robust platform that over time will be used by many organisations seeking to engage with high growth potential SMEs. A platform that will generate sufficient revenue to self-fund continuous improvement, user support and maintenance.
-    </p>
-  </div>
-</section>
+      <section className="py-4 bg-white mt-0">
+        <div className="text-center px-4">
+          <h2 className="text-2xl font-bold">With your interest...</h2>
+          <div className="max-w-4xl mx-auto">
+            <p className="mt-2 text-sm sm:text-base text-gray-600">
+              With your interest and support, the continuation of this story
+              hopefully results in the final build of a commercially robust
+              platform that over time will be used by many organisations seeking
+              to engage with high growth potential SMEs. A platform that will
+              generate sufficient revenue to self-fund continuous improvement,
+              user support and maintenance.
+            </p>
+          </div>
+        </div>
+      </section>
     </Main>
   );
 };

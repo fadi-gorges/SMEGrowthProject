@@ -102,11 +102,7 @@ const Sidebar = () => {
         <SidebarLink link={sidebarLinks.settings} />
         {isAdmin && <SidebarLink link={navLinks.admin} />}
       </div>
-      <Button
-        variant="secondary"
-        onClick={() => setLogoutDialogOpen(true)}
-        className="w-full"
-      >
+      <Button onClick={() => setLogoutDialogOpen(true)} className="w-full">
         <LogOutIcon size={20} />
         <p>Log out</p>
       </Button>

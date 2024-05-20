@@ -41,53 +41,55 @@ export function MeetOurTeamCarousel() {
     ];
 
     return (
-        <div style={{ position: 'relative', marginBottom: '40px' }} ref={carouselRef}> {/* Reduced margin-bottom */}
-            <Carousel opts={{ align: "start" }} className="w-full">
-                <CarouselContent>
-                    {teamMembers.map((member, index) => (
-                        <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3" style={{ padding: '0 20px' }}>
-                            <div className="p-1" style={{ maxWidth: '500px', margin: '0 auto' }}>
-                                <Card>
-                                    <CardContent className="flex flex-col items-center justify-center pt-4">
-                                        <div className="relative w-48 h-48 mb-4">
-                                            <Image
-                                                src={member.imgSrc}
-                                                alt={member.name}
-                                                layout="fill"
-                                                objectFit="cover"
-                                                className="rounded-lg"
-                                            />
-                                        </div>
-                                        <div className="text-center">
-                                            <h3 className="text-lg font-bold">{member.name}</h3>
-                                            <p className="text-sm text-gray-500">{member.company}</p>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
+        <div style={{ position: 'relative', marginBottom: '40px' }} ref={carouselRef}>
+            <div className="max-w-7xl mx-auto"> {/* Added max-width and centering */}
+                <Carousel opts={{ align: "start" }} className="w-full">
+                    <CarouselContent>
+                        {teamMembers.map((member, index) => (
+                            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3" style={{ padding: '0 10px' }}> {/* Reduced padding */}
+                                <div className="p-1" style={{ maxWidth: '500px', margin: '0 auto' }}>
+                                    <Card>
+                                        <CardContent className="flex flex-col items-center justify-center pt-4">
+                                            <div className="relative w-48 h-48 mb-4">
+                                                <Image
+                                                    src={member.imgSrc}
+                                                    alt={member.name}
+                                                    layout="fill"
+                                                    objectFit="cover"
+                                                    className="rounded-lg"
+                                                />
+                                            </div>
+                                            <div className="text-center">
+                                                <h3 className="text-lg font-bold">{member.name}</h3>
+                                                <p className="text-sm text-gray-500">{member.company}</p>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
 
-                <CarouselPrevious 
-                    style={{
-                        position: 'absolute',
-                        top: '50%', // Center vertically
-                        left: '20px', // Place on the left edge
-                        transform: 'translateY(-50%)', // Center vertically
-                        zIndex: 1000 // Ensure it is above any overlaid content if needed
-                    }} 
-                />
-                <CarouselNext 
-                    style={{
-                        position: 'absolute',
-                        top: '50%', // Center vertically
-                        right: '20px', // Place on the right edge
-                        transform: 'translateY(-50%)', // Center vertically
-                        zIndex: 1000 // Ensure it is above any overlaid content if needed
-                    }} 
-                />
-            </Carousel>
+                    <CarouselPrevious 
+                        style={{
+                            position: 'absolute',
+                            top: '50%', // Center vertically
+                            left: '10px', // Adjusted left edge
+                            transform: 'translateY(-50%)', // Center vertically
+                            zIndex: 1000 // Ensure it is above any overlaid content if needed
+                        }} 
+                    />
+                    <CarouselNext 
+                        style={{
+                            position: 'absolute',
+                            top: '50%', // Center vertically
+                            right: '10px', // Adjusted right edge
+                            transform: 'translateY(-50%)', // Center vertically
+                            zIndex: 1000 // Ensure it is above any overlaid content if needed
+                        }} 
+                    />
+                </Carousel>
+            </div>
             <div className="flex justify-center mt-4">
                 <p className="italic text-sm sm:text-base text-gray-600">
                     Students from Software Development Studio at UTS, Autumn 2024.

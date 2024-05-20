@@ -1,7 +1,5 @@
-import Main from "@/components/page/Main";
-import { getServerUser } from "@/lib/utils/getServerUser";
 import DashboardPage from "@/app/(protected)/dashboard/dashboardCard";
-import { User } from "@/payload-types";
+import Main from "@/components/page/Main";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,12 +8,11 @@ export const metadata: Metadata = {
 };
 
 const Dashboard = () => {
-    return(
-      <Main>
-        <DashboardPage/>
-      </Main>
-    );
-
-  }
+  return (
+    <Main>
+      <DashboardPage />
+    </Main>
+  );
+};
 
 export default Dashboard;
