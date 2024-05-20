@@ -1,5 +1,6 @@
 import Main from "@/components/page/Main";
 import { getServerUser } from "@/lib/utils/getServerUser";
+
 import { User } from "@/payload-types";
 import { Metadata } from "next";
 
@@ -64,7 +65,7 @@ const DashboardPage = async () => {
             button.addEventListener('click', function () {
               const id = this.getAttribute('data-id');
               const row = document.querySelector(\`tr[data-id="\${id}"]\`);
-              if (row) {
+              if (row && confirm('Are you sure you want to remove this item?')) {
                 row.remove();
               }
             });
