@@ -13,6 +13,7 @@ import {
   LogOutIcon,
   SearchIcon,
   SettingsIcon,
+  ShareIcon,
   TextSearchIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -26,6 +27,11 @@ export const sidebarLinks = {
     text: "Manage Profiles",
     link: "/profiles",
     icon: TextSearchIcon,
+  },
+  shareOrganisation: {
+    text: "Share Organisation",
+    link: "/share",
+    icon: ShareIcon,
   },
   addBusiness: {
     text: "Add Business",
@@ -97,6 +103,7 @@ const Sidebar = () => {
         <SidebarLink link={sidebarLinks.dashboard} />
         <SidebarLink link={sidebarLinks.search} />
         <SidebarLink link={sidebarLinks.manageProfiles} />
+        <SidebarLink link={sidebarLinks.shareOrganisation} />
         <SidebarLink link={sidebarLinks.addBusiness} />
         <SidebarLink link={sidebarLinks.notifications} alertCount={6} />
         <SidebarLink link={sidebarLinks.settings} />
