@@ -33,6 +33,7 @@ export const updateSearchProfile = async (
       name: validation.data.name,
       searchQuery: validation.data.searchQuery,
       manufacturer: validation.data.manufacturer,
+      industrySector: validation.data.industrySector,
       employeesRange: validation.data.employeesRange,
       postcode: validation.data.postcode,
       growthPotentialRange: validation.data.growthPotentialRange,

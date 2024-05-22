@@ -69,11 +69,13 @@ export interface Enterprise {
   numEmployees?: number | null;
   website?: string | null;
   suburb?: string | null;
+
   description?: string | null;
   growthPotential?: number | null;
   postCode?: number | null;
   manufacturer?: boolean | null;
   sme?: boolean | null;
+  industrySector?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -104,6 +106,7 @@ export interface SearchProfile {
   employeesRange?: string | null;
   growthPotentialRange?: string | null;
   postcode?: number | null;
+  industrySector?: string | null;
   updatedAt: string;
   createdAt: string;
 }

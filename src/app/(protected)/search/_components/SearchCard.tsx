@@ -57,6 +57,7 @@ const populateBusinessesFromServer = async () => {
       createdAt: enterprise.createdAt,
       website: enterprise.website,
       postCode: enterprise.postCode,
+      industrySector: enterprise.industrySector
     }));
     console.log("Businesses populated:", businesses);
     return businessesmap;
@@ -104,7 +105,7 @@ const statesAndTerritories = [
   "Northern Territory",
   "Australian Capital Territory",
 ];
-const sectors = ["Any", "Yes", "No"];
+const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture", "Manufacturing","Construction"];
 const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
   const [min, max] = staffRanges[range];
   return count >= min && count <= max;
@@ -127,7 +128,6 @@ const SearchCard = () => {
   }, []);
   const [searchProfileName, setSearchProfileName] = useState("");
   const [isTableVisible, setIsTableVisible] = useState(false);
-  const [openAccordion, setOpenAccordion] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [postcodeQuery, setpostcodeQuery] = useState("");
   const [selectedStaffRange, setSelectedStaffRange] = useState<
@@ -179,13 +179,9 @@ const SearchCard = () => {
         ? isInStaffRange(business.numEmployees!, selectedStaffRange)
         : true;
       const sectorMatch =
-        selectedSector === "" ||
-        (selectedSector === "Yes" && business.manufacturer === true) ||
-        (selectedSector === "No" && business.manufacturer === false);
-      selectedSector === "" ||
-        selectedSector === undefined ||
         selectedSector === "Any" ||
-        business.manufacturer?.toString() === selectedSector;
+        selectedSector === "" || 
+        business.industrySector?.toLowerCase() === selectedSector.toLowerCase();
       const growthPotentialMatch = selectedGrowthPotentialRange
         ? isInGrowthPotentialRange(
             business.growthPotential!,
@@ -206,7 +202,7 @@ const SearchCard = () => {
     );
     setFilteredBusinesses(sortedResults); // Update the filtered businesses
     setIsTableVisible(true); // Show the table with the search results
-    setOpenAccordion("");
+
   };
   const resetSearch = () => {
     setSearchQuery("");
@@ -226,7 +222,7 @@ const SearchCard = () => {
     const data = {
       name: searchProfileName,
       searchQuery: searchQuery,
-      manufacturer: selectedSector === "Yes",
+      industrySector: selectedSector,
       employeesRange: selectedStaffRange,
       growthPotentialRange: selectedGrowthPotentialRange,
       postcode: postcodeQ || undefined,
@@ -259,15 +255,10 @@ const SearchCard = () => {
           </div>
           <Accordion
             type="single"
-            collapsible
-            className="w-full"
-            value={openAccordion} // Control which section is open
-            onValueChange={(val) => setOpenAccordion(val)} // Update accordion state
+            className="w-full pt-4"
+            value="item-1" 
           >
             <AccordionItem value="item-1">
-              <AccordionTrigger>
-                <p>Advanced Options</p>
-              </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-wrap gap-4">
                   <div>
@@ -319,19 +310,13 @@ const SearchCard = () => {
                     </Select>
                   </div>
                   <div>
-                    <p>Manufacturer</p>
+                    <p>Industry Sector</p>
                     <Select
                       value={selectedSector}
-                      onValueChange={(val) => {
-                        if (val === "Yes" || val === "No") {
-                          setSelectedSector(val);
-                        } else {
-                          setSelectedSector("");
-                        }
-                      }}
+                      onValueChange={(val) => setSelectedSector(val)}
                     >
                       <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Is Manufacturer" />
+                        <SelectValue placeholder="Select a Sector" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -396,7 +381,7 @@ const SearchCard = () => {
                         Growth Potential: {selectedGrowthPotentialRange}
                       </div>
                       <div>Number of Staff: {selectedStaffRange}</div>
-                      <div>Is Manufacturer: {selectedSector}</div>
+                      <div>Industry Sector: {selectedSector}</div>
                       <div>State/Territory: {selectedState}</div>
                       <div>Postcode: {postcodeQuery}</div>
                       <div>Search Query: {searchQuery}</div>
@@ -414,18 +399,18 @@ const SearchCard = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Is Manufacturer</TableHead>
+                <TableHead>Industry Sector</TableHead>
                 <TableHead>Number of Staff</TableHead>
                 <TableHead>Growth Potential</TableHead>
                 <TableHead>Learn More</TableHead>
-                <TableHead>Save SME</TableHead>
+                <TableHead>Add to Dashboard</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredBusinesses.map((business) => (
                 <TableRow key={business.id}>
                   <TableCell>{business.name}</TableCell>
-                  <TableCell>{business.manufacturer ? "Yes" : "No"}</TableCell>
+                  <TableCell>{business.industrySector}</TableCell>
                   <TableCell>{business.numEmployees}</TableCell>
                   <TableCell>{business.growthPotential}%</TableCell>
                   <TableCell>
@@ -449,7 +434,7 @@ const SearchCard = () => {
                       type="button"
                       onClick={() => saveBusiness(business.id)}
                     >
-                      {savedBusinesses.includes(business.id) ? "Saved" : "Save"}
+                      {savedBusinesses.includes(business.id) ? "Added" : "Add"}
                     </Button>
                   </TableCell>
                 </TableRow>
