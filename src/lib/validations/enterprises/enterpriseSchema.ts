@@ -6,6 +6,7 @@ export const enterpriseSchema = z.object({
   numEmployees: z.number().int().positive().nullable(),
   website: z.string().nullable(),
   suburb: z.string().nullable(),
+  industrySector: z.string().nullable(),
   postCode: z.number().int().positive().nullable(),
   sme: z.boolean().nullable(),
   manufacturer: z.boolean().nullable(),

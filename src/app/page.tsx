@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import backgroundImage from "public/images/hc3.gif";
+import backgroundImage from "public/images/H4.gif";
 
 export const metadata: Metadata = {
   title: "AusBizGrowth",
@@ -25,10 +25,10 @@ const HomePage = async () => {
         name="description"
         content="Discover high-growth potential Australian businesses."
       />
-      <div
-        className="relative bg-cover bg-center bg-no-repeat rounded-lg "
-        style={{ backgroundImage: `url(${backgroundImage.src})` }}
-      >
+    <div
+  className="relative bg-cover bg-center rounded-lg " // Ensures at least screen height coverage
+  style={{ backgroundImage: `url(${backgroundImage.src})` }}
+>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
         <div className="relative text-center py-48 px-4">
           <div className="flex flex-col items-center">
@@ -49,7 +49,7 @@ const HomePage = async () => {
           </Link>
           {/* Statistics Section */}
           <div className="flex flex-col md:flex-row justify-center">
-            <div className="w-full md:w-1/2 mt-28 mb-8 md:mb-0 drop-shadow-lg">
+            <div className="w-full md:w-1/2 mt-28 mb-4 md:mb-0 drop-shadow-lg">
               <div className="flex flex-col items-center">
                 <h1
                   className="hover:drop-shadow-xl font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
@@ -59,7 +59,7 @@ const HomePage = async () => {
                 </h1>
                 <h5 className="text-center text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
                   Tracking High Growth Potential
-                  <br /> SME’s in New South Wales
+                  <br /> SMEs in New South Wales
                 </h5>
               </div>
             </div>
@@ -78,50 +78,53 @@ const HomePage = async () => {
               </div>
             </div>
           </div>
+
+
+{/* What We Offer Section */}
+<div className="mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 lg:gap-8">
+    <div className="flex flex-col justify-center text-left w-full lg:max-w-xl">
+      <h1 className="text-xl sm:text-2xl font-bold mb-3 lg:mb-4">What we offer...</h1>
+      <p className="text-sm sm:text-base lg:text-lg">
+        There are many organizations across Australia that are focused on
+        providing services that support the growth of Australian industry,
+        98% of which are classified as small to medium enterprises (SMEs).
+      </p>
+      <p className="mt-2 text-sm sm:text-base lg:text-lg">
+        A team from UTS, CSIRO, the Industry Growth Program and Business NSW
+        along with 14 UTS software and data science students have designed
+        this platform to enable organisations, like yours, to track the
+        growth potential of businesses that fit your product or service
+        profiles.
+      </p>
+      <p className="mt-2 text-sm sm:text-base lg:text-lg">
+        Sign up, set up your account, tracking profiles and notification
+        rules, then sit back while our algorithms find and recommend
+        businesses to connect with.
+      </p>
+    </div>
+    <Image
+      src="/images/Meeting.jpg"
+      alt="Meeting of professionals"
+      width={550}
+      height={400}
+      className="max-w-full h-auto rounded-lg shadow-lg"
+    />
+  </div>
+</div>
+
+    {/* Testimonial Carousel Section */}
+<div className="px-8 py-20" style={{ paddingBottom: '0px' }}> 
+  <h1 className="text-3xl font-bold text-center">
+    Why we need this AI platform
+  </h1>
+  <Testimonials />
+</div>
         </div>
+        
       </div>
 
-      {/* What We Offer Section */}
-
-      <div className="mt-20 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-10">
-        <div>
-          <h1 className="text-2xl font-bold">What we offer...</h1>
-          <p className="mt-4">
-            There are many organizations across Australia that are focused on
-            providing services that support the growth of Australian industry,
-            98% of which are classified as small to medium enterprises (SMEs).
-          </p>
-          <p className="mt-2">
-            A team from UTS, CSIRO, the Industry Growth Program and Business NSW
-            along with 14 UTS software and data science students have designed
-            this platform to enable organisations, like yours, to track the
-            growth potential of businesses that fit your product or service
-            profiles.
-          </p>
-          <p className="mt-2">
-            Sign up, set up your account, tracking profiles and notification
-            rules, then sit back while our algorithms find and recommend
-            businesses to connect with.
-          </p>
-        </div>
-        <div className="flex justify-center">
-          <Image
-            src="/images/Meeting.jpg"
-            alt="Meeting of professionals"
-            width={600}
-            height={400}
-            className="rounded-lg shadow-lg"
-          />
-        </div>
-      </div>
-
-      {/* Testimonial Carousel Section */}
-      <div className="px-8 py-20">
-        <h1 className="text-2xl font-bold text-center">
-          Why we need this AI platform
-        </h1>
-        <Testimonials />
-      </div>
+     
     </Main>
   );
 };

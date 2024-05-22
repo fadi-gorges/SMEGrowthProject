@@ -5,7 +5,7 @@ export const Enterprises: CollectionConfig = {
   slug: "enterprises",
   admin: {
     useAsTitle: "name",
-    defaultColumns: ["id", "name", "abn", "sector", "numEmployees"],
+    defaultColumns: ["id", "name", "abn", "industrySector", "numEmployees"],
     listSearchableFields: ["name", "abn"],
   },
   access: {
