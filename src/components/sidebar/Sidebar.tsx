@@ -29,7 +29,7 @@ export const sidebarLinks = {
     icon: TextSearchIcon,
   },
   shareOrganisation: {
-    text: "Share Organisation",
+    text: "Add Team Members",
     link: "/share",
     icon: UserPlus2Icon,
   },
