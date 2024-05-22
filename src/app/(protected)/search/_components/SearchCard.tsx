@@ -178,8 +178,9 @@ const SearchCard = () => {
       const staffMatch = selectedStaffRange
         ? isInStaffRange(business.numEmployees!, selectedStaffRange)
         : true;
-        const sectorMatch =
+      const sectorMatch =
         selectedSector === "Any" ||
+        selectedSector === "" || 
         business.industrySector?.toLowerCase() === selectedSector.toLowerCase();
       const growthPotentialMatch = selectedGrowthPotentialRange
         ? isInGrowthPotentialRange(
