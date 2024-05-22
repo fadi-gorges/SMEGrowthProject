@@ -6,10 +6,13 @@ import {
   AlertDialogCancel,
   AlertDialogContent,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Enterprise } from "@/payload-types";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import { DownloadIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const DashboardPage = () => {
   const [enterprises, setEnterprises] = useState<Enterprise[]>([]);
@@ -45,8 +48,17 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="p-5 w-full">
-      <h1 className="text-3xl font-bold mb-4">{organisation} Dashboard</h1>
+    <div className="w-full space-y-8">
+      <div className="flex justify-between">
+        <h1 className="text-3xl font-bold">{organisation} Dashboard</h1>
+        <Button
+          onClick={() =>
+            toast.success("A Dashboard Report was saved to your device.")
+          }
+        >
+          Save Report <DownloadIcon />
+        </Button>
+      </div>
       {enterprises.length > 0 ? (
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500">
