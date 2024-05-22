@@ -3,7 +3,7 @@ import Main from "@/components/page/Main";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Share Organisation",
+  title: "Add Team Members",
   description: "",
 };
 
