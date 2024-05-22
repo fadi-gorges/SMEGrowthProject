@@ -23,7 +23,7 @@ const AddEnterpriseCard = () => {
       suburb: '',
       postCode: '', // Change default value to empty string
       sme: '', // Change default value to empty string
-      industry: '',
+      industrySector: '',
       manufacturer: '', // Change default value to empty string
       growthPotential: '',
       description:'',
@@ -73,7 +73,7 @@ const AddEnterpriseCard = () => {
         const manufacturer = convertToBoolean(row[3])
         const abn = row[1] ? row[1].replace(/\s+/g, '') : undefined;
         console.log(row[2])
-        const industry= null;
+        const industrySector= null;
         return {
         
           name: row[0], 
@@ -88,7 +88,7 @@ const AddEnterpriseCard = () => {
           description: row[7],
           numEmployees: sme ? getRandomNumberInRange(1, 250) : null,
           growthPotential: getRandomNumberInRange(1, 100),
-          industry :industry,
+          industrySector :industrySector,
         };
       });
   
@@ -155,7 +155,7 @@ const AddEnterpriseCard = () => {
       data.growthPotential= getRandomNumberInRange(1, 100);
       data.manufacturer = data.manufacturer !== "" ? data.manufacturer : false;
       data.sme = data.sme !== "" ? data.sme : false;
-      data.industry = data.industry;
+      data.industrySector = data.industrySector;
       const res = await createEnterprise(data);
       console.log("API Response:", res);
       setIsLoading(false);
@@ -204,7 +204,7 @@ const AddEnterpriseCard = () => {
           <FormItem className="mb-4">
         <FormLabel>Industry:</FormLabel>
 
-        <select {...methods.register('industry')} required>
+        <select {...methods.register('industrySector')} required>
           <option value="">Select industry</option>
           <option value="manufacturer">Manufacturer</option>
           <option value="retail">Retail</option>

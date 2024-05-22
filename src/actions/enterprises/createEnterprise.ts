@@ -32,7 +32,7 @@ export const createEnterprise = async (
         numEmployees: validationResult.data.numEmployees,//math random
         website: validationResult.data.website,
         suburb: validationResult.data.suburb,
-        industry : validationResult.data.industry,
+        industrySector : validationResult.data.industrySector,
         postCode: validationResult.data.postCode,
         sme: validationResult.data.sme,
         manufacturer: validationResult.data.manufacturer,
