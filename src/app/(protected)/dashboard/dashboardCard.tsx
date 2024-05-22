@@ -20,6 +20,7 @@ const DashboardPage = () => {
 
   const [showEnterprise, setShowEnterprise] = useState<Enterprise>();
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const [hover, setHover] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,17 +90,22 @@ const DashboardPage = () => {
             </thead>
             <tbody>
               {enterprises.map((enterprise) => (
-                <tr className="bg-white border-b" key={enterprise.id}>
+                <tr 
+                  className="bg-white border-b" 
+                  key={enterprise.id}
+                >
                   <th
                     scope="row"
                     className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"
                   >
                     <div
-                      className="hover:cursor-pointer"
+                      className={`cursor-pointer ${hover === enterprise.id ? 'text-blue-500' : ''}`}
                       onClick={() => {
                         setShowEnterprise(enterprise);
                         setOpenDetailsDialog(true);
                       }}
+                      onMouseEnter={() => setHover(enterprise.id)}
+                      onMouseLeave={() => setHover('')}
                     >
                       {enterprise.name}
                     </div>
@@ -159,7 +165,7 @@ const DashboardPage = () => {
                 <h3 className="text-2xl font-bold"> Description </h3>
                 <p className="mb-5">
                   {" "}
-                  {showEnterprise?.description || "Not given."}{" "}
+                  {showEnterprise?.description || "Not given"}{" "}
                 </p>
 
                 <div className="mb-5">
@@ -186,13 +192,13 @@ const DashboardPage = () => {
                 <div className="mb-5">
                   <h3 className="text-2xl font-bold"> Business Type </h3>
                   <p>
-                    <strong>SME:</strong>{" "}
-                    {showEnterprise?.sme ? "Yes" : "No" || "Not given"}
+                    <strong>Industry Sector:</strong>{" "}
+                    {showEnterprise?.industrySector || "Not given"}
                   </p>
                   <p>
-                    <strong>Manufacturer:</strong>{" "}
-                    {showEnterprise?.manufacturer ? "Yes" : "No" || "Not given"}
-                  </p>
+                    <strong>SME:</strong>{" "}
+                    {showEnterprise?.sme ? "Yes" : "No" || "Not given"}
+                  </p>   
                 </div>
 
                 <div className="mb-5">
