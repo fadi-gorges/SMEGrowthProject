@@ -57,6 +57,7 @@ const populateBusinessesFromServer = async () => {
       createdAt: enterprise.createdAt,
       website: enterprise.website,
       postCode: enterprise.postCode,
+      industrySector: enterprise.industrySector
     }));
     console.log("Businesses populated:", businesses);
     return businessesmap;
@@ -104,7 +105,7 @@ const statesAndTerritories = [
   "Northern Territory",
   "Australian Capital Territory",
 ];
-const sectors = ["Any", "Yes", "No"];
+const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture", "Manufacturing","Construction"];
 const isInStaffRange = (count: number, range: StaffRangeKey): boolean => {
   const [min, max] = staffRanges[range];
   return count >= min && count <= max;
@@ -177,14 +178,9 @@ const SearchCard = () => {
       const staffMatch = selectedStaffRange
         ? isInStaffRange(business.numEmployees!, selectedStaffRange)
         : true;
-      const sectorMatch =
-        selectedSector === "" ||
-        (selectedSector === "Yes" && business.manufacturer === true) ||
-        (selectedSector === "No" && business.manufacturer === false);
-      selectedSector === "" ||
-        selectedSector === undefined ||
+        const sectorMatch =
         selectedSector === "Any" ||
-        business.manufacturer?.toString() === selectedSector;
+        business.industrySector?.toLowerCase() === selectedSector.toLowerCase();
       const growthPotentialMatch = selectedGrowthPotentialRange
         ? isInGrowthPotentialRange(
             business.growthPotential!,
@@ -225,7 +221,7 @@ const SearchCard = () => {
     const data = {
       name: searchProfileName,
       searchQuery: searchQuery,
-      manufacturer: selectedSector === "Yes",
+      industrySector: selectedSector,
       employeesRange: selectedStaffRange,
       growthPotentialRange: selectedGrowthPotentialRange,
       postcode: postcodeQ || undefined,
@@ -313,19 +309,13 @@ const SearchCard = () => {
                     </Select>
                   </div>
                   <div>
-                    <p>Manufacturer</p>
+                    <p>Industry Sector</p>
                     <Select
                       value={selectedSector}
-                      onValueChange={(val) => {
-                        if (val === "Yes" || val === "No") {
-                          setSelectedSector(val);
-                        } else {
-                          setSelectedSector("");
-                        }
-                      }}
+                      onValueChange={(val) => setSelectedSector(val)}
                     >
                       <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Is Manufacturer" />
+                        <SelectValue placeholder="Select a Sector" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -390,7 +380,7 @@ const SearchCard = () => {
                         Growth Potential: {selectedGrowthPotentialRange}
                       </div>
                       <div>Number of Staff: {selectedStaffRange}</div>
-                      <div>Is Manufacturer: {selectedSector}</div>
+                      <div>Industry Sector: {selectedSector}</div>
                       <div>State/Territory: {selectedState}</div>
                       <div>Postcode: {postcodeQuery}</div>
                       <div>Search Query: {searchQuery}</div>
@@ -408,7 +398,7 @@ const SearchCard = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Is Manufacturer</TableHead>
+                <TableHead>Industry Sector</TableHead>
                 <TableHead>Number of Staff</TableHead>
                 <TableHead>Growth Potential</TableHead>
                 <TableHead>Learn More</TableHead>
@@ -419,7 +409,7 @@ const SearchCard = () => {
               {filteredBusinesses.map((business) => (
                 <TableRow key={business.id}>
                   <TableCell>{business.name}</TableCell>
-                  <TableCell>{business.manufacturer ? "Yes" : "No"}</TableCell>
+                  <TableCell>{business.industrySector}</TableCell>
                   <TableCell>{business.numEmployees}</TableCell>
                   <TableCell>{business.growthPotential}%</TableCell>
                   <TableCell>
