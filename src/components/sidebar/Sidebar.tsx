@@ -14,6 +14,7 @@ import {
   SearchIcon,
   SettingsIcon,
   TextSearchIcon,
+  UserPlus2Icon,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,6 +27,11 @@ export const sidebarLinks = {
     text: "Manage Profiles",
     link: "/profiles",
     icon: TextSearchIcon,
+  },
+  shareOrganisation: {
+    text: "Share Organisation",
+    link: "/share",
+    icon: UserPlus2Icon,
   },
   addBusiness: {
     text: "Add Business",
@@ -98,7 +104,8 @@ const Sidebar = () => {
         <SidebarLink link={sidebarLinks.search} />
         <SidebarLink link={sidebarLinks.manageProfiles} />
         <SidebarLink link={sidebarLinks.addBusiness} />
-        <SidebarLink link={sidebarLinks.notifications} alertCount={6} />
+        <SidebarLink link={sidebarLinks.notifications} />
+        <SidebarLink link={sidebarLinks.shareOrganisation} />
         <SidebarLink link={sidebarLinks.settings} />
         {isAdmin && <SidebarLink link={navLinks.admin} />}
       </div>
