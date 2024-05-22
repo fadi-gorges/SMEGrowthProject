@@ -24,7 +24,7 @@ const Testimonials = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="p-6 shadow-md rounded-lg flex flex-col justify-between">
+            <div key={index} className="p-6 shadow-md rounded-lg flex flex-col justify-between" style={{ backgroundColor: 'white' }}>
               <p className="text-sm mb-4">{testimonial.quote}</p>
               <div className="mt-4">
                 <p className="font-semibold">{testimonial.name}</p>
