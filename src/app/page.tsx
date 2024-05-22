@@ -26,7 +26,7 @@ const HomePage = async () => {
         content="Discover high-growth potential Australian businesses."
       />
     <div
-  className="relative bg-cover bg-center bg-no-repeat rounded-lg min-h-screen" // Ensures at least screen height coverage
+  className="relative bg-cover bg-center rounded-lg " // Ensures at least screen height coverage
   style={{ backgroundImage: `url(${backgroundImage.src})` }}
 >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
