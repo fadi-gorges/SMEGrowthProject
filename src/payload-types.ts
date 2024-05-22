@@ -69,7 +69,7 @@ export interface Enterprise {
   numEmployees?: number | null;
   website?: string | null;
   suburb?: string | null;
-  industrySector?: string | null;
+
   description?: string | null;
   growthPotential?: number | null;
   postCode?: number | null;
