@@ -1,10 +1,13 @@
 "use client";
+import { readAllSearchProfiles } from "@/actions/searchProfiles/readAllSearchProfiles";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { SearchProfile } from "@/payload-types";
+import { useEffect, useState } from "react";
 
 const NotificationSettings = () => {
-  const [profiles, setProfiles] = useState<string[]>([]);
+  const [profiles, setProfiles] = useState<SearchProfile[]>([]);
+  const [selectedProfiles, setSelectedProfiles] = useState<SearchProfile[]>([]);
   const [frequency, setFrequency] = useState("");
   const [type, setType] = useState("");
   const [applyToAllYes, setApplyToAllYes] = useState(false);
@@ -15,6 +18,17 @@ const NotificationSettings = () => {
   const handleToggle = () => {
     setIsChecked(!isChecked);
   };
+
+  const getProfiles = async() => {
+    const profileresponse = await readAllSearchProfiles();
+    if (profileresponse.success) {
+      setProfiles(profileresponse.searchProfiles);
+    }
+  };
+
+  useEffect(() => {
+    getProfiles();
+  }, []);
 
   const handleApplyToAllYesToggle = () => {
     setApplyToAllYes(!applyToAllYes);
@@ -30,12 +44,11 @@ const NotificationSettings = () => {
     }
   };
 
-  const handleProfileSelection = (profile: string) => {
-    const index = profiles.indexOf(profile);
-    if (index === -1) {
-      setProfiles([...profiles, profile]);
+  const handleProfileSelection = (profile: SearchProfile) => {
+    if (selectedProfiles.includes(profile)) {
+      setSelectedProfiles(selectedProfiles.filter((p) => p !== profile));
     } else {
-      setProfiles(profiles.filter((p) => p !== profile));
+      setSelectedProfiles([...selectedProfiles, profile]);
     }
   };
 
@@ -152,20 +165,20 @@ const NotificationSettings = () => {
               marginTop: "10px",
             }}
           >
-            {["Search profile 1", "Search profile 2", "Search profile 3"].map(
+            {profiles.map(
               (profile) => (
                 <div
-                  key={profile}
+                  key={profile.id}
                   style={{ display: "flex", alignItems: "center" }}
                 >
                   <input
                     type="checkbox"
-                    id={profile}
-                    checked={profiles.includes(profile)}
+                    id={profile.id}
+                    checked={selectedProfiles.includes(profile)}
                     onChange={() => handleProfileSelection(profile)}
                     style={{ marginRight: "5px" }}
                   />
-                  <label htmlFor={profile}>{profile}</label>
+                  <label htmlFor={profile.id}>{profile.name}</label>
                 </div>
               )
             )}
