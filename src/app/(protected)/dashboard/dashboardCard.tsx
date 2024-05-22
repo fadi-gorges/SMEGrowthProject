@@ -47,7 +47,7 @@ const DashboardPage = () => {
   return (
     <div className="p-5 w-full">
       <h1 className="text-3xl font-bold mb-4">{organisation} Dashboard</h1>
-      {enterprises.length > 0 && (
+      {enterprises.length > 0 ? (
         <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -203,6 +203,8 @@ const DashboardPage = () => {
             </AlertDialogContent>
           </AlertDialog>
         </div>
+      ) : (
+        "Loading..."
       )}
     </div>
   );
