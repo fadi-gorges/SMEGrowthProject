@@ -49,7 +49,7 @@ const HomePage = async () => {
           </Link>
           {/* Statistics Section */}
           <div className="flex flex-col md:flex-row justify-center">
-            <div className="w-full md:w-1/2 mt-28 mb-4 md:mb-0 drop-shadow-lg">
+            <div className="w-full md:w-1/2 mt-12 mb-4 md:mb-0 drop-shadow-lg">
               <div className="flex flex-col items-center">
                 <h1
                   className="hover:drop-shadow-xl font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
@@ -63,7 +63,7 @@ const HomePage = async () => {
                 </h5>
               </div>
             </div>
-            <div className="w-full md:w-1/2 mt-28 mb-8 md:mb-0 drop-shadow-lg">
+            <div className="w-full md:w-1/2 mt-12 mb-8 md:mb-0 drop-shadow-lg">
               <div className="flex flex-col items-center">
                 <h1
                   className="hover:drop-shadow-xl font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
@@ -81,7 +81,7 @@ const HomePage = async () => {
 
 
 {/* What We Offer Section */}
-<div className="mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div className="mt-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
   <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 lg:gap-8">
     <div className="flex flex-col justify-center text-left w-full lg:max-w-xl">
       <h1 className="text-xl sm:text-2xl font-bold mb-3 lg:mb-4">What we offer...</h1>
