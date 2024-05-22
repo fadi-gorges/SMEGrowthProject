@@ -45,6 +45,10 @@ export const SearchProfiles: CollectionConfig = {
     {
       name:"postcode",
       type:"number",
-    }
+    },
+    {
+      name: "industrySector",
+      type: "text",
+    },
   ],
 };
