@@ -30,12 +30,12 @@ const HomePage = async () => {
   style={{ backgroundImage: `url(${backgroundImage.src})` }}
 >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
-        <div className="relative text-center py-48 px-4">
+        <div className="relative text-center pt-32 pb-32 px-4">
           <div className="flex flex-col items-center">
             <h1 className="max-w-6xl hover:drop-shadow-xl text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-gray-900 drop-shadow-2xl">
               Find Australian businesses with high growth potential.
             </h1>
-            <p className="text-xl my-8 text-gray-600">
+            <p className="text-xl mb-8 text-gray-600">
               Are you looking for ways to more efficiently identify SMEs to
               engage with, where there is a greater chance of successful
               collaboration delivering positive impact?
@@ -81,7 +81,7 @@ const HomePage = async () => {
 
 
 {/* What We Offer Section */}
-<div className="mt-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
   <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center justify-center gap-4 sm:gap-6 lg:gap-8">
     <div className="flex flex-col justify-center text-left w-full lg:max-w-xl">
       <h1 className="text-xl sm:text-2xl font-bold mb-3 lg:mb-4">What we offer...</h1>
