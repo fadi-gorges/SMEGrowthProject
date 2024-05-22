@@ -14,8 +14,8 @@ const ShareOrganisation: React.FC = () => {
     if (email && !emails.includes(email)) {
       setEmails([...emails, email]);
       setEmail("");
-      setMessage(`Now, ${email} has access to this website`);
-      setTimeout(() => setMessage(null), 3000); // Clear message after 3 seconds
+      setMessage(`Waiting for ${email} to accept invitation`);
+      setTimeout(() => setMessage(null), 5000); // Clear message after 3 seconds
     }
   };
 
@@ -25,7 +25,7 @@ const ShareOrganisation: React.FC = () => {
 
   return (
     <div className="p-5 w-full">
-      <h1 className="text-3xl font-bold mb-4">Share Organisation</h1>
+      <h1 className="text-3xl font-bold mb-4">Add Team Members</h1>
       <div className="mb-4">
         <div className="flex mb-2">
           <input
