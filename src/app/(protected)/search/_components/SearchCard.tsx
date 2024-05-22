@@ -127,7 +127,6 @@ const SearchCard = () => {
   }, []);
   const [searchProfileName, setSearchProfileName] = useState("");
   const [isTableVisible, setIsTableVisible] = useState(false);
-  const [openAccordion, setOpenAccordion] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [postcodeQuery, setpostcodeQuery] = useState("");
   const [selectedStaffRange, setSelectedStaffRange] = useState<
@@ -206,7 +205,7 @@ const SearchCard = () => {
     );
     setFilteredBusinesses(sortedResults); // Update the filtered businesses
     setIsTableVisible(true); // Show the table with the search results
-    setOpenAccordion("");
+
   };
   const resetSearch = () => {
     setSearchQuery("");
@@ -259,15 +258,10 @@ const SearchCard = () => {
           </div>
           <Accordion
             type="single"
-            collapsible
-            className="w-full"
-            value={openAccordion} // Control which section is open
-            onValueChange={(val) => setOpenAccordion(val)} // Update accordion state
+            className="w-full pt-4"
+            value="item-1" 
           >
             <AccordionItem value="item-1">
-              <AccordionTrigger>
-                <p>Advanced Options</p>
-              </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-wrap gap-4">
                   <div>
@@ -418,7 +412,7 @@ const SearchCard = () => {
                 <TableHead>Number of Staff</TableHead>
                 <TableHead>Growth Potential</TableHead>
                 <TableHead>Learn More</TableHead>
-                <TableHead>Save SME</TableHead>
+                <TableHead>Add to Dashboard</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -449,7 +443,7 @@ const SearchCard = () => {
                       type="button"
                       onClick={() => saveBusiness(business.id)}
                     >
-                      {savedBusinesses.includes(business.id) ? "Saved" : "Save"}
+                      {savedBusinesses.includes(business.id) ? "Added" : "Add"}
                     </Button>
                   </TableCell>
                 </TableRow>
