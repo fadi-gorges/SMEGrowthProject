@@ -21,14 +21,14 @@ const testimonials = [
 const Testimonials = () => {
   return (
     <div className="py-12">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> {/* Increased gap */}
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="p-6 shadow-md rounded-lg flex flex-col justify-between" style={{ backgroundColor: 'white' }}>
-              <p className="text-sm mb-4">{testimonial.quote}</p>
+            <div key={index} className="p-8 shadow-lg rounded-lg flex flex-col justify-between text-left" style={{ backgroundColor: 'white' }}> {/* Increased padding and shadow for depth */}
+              <p className="text-lg mb-6 text-pretty">{testimonial.quote}</p> {/* Larger text for quotes */}
               <div className="mt-4">
-                <p className="font-semibold">{testimonial.name}</p>
-                <p className="text-xs text-gray-500">{testimonial.position}</p>
+                <p className="text-xl font-semibold">{testimonial.name}</p> {/* Larger text for names */}
+                <p className="text-sm text-gray-500">{testimonial.position}</p> {/* Adjusted text size for positions */}
               </div>
             </div>
           ))}
@@ -39,3 +39,7 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+
+
+
+//             <div key={index} className="p-6 shadow-md rounded-lg flex flex-col justify-between" style={{ backgroundColor: 'white' }}>
