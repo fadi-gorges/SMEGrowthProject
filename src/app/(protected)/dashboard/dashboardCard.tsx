@@ -8,6 +8,8 @@ import { deleteEngagement } from "@/actions/engagements/deleteEngagement";
 import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
 import { Switch } from "@/components/ui/switch";
 import { getOrganisation } from "@/actions/organisations/readOrganisation";
+import { AlertDialog, AlertDialogContent, AlertDialogCancel } from "@/components/ui/alert-dialog";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 
 const DashboardPage = () => {
     const [engagements, setEngagements] = useState<Engagement[]>([]);
@@ -74,7 +76,11 @@ const DashboardPage = () => {
     return profiles.length > 0 ? profiles[0].name : 'No Profile';
   };
   
+  const getEnterpriseDetails = (enterpriseId: string) => {
+    const enterprise = enterprises.find((e) => e.id === enterpriseId);
 
+    return enterprise;
+  }
  
 
  
@@ -179,6 +185,8 @@ const engagedEnterpriseIds = new Set(engagements.map(e => e.enterprise));
 
 const unengagedEnterprises = enterprises.filter(enterprise => !engagedEnterpriseIds.has(enterprise.id));
 
+const [showEnterpriseId, setShowEnterpriseId] = useState("");
+const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -206,7 +214,15 @@ const unengagedEnterprises = enterprises.filter(enterprise => !engagedEnterprise
                     {engagements.map((engagement) => (
                         <tr className="bg-white border-b" key={engagement.id}>
                             <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+                                <div
+                                  className="hover:cursor-pointer"
+                                  onClick={() => {
+                                    setShowEnterpriseId(engagement.enterprise.toString());
+                                    setOpenDetailsDialog(true);
+                                  }}
+                                >
                                 {getEnterpriseName(engagement.enterprise.toString())}
+                                </div>
                             </th>
                             <td className="py-4 px-6">
                                 <Switch checked={engagement.contacted as boolean} onCheckedChange={() => handleToggle(engagement.id, 'contacted')} className="data-[state=checked]:bg-green-500" />
@@ -269,6 +285,61 @@ const unengagedEnterprises = enterprises.filter(enterprise => !engagedEnterprise
                 </tbody>
             </table>
         </div>
+
+        <AlertDialog open={openDetailsDialog} onOpenChange={setOpenDetailsDialog}>
+          <AlertDialogTrigger />
+          <AlertDialogContent className="p-5">
+          <AlertDialogCancel className="absolute top-2 right-2">
+            <button aria-label="Close" className="text-gray-700 hover:text-gray-900">
+            &#10005; 
+            </button>
+          </AlertDialogCancel>
+          <h1 className="text-3xl font-bold mb-4">{getEnterpriseDetails(showEnterpriseId)?.name} Enterprise Details</h1>
+          
+          <h4 className = "text-2xl font-bold"> Growth Potential: {getEnterpriseDetails(showEnterpriseId)?.growthPotential}%</h4>
+
+          <div className="text-sm text-gray-700">
+            <h3 className = "text-2xl font-bold"> Description </h3>
+              <p className = "mb-5"> {getEnterpriseDetails(showEnterpriseId)?.description || "Not given"} </p>
+            
+          <div className = "mb-5">
+            <h3 className = "text-2xl font-bold"> Identification </h3>
+              <p><strong>ABN:</strong> {getEnterpriseDetails(showEnterpriseId)?.abn}</p>
+              <p>
+                <strong>Website:</strong>{" "}
+                {getEnterpriseDetails(showEnterpriseId)?.website ? (
+                  <a
+                    href={getEnterpriseDetails(showEnterpriseId)?.website || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {getEnterpriseDetails(showEnterpriseId)?.website}
+                  </a>
+                ) : (
+                  "Not given"
+                )}
+              </p>
+          </div>
+          
+          <div className = "mb-5">
+            <h3 className = "text-2xl font-bold"> Business Type </h3>
+            <p><strong>SME:</strong> {getEnterpriseDetails(showEnterpriseId)?.sme ? 'Yes' : 'No' || "Not given"}</p>
+            <p><strong>Manufacturer:</strong> {getEnterpriseDetails(showEnterpriseId)?.manufacturer ? 'Yes' : 'No' || "Not given"}</p>
+          </div>
+          
+          <div className = "mb-5">
+            <h3 className = "text-2xl font-bold"> Address </h3>
+            <p><strong>Suburb:</strong> {getEnterpriseDetails(showEnterpriseId)?.suburb || "Not given" }</p>
+            <p><strong>Post Code:</strong> {getEnterpriseDetails(showEnterpriseId)?.postCode || "Not given" }</p>
+          </div>
+              
+            <p><strong>Number of Employees:</strong> {getEnterpriseDetails(showEnterpriseId)?.numEmployees || 'Not given'}</p>
+            
+            
+            
+          </div>    
+          </AlertDialogContent>
+        </AlertDialog>
     </div>
 
     
