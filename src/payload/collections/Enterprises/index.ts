@@ -63,5 +63,9 @@ export const Enterprises: CollectionConfig = {
       name: "sme",
       type: "checkbox",
     },
+    {
+      name: "industrySector",
+      type: "text",
+    },
   ],
 };

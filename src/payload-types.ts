@@ -75,6 +75,7 @@ export interface Enterprise {
   postCode?: number | null;
   manufacturer?: boolean | null;
   sme?: boolean | null;
+  industrySector?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -105,6 +106,7 @@ export interface SearchProfile {
   employeesRange?: string | null;
   growthPotentialRange?: string | null;
   postcode?: number | null;
+  industrySector?: string | null;
   updatedAt: string;
   createdAt: string;
 }

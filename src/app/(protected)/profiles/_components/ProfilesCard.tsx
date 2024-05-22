@@ -34,11 +34,12 @@ const StaffRanges = [
   "10-50",
   "50-100",
   "100-200",
-  ">250",
-  "<250",
+  ">200",
+  "<200",
   "Any",
 ];
 const GrowthPotentialRanges = ["0-25", "25-50", "50-75", "75-100", "Any"];
+const sectors = ["Any","Technology", "Retail", "Healthcare", "Finance", "Agriculture", "Manufacturing","Construction"];
 const ProfilesCard = () => {
   const [searchProfiles, setSearchProfiles] = useState<SearchProfile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -86,7 +87,7 @@ const ProfilesCard = () => {
       id: updatedProfile.id,
       name: updatedProfile.name,
       searchQuery: updatedProfile.searchQuery!,
-      manufacturer: updatedProfile.manufacturer!,
+      industrySector: updatedProfile.industrySector!,
       employeesRange: updatedProfile.employeesRange!,
       growthPotentialRange: updatedProfile.growthPotentialRange!,
       postcode: updatedProfile.postcode!,
@@ -124,7 +125,7 @@ const ProfilesCard = () => {
               <CardContent>
                 <CardDescription>
                   <p>Search Query: {profile.searchQuery}</p>
-                  <p>Manufacturer: {profile.manufacturer ? "Yes" : "No"}</p>
+                  <p>Industry Sector: {profile.industrySector}</p>
                   <p>Employees Range: {profile.employeesRange}</p>
                   <p>Growth Potential Range: {profile.growthPotentialRange}%</p>
                   <p>Postcode: {profile.postcode}</p>
@@ -212,23 +213,26 @@ const ProfilesCard = () => {
               />
             </p>
             <p>
-              Manufacturer:{" "}
+              Industry Sector:{" "}
               <Select
-                value={profileToEdit?.manufacturer ? "Yes" : "No"}
-                onValueChange={(e) =>
+                value={profileToEdit?.industrySector!}
+                onValueChange={(value) =>
                   setProfileToEdit({
                     ...profileToEdit!,
-                    manufacturer: e.toString() === "Yes",
+                    industrySector: value.toString(),
                   })
                 }
               >
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Is Manufacturer" />
+                  <SelectValue placeholder="Select Industry Sector" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="Yes">Yes</SelectItem>
-                    <SelectItem value="No">No</SelectItem>
+                    {sectors.map((sector) => (
+                      <SelectItem key={sector} value={sector}>
+                        {sector}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
