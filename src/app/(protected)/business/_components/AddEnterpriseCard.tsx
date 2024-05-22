@@ -23,6 +23,7 @@ const AddEnterpriseCard = () => {
       suburb: '',
       postCode: '', // Change default value to empty string
       sme: '', // Change default value to empty string
+      industrySector: '',
       manufacturer: '', // Change default value to empty string
       growthPotential: '',
       description:'',
@@ -72,6 +73,7 @@ const AddEnterpriseCard = () => {
         const manufacturer = convertToBoolean(row[3])
         const abn = row[1] ? row[1].replace(/\s+/g, '') : undefined;
         console.log(row[2])
+        const industrySector= null;
         return {
         
           name: row[0], 
@@ -85,7 +87,8 @@ const AddEnterpriseCard = () => {
           postCode: row[6] ? parseInt(row[6]) : null,
           description: row[7],
           numEmployees: sme ? getRandomNumberInRange(1, 250) : null,
-          growthPotential: getRandomNumberInRange(1, 100)
+          growthPotential: getRandomNumberInRange(1, 100),
+          industrySector :industrySector,
         };
       });
   
@@ -152,6 +155,7 @@ const AddEnterpriseCard = () => {
       data.growthPotential= getRandomNumberInRange(1, 100);
       data.manufacturer = data.manufacturer !== "" ? data.manufacturer : false;
       data.sme = data.sme !== "" ? data.sme : false;
+      data.industrySector = data.industrySector;
       const res = await createEnterprise(data);
       console.log("API Response:", res);
       setIsLoading(false);
@@ -197,14 +201,29 @@ const AddEnterpriseCard = () => {
             <FormLabel>ABN:</FormLabel>
             <Input type="text" {...methods.register('abn')} required />
           </FormItem>
-          <FormItem>
-            <FormLabel>Is SME:</FormLabel>
-            <Input type="checkbox" {...methods.register('sme')} />
+          <FormItem className="mb-4">
+        <FormLabel>Industry:</FormLabel>
+
+        <select {...methods.register('industrySector')} required>
+          <option value="">Select industry</option>
+          <option value="manufacturer">Manufacturer</option>
+          <option value="retail">Retail</option>
+          <option value="finance">Finance</option>
+          <option value="agriculture">Agriculture</option>
+          <option value="construction">Construction</option>
+          <option value="technology">Technology</option>
+        </select>
+      </FormItem>
+          
+          <FormItem className="mb-4">
+            <FormLabel className=" mb-2">Is Sme:</FormLabel>
+            
+          <input className="m-3" type="checkbox" {...methods.register('sme')} />
+          <span className="text-sm">SME</span>
+        
           </FormItem>
           <FormItem>
-            <FormLabel>Manufacturer:</FormLabel>
-            <Input type="checkbox" {...methods.register('manufacturer')} />
-          </FormItem>
+      </FormItem>
           <FormItem>
             <FormLabel>Website:</FormLabel>
             <Input type="text" {...methods.register('website')} />

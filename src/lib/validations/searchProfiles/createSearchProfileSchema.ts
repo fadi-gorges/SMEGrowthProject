@@ -4,6 +4,7 @@ export const baseSearchProfileSchema = z.object({
   name: z.string(),
   searchQuery: z.string().optional(),
   manufacturer: z.boolean().optional(),
+  industrySector: z.string().optional(),
   employeesRange: z.string().optional(),
   postcode: z.number().positive().optional(),
   growthPotentialRange: z.string().optional(),
@@ -15,6 +16,7 @@ export const createSearchProfileSchema = baseSearchProfileSchema.refine(
     data.manufacturer ||
     data.employeesRange ||
     data.postcode ||
+    data.industrySector ||
     data.growthPotentialRange,
   { message: "At least one search parameter is required." }
 );

@@ -11,6 +11,7 @@ export const updateSearchProfileSchema = baseSearchProfileSchema
       data.manufacturer ||
       data.employeesRange ||
       data.postcode ||
+      data.industrySector||
       data.growthPotentialRange,
     { message: "At least one search parameter is required." }
   );
