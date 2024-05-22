@@ -187,6 +187,7 @@ const unengagedEnterprises = enterprises.filter(enterprise => !engagedEnterprise
 
 const [showEnterpriseId, setShowEnterpriseId] = useState("");
 const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+const [hover, setHover] = useState<String>('');
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -215,11 +216,13 @@ const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
                         <tr className="bg-white border-b" key={engagement.id}>
                             <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
                                 <div
-                                  className="hover:cursor-pointer"
+                                  className={`cursor-pointer ${hover === engagement.id ? 'text-blue-500' : ''}`}
                                   onClick={() => {
                                     setShowEnterpriseId(engagement.enterprise.toString());
                                     setOpenDetailsDialog(true);
                                   }}
+                                  onMouseEnter={() => setHover(engagement.id)}
+                                  onMouseLeave={() => setHover('')}
                                 >
                                 {getEnterpriseName(engagement.enterprise.toString())}
                                 </div>
