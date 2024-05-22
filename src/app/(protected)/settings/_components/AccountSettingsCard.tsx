@@ -56,8 +56,8 @@ const AccountSettingsCard = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const [unsubscribeDialogOpen, setUnsubscribeDialogOpen] = useState(false);
-  const [isUnsubscribing, setIsUnsubscribing] = useState(false);
+  const [transferDialogOpen, setTransferDialogOpen] = useState(false);
+  const [isTransferring, setIsTransferring] = useState(false);
 
   const [userOrganisation, setUserOrganisation] = useState<
     Omit<Organisation, "id" | "createdAt" | "updatedAt">
@@ -155,18 +155,6 @@ const AccountSettingsCard = () => {
     }
   };
 
-  const handleUnsubscribe = async () => {
-    setIsUnsubscribing(true);
-    try {
-      const res = await updateSubscription(false);
-      setIsUnsubscribing(false);
-      toast.success("You have successfully unsubscribed.");
-      router.replace("/auth/payment");
-    } catch (e) {
-      setIsUnsubscribing(false);
-      toast.error("An error occured, please try again");
-    }
-  };
 
   if (!user) return null;
 
@@ -346,37 +334,14 @@ const AccountSettingsCard = () => {
             <Separator />
             <div className="flex items-center justify-between gap-6">
               <div className="flex flex-col gap-2">
-                <h3 className="text-lg font-medium leading-6">Unsubscribe</h3>
-                <small className="text-muted-foreground">
-                  To unsubscribe, please click the &quot;unsubscribe&quot;
-                  button.
-                </small>
+                <h3 className="text-lg font-medium leading-6">Transfer Admin Privileges</h3>
               </div>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  if (user?.paymentSuccessful) {
-                    setUnsubscribeDialogOpen(true);
-                  }
-                }}
-              >
-                {user?.paymentSuccessful ? "Unsubscribe" : "Subscribe"}
-              </Button>
-              <ResponsiveAlertDialog
-                title="Unsubscribe"
-                description="This action cannot be undone. This will remove your subscription."
-                open={unsubscribeDialogOpen}
-                setOpen={setUnsubscribeDialogOpen}
-              >
                 <Button
                   variant="destructive"
-                  loading={isUnsubscribing}
-                  onClick={handleUnsubscribe}
+                  loading={isTransferring}
                 >
-                  Unsubscribe
+                  Transfer
                 </Button>
-              </ResponsiveAlertDialog>
             </div>
             <div className="flex items-center justify-between gap-6">
               <div className="flex flex-col gap-2">

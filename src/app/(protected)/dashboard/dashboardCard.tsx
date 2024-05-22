@@ -1,21 +1,28 @@
 "use client";
 import { readAllEnterprises } from "@/actions/enterprises/readAllEnterprises";
 import { getOrganisation } from "@/actions/organisations/readOrganisation";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+} from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
 import { Enterprise } from "@/payload-types";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { useEffect, useState } from "react";
 
 const DashboardPage = () => {
   const [enterprises, setEnterprises] = useState<Enterprise[]>([]);
   const [organisation, setOrganisation] = useState("");
-  const [loading, setLoading] = useState(true);
+
+  const [showEnterprise, setShowEnterprise] = useState<Enterprise>();
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const enterprisesResp = await readAllEnterprises();
         const orgRes = await getOrganisation();
-        setLoading(false);
 
         if (!orgRes.success || !enterprisesResp.success) {
           console.error("Failed to fetch data.");
@@ -27,7 +34,6 @@ const DashboardPage = () => {
         setEnterprises(enterprisesResp.enterprises);
       } catch (error) {
         console.error(error || "An error occurred");
-        setLoading(false);
       }
     };
 
@@ -76,7 +82,15 @@ const DashboardPage = () => {
                     scope="row"
                     className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    {enterprise.name}
+                    <div
+                      className="hover:cursor-pointer"
+                      onClick={() => {
+                        setShowEnterprise(enterprise);
+                        setOpenDetailsDialog(true);
+                      }}
+                    >
+                      {enterprise.name}
+                    </div>
                   </th>
                   <td className="py-4 px-6">
                     {enterprise.growthPotential &&
@@ -106,6 +120,88 @@ const DashboardPage = () => {
               ))}
             </tbody>
           </table>
+          <AlertDialog
+            open={openDetailsDialog}
+            onOpenChange={setOpenDetailsDialog}
+          >
+            <AlertDialogTrigger />
+            <AlertDialogContent className="p-5">
+              <AlertDialogCancel className="absolute top-2 right-2">
+                <button
+                  aria-label="Close"
+                  className="text-gray-700 hover:text-gray-900"
+                >
+                  &#10005;
+                </button>
+              </AlertDialogCancel>
+              <h1 className="text-3xl font-bold mb-4">
+                {showEnterprise?.name} Enterprise Details
+              </h1>
+
+              <h4 className="text-2xl font-bold">
+                {" "}
+                Growth Potential: {showEnterprise?.growthPotential}%
+              </h4>
+
+              <div className="text-sm text-gray-700">
+                <h3 className="text-2xl font-bold"> Description </h3>
+                <p className="mb-5">
+                  {" "}
+                  {showEnterprise?.description || "Not given."}{" "}
+                </p>
+
+                <div className="mb-5">
+                  <h3 className="text-2xl font-bold"> Identification </h3>
+                  <p>
+                    <strong>ABN:</strong> {showEnterprise?.abn}
+                  </p>
+                  <p>
+                    <strong>Website:</strong>{" "}
+                    {showEnterprise?.website ? (
+                      <a
+                        href={showEnterprise?.website || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {showEnterprise?.website}
+                      </a>
+                    ) : (
+                      "Not given"
+                    )}
+                  </p>
+                </div>
+
+                <div className="mb-5">
+                  <h3 className="text-2xl font-bold"> Business Type </h3>
+                  <p>
+                    <strong>SME:</strong>{" "}
+                    {showEnterprise?.sme ? "Yes" : "No" || "Not given"}
+                  </p>
+                  <p>
+                    <strong>Manufacturer:</strong>{" "}
+                    {showEnterprise?.manufacturer ? "Yes" : "No" || "Not given"}
+                  </p>
+                </div>
+
+                <div className="mb-5">
+                  <h3 className="text-2xl font-bold"> Address </h3>
+                  <p>
+                    <strong>Suburb:</strong>{" "}
+                    {showEnterprise?.suburb || "Not given"}
+                  </p>
+                  <p>
+                    <strong>Post Code:</strong>{" "}
+                    {showEnterprise?.postCode || "Not given"}
+                  </p>
+                </div>
+
+                <p>
+                  <strong>Number of Employees:</strong>{" "}
+                  {showEnterprise?.numEmployees || "Not given"}
+                </p>
+              </div>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       )}
     </div>
