@@ -40,6 +40,10 @@ export const Enterprises: CollectionConfig = {
       type: "text",
     },
     {
+      name: "industry",
+      type: "text",
+    },
+    {
       name: "description",
       type: "textarea",
     },
