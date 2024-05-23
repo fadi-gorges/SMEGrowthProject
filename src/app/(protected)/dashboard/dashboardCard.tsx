@@ -83,7 +83,7 @@ const DashboardPage = () => {
                   Engaged
                 </th>
                 <th scope="col" className="py-3 px-6">
-                  Delete
+                  Remove
                 </th>
               </tr>
             </thead>
@@ -125,7 +125,7 @@ const DashboardPage = () => {
                       onClick={() => handleDelete(enterprise.id)}
                       className="text-red-500 hover:text-red-700"
                     >
-                      Delete
+                      Remove
                     </button>
                   </td>
                 </tr>
