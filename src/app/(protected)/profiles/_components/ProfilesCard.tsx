@@ -51,7 +51,7 @@ const ProfilesCard = () => {
   );
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-
+  const [runningProfiles, setRunningProfiles] = useState<string[]>([]);
   useEffect(() => {
     const fetchProfiles = async () => {
       const response = await readAllSearchProfiles();
@@ -107,6 +107,13 @@ const ProfilesCard = () => {
       alert("Error updating search profile:" + response.error);
     }
   };
+  const handleRunToggle = (profileId: string) => {
+    setRunningProfiles((prev) =>
+      prev.includes(profileId)
+        ? prev.filter((id) => id !== profileId)
+        : [...prev, profileId]
+    );
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -121,6 +128,7 @@ const ProfilesCard = () => {
             <Card key={profile.id} className="w-80">
               <CardHeader>
                 <CardTitle>{profile.name}</CardTitle>
+                
               </CardHeader>
               <CardContent>
                 <CardDescription>
@@ -143,6 +151,20 @@ const ProfilesCard = () => {
                   >
                     <EditIcon style={{ fontSize: "16px" }} />
                   </Button>
+                  {runningProfiles.includes(profile.id) ? (
+                  <Button onClick={() => handleRunToggle(profile.id)}
+                      style={{ padding: "5px", minWidth: "60px" }}
+                    >
+                      Running</Button>
+                  ):(
+                  <Button
+                        onClick={() => handleRunToggle(profile.id)}
+                        variant="secondary"
+                        style={{ padding: "5px", minWidth: "60px" }}
+                      >
+                        Run
+                      </Button>
+                  )}
                   <Button
                     onClick={() => {
                       setProfileToDelete(profile);
@@ -235,7 +257,7 @@ const ProfilesCard = () => {
                     ))}
                   </SelectGroup>
                 </SelectContent>
-              </Select>
+              </Select> 
             </p>
             <p>
               Employees Range:{" "}
