@@ -27,7 +27,9 @@ const HomePage = async () => {
       />
     <div
   className="relative bg-cover bg-center rounded-lg " // Ensures at least screen height coverage
-  style={{ backgroundImage: `url(${backgroundImage.src})` }}
+  style={{ backgroundImage: `url(${backgroundImage.src})`,
+           backgroundColor: "rgba(255, 255, 255, 0.5)",
+           backgroundBlendMode: "overlay" }}
 >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white"></div>
         <div className="relative text-center py-48 px-4">
@@ -35,9 +37,9 @@ const HomePage = async () => {
             <h1 className="max-w-6xl hover:drop-shadow-xl text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-gray-900 drop-shadow-2xl">
               Find Australian businesses with high growth potential.
             </h1>
-            <p className="text-xl my-8 text-gray-600">
+            <p className="text-2xl md:text-3xl lg:text-4xl my-10 text-gray-700">
               Are you looking for ways to more efficiently identify SMEs to
-              engage with, where there is a greater chance of successful
+              engage with, where there is a <br /> greater chance of successful
               collaboration delivering positive impact?
             </p>
           </div>
@@ -57,7 +59,7 @@ const HomePage = async () => {
                 >
                   150,000
                 </h1>
-                <h5 className="text-center text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
+                <h5 className="text-center text-gray-1000 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl">
                   Tracking High Growth Potential
                   <br /> SMEs in New South Wales
                 </h5>
@@ -71,7 +73,7 @@ const HomePage = async () => {
                 >
                   2,356
                 </h1>
-                <h5 className="text-center text-gray-500 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-8 md:mb-40">
+                <h5 className="text-center text-gray-1000 text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl mb-8 md:mb-40">
                   High Growth Potential SMEs <br /> Identified in New South
                   Wales
                 </h5>
