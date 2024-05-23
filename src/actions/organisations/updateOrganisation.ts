@@ -14,6 +14,7 @@ export const updateOrganisation = async (
   const validation = organisationSchema.safeParse(data);
 
   if (!validation.success) {
+    console.error("Validation failed:", validation.error);
     return { success: false, error: "Bad request." };
   }
 
@@ -25,14 +26,24 @@ export const updateOrganisation = async (
 
   const payload = await getPayloadClient();
 
-  await payload.update({
-    collection: "organisations",
-    id: user.organisation as string,
-    data: {
-      name: validation.data.name,
-      members: validation.data.members,
-    },
+  console.log("Updating organisation with data:", {
+    name: validation.data.name,
+    members: validation.data.members,
   });
 
-  return { success: true };
+  try {
+    await payload.update({
+      collection: "organisations",
+      id: user.organisation as string,
+      data: {
+        name: validation.data.name,
+        members: validation.data.members,
+      },
+    });
+    console.log("Update successful");
+    return { success: true };
+  } catch (error) {
+    console.error("Update failed:", error);
+    return { success: false, error: "Update failed" };
+  }
 };
