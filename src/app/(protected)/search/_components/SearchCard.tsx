@@ -178,8 +178,9 @@ const SearchCard = () => {
       const staffMatch = selectedStaffRange
         ? isInStaffRange(business.numEmployees!, selectedStaffRange)
         : true;
-        const sectorMatch =
+      const sectorMatch =
         selectedSector === "Any" ||
+        selectedSector === "" || 
         business.industrySector?.toLowerCase() === selectedSector.toLowerCase();
       const growthPotentialMatch = selectedGrowthPotentialRange
         ? isInGrowthPotentialRange(
@@ -244,7 +245,7 @@ const SearchCard = () => {
           <div className="flex items-center gap-2">
             <Input
               type="text"
-              placeholder="Search for highgrowth SME's"
+              placeholder="Use ABN or web URL to search for a specific business"
               value={searchQuery} // Bind the search query state to the input
               onChange={handleSearchChange} // Handle input changes
             />
