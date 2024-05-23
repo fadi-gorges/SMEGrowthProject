@@ -216,7 +216,7 @@ const AddEnterpriseCard = () => {
       </FormItem>
           
           <FormItem className="mb-4">
-            <FormLabel className=" mb-2">Is Sme:</FormLabel>
+            <FormLabel className=" mb-2">Under 200 Staff:</FormLabel>
             
           <input className="m-3" type="checkbox" {...methods.register('sme')} />
           <span className="text-sm">SME</span>
