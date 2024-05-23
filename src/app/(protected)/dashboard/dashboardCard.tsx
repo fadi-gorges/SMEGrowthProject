@@ -84,7 +84,7 @@ const DashboardPage = () => {
                   Engaged
                 </th>
                 <th scope="col" className="py-3 px-6">
-                  Remove
+                  
                 </th>
               </tr>
             </thead>
