@@ -17,17 +17,23 @@ Before you begin, make sure you have the following installed and set up:
 
 ### Installing
 
-1. Install the dependencies:
+1. Clone the repository
+
+```sh
+git clone https://github.com/fadi-gorges/SMEGrowthProject.git
+```
+
+2. Install the dependencies:
 
 ```sh
 npm install
 ```
 
-2. Set up your environment variables:
+3. Set up your environment variables:
 
 Copy the `.env.example` file to a new file named `.env` and fill out the environment variables according to your MongoDB and email settings. The application uses these environment variables for various configurations.
 
-3. Start the development server:
+4. Start the development server:
 
 ```sh
 npm run dev
